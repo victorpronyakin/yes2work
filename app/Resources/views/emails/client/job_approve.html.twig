@@ -1,0 +1,12 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Hi {{ job.user.firstName }}
+    <br><br>
+    Thank you for loading the {{ job.jobTitle }} position on Yes2Work.
+    <br><br>
+    Your job has been reviewed and has now been published by Yes2Work. Please check your emails over the next few weeks or check your Yes2Work profile for the YES eligible applicants.
+    <br><br>
+    To view your Yes2Work dashboard please click <a href="{{ job.link }}">here</a>
+    <br><br>
+    Get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

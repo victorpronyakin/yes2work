@@ -1,0 +1,15 @@
+.not-visible{
+  display: none;
+
+  &.visible-block{
+    display: flex;
+  }
+}
+.custom-upload{
+  .btn-interview{
+    width: auto;
+  }
+}
+.file-container{
+  overflow: hidden;
+}

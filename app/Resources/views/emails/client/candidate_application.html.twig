@@ -1,0 +1,10 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Hi {{ client.firstName }}
+    <br><br>
+    You have received an application from a young prospective employee for your {{ jobTitle }} job you loaded on Yes2Work.
+    <br><br>
+    Please click <a href="{{ link }}">here</a> to view the applicant’s profile.
+    <br><br>
+    Get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

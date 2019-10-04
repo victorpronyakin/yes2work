@@ -1,0 +1,51 @@
+.candidate-dashboard-st{
+  display: flex;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.label-text{
+  color: #414041;
+  font-size: 14px;
+}
+.custom-padding{
+  padding: 6px 45px 7px 45px;
+}
+.disabled-text{
+  color: #bbb;
+}
+
+.switch:disabled + label{
+  cursor: not-allowed;
+}
+
+.modal-video-record {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, .5);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &.active {
+    display: flex;
+    overflow: auto;
+  }
+
+  .modal-header{
+    width: 450px;
+  }
+
+  .modal-body{
+    padding: 1rem 2rem;
+    width: 450px;
+    margin: 0 auto;
+    background: #fff;
+    flex: inherit;
+  }
+}

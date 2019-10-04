@@ -1,0 +1,443 @@
+<div class="row margin-bottom--24 d-flex d-flex--justify-between">
+  <div class="tabs-items jobs-button-desktop">
+    <a class="tab-cell" routerLink="/business/applicants_awaiting" routerLinkActive="active" [queryParams]="(requestJobId > 0) ? {jobId: requestJobId} : {}">Applicants awaiting approval</a>
+    <a class="tab-cell" routerLink="/business/applicants_shortlist" routerLinkActive="active" [queryParams]="(requestJobId > 0) ? {jobId: requestJobId} : {}">Shortlisted for consideration </a>
+    <a class="tab-cell" routerLink="/business/applicants_approved" routerLinkActive="active" [queryParams]="(requestJobId > 0) ? {jobId: requestJobId} : {}">Approved applicants</a>
+    <a class="tab-cell" routerLink="/business/applicants_declined" routerLinkActive="active" [queryParams]="(requestJobId > 0) ? {jobId: requestJobId} : {}">Declined applicants</a>
+  </div>
+  <select class="form-control field--medium input-form select-form jobs-button-mobile min-width--100" #filter1 (change)="routerApplicants(filter1.value, requestJobId)">
+    <option value="/business/applicants_awaiting">Applicants awaiting approval</option>
+    <option value="/business/applicants_shortlist">Shortlisted for consideration</option>
+    <option value="/business/applicants_approved">Approved applicants</option>
+    <option value="/business/applicants_declined">Declined applicants</option>
+  </select>
+  <div class="rendering-icon">
+    <button (click)="statusRendiring(true)" [ngClass]="{'active': renderingApplicants}"><i class="fas fa-bars"></i></button>
+    <button (click)="statusRendiring(false)" [ngClass]="{'active': !renderingApplicants}"><i class="fas fa-th-large"></i></button>
+  </div>
+</div>
+
+<div class="search-applicants row d-flex d-flex--align-center margin-bottom--32">
+  <div class="col-md-4 padding-left--0">
+    <span class="d-flex search-desc">Search applicants</span>
+  </div>
+  <div class="col-md-4">
+    <input type="text" class="input-form full-width select-form" placeholder="Enter candidates name" #search (change)="resetArrayPagination();searchFilter()">
+  </div>
+  <div class="col-md-4 padding-right--0">
+    <ng-select placeholder="All jobs" [(ngModel)]="requestJobId" #jobStatus [searchable]="false" (change)="resetArrayPagination();searchFilter()">
+      <ng-option [value]="null">All jobs</ng-option>
+      <ng-option *ngFor="let job of listOfJobs" [value]="job?.id">{{ job?.jobTitle }}</ng-option>
+    </ng-select>
+    <!-- jobs status -->
+  </div>
+</div>
+
+<div class="row margin-bottom--24 filter-title">
+  <div #filterItem (click)="openMoreFilters()" class="filter-item d-flex d-flex--justify-between full-width">
+    <span>filter applicants
+      <i *ngIf="!checkOpenFilters" class="fas fa-angle-down"></i>
+      <i *ngIf="checkOpenFilters" class="fas fa-angle-up"></i>
+    </span>
+    <a #openButton>Open more filters</a>
+  </div>
+</div>
+
+<div class="filter-background" #filterFont></div>
+
+<div class="row more-filter" #openFilters>
+  <div class="col-md-12 select-groups d-flex d-flex--align-center d-flex--justify-start d-flex--wrap">
+    <form [formGroup]="filterForm" class="d-flex--justify-between col-md-12 d-flex d-flex--align-center d-flex--wrap">
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ng-select placeholder="Youth Employment System Eligibility"
+                   formControlName="eligibility"
+                   #eligibility
+                   (change)="resetEthnicity(eligibility.selectedValues[0]);getApplicantsCount()"
+                   [searchable]="false">
+          <ng-option [value]="'applicable'">YES Applicable Candidates Only</ng-option>
+          <ng-option [value]="'all'">All candidates</ng-option>
+        </ng-select>
+      </div>
+      <!-- Youth Employment System Eligibility -->
+      <div class="form-group margin-right--12 d-flex d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="ethnicityOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configEthnicity"
+                                 [(ngModel)]="ethnicityModel"
+                                 #ethnicity
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="ethnicity"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- ethnicity -->
+      <div class="form-group margin-right--12 d-flex d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="genderOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configGender"
+                                 [(ngModel)]="genderModel"
+                                 #gender
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="gender"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- gender -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ss-multiselect-dropdown [options]="locationOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configLocation"
+                                 [(ngModel)]="locationModel"
+                                 #location
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="location"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- location -->
+      <div class="form-group d-flex--direction-column margin-right--12"></div>
+      <h3 style="width: 100%; color: #002855; text-transform: uppercase; font-size: 16px; font-weight: 600; margin-bottom: 15px;">Highest Qualification</h3>
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ss-multiselect-dropdown [options]="qualificationLevelOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configQualificationLevels"
+                                 [(ngModel)]="qualificationLevelModel"
+                                 #qualificationLevel
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="highestQualification"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- Qualification Level -->
+      <h3 style="width: 100%; color: #002855; text-transform: uppercase; font-size: 16px; font-weight: 600; margin-bottom: 15px;">Work Experience</h3>
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ss-multiselect-dropdown [options]="specializationOptions"
+                                 [settings]="specializationSettings"
+                                 [texts]="_sharedService.configSpecialization"
+                                 [(ngModel)]="specializationModel"
+                                 #specialization
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="field"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- Specialization -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ss-multiselect-dropdown [options]="yearsWorkOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configYearsWorks"
+                                 [(ngModel)]="yearsWorkModel"
+                                 #yearsWork
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="yearsOfWorkExperience"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- Years Work -->
+      <div class="form-group d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="availabilityOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configAvailability"
+                                 [(ngModel)]="availabilityModel"
+                                 #availability
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="availability"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- availability -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ng-select placeholder="Video"
+                   formControlName="video"
+                   #video
+                   [searchable]="false"
+                   (change)="getApplicantsCount()">
+          <ng-option [value]="'Yes'">Yes</ng-option>
+          <ng-option [value]="'No'">No</ng-option>
+        </ng-select>
+      </div>
+      <!-- video -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ng-select placeholder="Assessment Completed"
+                   formControlName="assessmentCompleted"
+                   #assessmentCompleted
+                   [searchable]="false">
+          <ng-option [value]="'Yes'">Yes</ng-option>
+          <ng-option [value]="'No'">No</ng-option>
+        </ng-select>
+      </div>
+      <!-- Assessment Completed -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ng5-slider [(value)]="minValue"
+                    [(highValue)]="maxValue"
+                    (userChangeEnd)="getApplicantsCount()"
+                    [options]="options"></ng5-slider>
+      </div>
+      <!-- Most Recent Annual Salary -->
+    </form>
+
+    <div class="row full-width d-flex--justify-end">
+      <button class="btn reset-btn" (click)="resetFilterForm()">
+        <i class="fas fa-redo-alt"></i> reset filters
+      </button>
+      <span class="total-count margin-left--16"><span>{{ totalCountFilter }}</span> Candidates</span>
+      <button class="btn primary-button margin-left--16" (click)="resetArrayPagination();searchFilter()">Search</button>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <h4 class="subtitle-row" *ngIf="totalCount?.number"> {{ totalCount?.number }} applicants</h4>
+  <h4 class="subtitle-row" *ngIf="!totalCount?.number">0 applicants</h4>
+</div>
+
+<div class="row margin-bottom--24">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24" #rendering (window:resize)="onResize()">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div (click)="sortCandidate('firstName')" class="column-table d-flex--justify-between " style="width: 14%">
+            <span class="title-column">Applicant name</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='firstName'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'firstName'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('highestQualification')" class="column-table d-flex--justify-between" style="width: 14%">
+            <span class="title-column">Highest Qualification</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='highestQualification'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'highestQualification'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('mostSalary')" class="column-table d-flex--justify-between" style="width: 10%">
+            <span class="title-column">Salary</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='mostSalary'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'mostSalary'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('availability')" class="column-table d-flex--justify-between" style="width: 14%">
+            <span class="title-column">Availability</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='availability'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'availability'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('employer')" class="column-table d-flex--justify-between" style="width: 14%">
+            <span class="title-column">Most recent employer</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='employer'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'employer'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('role')" class="column-table d-flex--justify-between" style="width: 14%">
+            <span class="title-column">Most recent role</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='role'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'role'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div class="column-table d-flex--justify-center" style="width: 16%">Video</div>
+          <div class="column-table d-flex--justify-center margin-right--15" style="width: 3%"></div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let applicant of applicantsData; let i = index">
+          <div class="content-row d-flex position--relative">
+            <div class="column-table acc border-right-table column-table-mod" style="width: 14%">
+              <div class="description-cell full-width d-flex d-flex--align-center image-cell">
+                <span class="job-title-cell" [ngClass]="{'absolute-job': renderingApplicants}">Job: {{ applicant?.jobTitle }}</span>
+                <span class="applicant-avatar margin-right--12">
+                <img *ngIf="applicant?.picture !== null" src="{{ applicant?.picture }}" alt="candidate image" class="applicant_image" onerror="this.style.opacity='0'">
+                <img *ngIf="applicant?.picture === null" src="/assets/img/placeholders/placeholder.png" alt="candidate image" class="applicant_image" onerror="this.style.opacity='0'">
+              </span>
+                <h4 class="title-description-cell">{{ applicant?.firstName }} {{ applicant?.lastName.charAt(0) }}</h4>
+                <button *ngIf="applicant?.video" (click)="openVerticallyCenters(videoPopup, applicant)" class="btn btn-interview margin-right--8 display-none"><i class="fas fa-play-circle"></i> Video Interview</button>
+                <a *ngIf="applicant?.cvFiles?.length > 0 && !renderingApplicants" (click)="openVerticallyCenter(content)" class="btn btn-interview down margin-right--12"><i class="fas fa-download"></i> Preview CV</a>
+                <ng-template #content let-c="close" let-d="dismiss">
+                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <div class="modal-body">
+                    <div class="iframe-cv" *ngFor="let file of applicant?.cvFiles">
+                      <iframe class="doc" [src]="file?.url | urlType" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                      <a *ngIf="file.approved" href="{{ file?.url }}" download="{{ file?.url }}" target="_blank" class="btn btn-interview doc-t margin-right--12"><i class="fas fa-download"></i> Download CV</a>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center column-table-mod border-right-table" style="width: 14%">
+              <div class="title-cell">Highest qualification level</div>
+              <div class="description-cell">
+                <span *ngIf="applicant?.highestQualification">{{ applicant?.highestQualification }}</span>
+                <span *ngIf="!applicant?.highestQualification">-</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center column-table-mod border-right-table" style="width: 10%">
+              <div class="title-cell">Most recent monthly salary</div>
+              <div class="description-cell">
+                <span *ngIf="applicant?.mostSalary && applicant?.salaryPeriod === 'monthly'">R{{ applicant?.mostSalary | number:'.0-0' }}</span>
+                <span *ngIf="applicant?.mostSalary && applicant?.salaryPeriod !== 'monthly'">R{{ applicant?.mostSalary / 12 | number:'.0-0' }}</span>
+                <span *ngIf="!applicant?.mostSalary">-</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center column-table-mod border-right-table" style="width: 14%">
+              <div class="title-cell">Availability</div>
+              <div class="description-cell">
+                <span *ngIf="applicant?.availability === false">{{ _sharedService.getCandidateAvailabilityInHumanReadableForm(
+                        applicant.availability, applicant.availabilityPeriod, applicant.dateAvailability ) }}</span>
+                <span *ngIf="applicant?.availability === true || applicant?.availability === null">Immediately</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center column-table-mod border-right-table" style="width: 14%">
+              <div class="title-cell">Most recent employer</div>
+              <div class="description-cell">
+                <span *ngIf="applicant?.employer">{{ applicant?.employer }}</span>
+                <span *ngIf="!applicant?.employer">-</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center column-table-mod border-right-table" style="width: 14%">
+              <div class="title-cell">Most recent role</div>
+              <div class="description-cell">
+                <span *ngIf="applicant?.role">{{ applicant?.role }}</span>
+                <span *ngIf="!applicant?.role">-</span>
+              </div>
+            </div>
+            <div *ngIf="!renderingApplicants" class="column-table d-flex--justify-center column-table-mod border-right-table" style="width: 14%">
+              <div class="title-cell">Years of work experience</div>
+              <div class="description-cell">
+                <span *ngIf="applicant?.yearsOfWorkExperience">{{ applicant?.yearsOfWorkExperience }} years</span>
+                <span *ngIf="!applicant?.yearsOfWorkExperience">None</span>
+              </div>
+            </div>
+            <div *ngIf="!renderingApplicants" class="column-table d-flex--justify-center column-table-mod border-right-table" style="width: 14%">
+              <div class="title-cell">Field</div>
+              <div class="description-cell" style="text-align: right;">
+                <span *ngIf="applicant?.field">{{ applicant?.field }}</span>
+                <span *ngIf="!applicant?.field">-</span>
+              </div>
+            </div>
+            <div *ngIf="!renderingApplicants" class="column-table d-flex--justify-center column-table-mod border-right-table" style="width: 14%">
+              <div class="title-cell">YES Applicable</div>
+              <div class="description-cell">
+                <span *ngIf="!applicant?.applicable" style="color: red">Non-YES Candidate</span>
+                <span *ngIf="applicant?.applicable" style="color: green">YES Candidate</span>
+              </div>
+            </div>
+            <div *ngIf="renderingApplicants" class="column-table d-flex--justify-center column-table-mod column-table-rendering border-right-table column-mod" style="width: 16%">
+              <button [disabled]="!applicant?.video" (click)="openVerticallyCenters(videoPopup, applicant)" class="btn btn-interview btn-interview-mod"><i class="fas fa-play-circle"></i> View video
+              </button>
+            </div>
+            <div *ngIf="renderingApplicants" class="column-table d-flex--justify-center column-table-mod column-table-rendering p-right-0 margin-right--15" style="width: 3%">
+              <div class="description-cell d-flex--justify-center">
+                <a class="view-popup-icon" (click)="openVerticallyCentered(candidateDetailsPopup, applicant)"><i
+                  class="fa fa-eye"></i></a>
+              </div>
+            </div>
+            <div *ngIf="!renderingApplicants" class="column-table d-flex--justify-center column-table-mod column-table-rendering column-mod"
+                 [ngClass]="{'border-right-table': viewPage === 1 || viewPage === 2}"
+                 style="width: 100%">
+              <div class="title-cell"></div>
+              <div class="description-cell second-button">
+                <button class="btn primary-button" (click)="openVerticallyCentered(candidateDetailsPopup, applicant)">View full profile</button>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-between border-right-table column-mod"
+                 *ngIf="!renderingApplicants && viewPage === 1 || !renderingApplicants && viewPage === 2">
+              <button class="btn btn-action danger-button"
+                      *ngIf="viewPage === 1 || viewPage === 2"
+                      (click)="declineCandidateApplication(applicant, i)">Decline</button>
+              <button class="btn btn-action primary-button"
+                      *ngIf="viewPage === 1"
+                      (click)="addCandidateToShortList(applicant, i)">Short list</button>
+              <button class="btn btn-action primary-button"
+                      *ngIf="viewPage === 1 || viewPage === 2"
+                      (click)="setUpInterview(applicant, applicant?.jobID, i)">Set up interview</button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="applicantsData.length === 0 && !paginationFilter" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>No applicants found!</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="applicantsData.length === 0 && paginationFilter" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-44">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="loadMoreCheck && !paginationLoader" class="job-popup-delete" (click)="loadPagination()">
+      Load more
+    </span>
+
+    <div *ngIf="paginationLoader" class="loader-table margin-bottom--12" id="loader-6">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</div>
+
+<ng-template #candidateDetailsPopup let-cc="close" let-dc="dismiss">
+  <app-browse-all-candidates-view-details-popup [closePopup]="dc"
+                                                [candidateToView]="candidateToView"
+                                                [listJob]="applicantsData"
+                                                [listOfJobs]="listOfJobs"
+                                                [(totalCount)]="totalCount"
+  ></app-browse-all-candidates-view-details-popup>
+</ng-template>
+
+<ng-template #videoPopup let-cd="close" let-dd="dismiss">
+  <app-business-video-popup [closePopup]="dd"
+                            [candidateToView]="candidateToView"
+  ></app-business-video-popup>
+</ng-template>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+

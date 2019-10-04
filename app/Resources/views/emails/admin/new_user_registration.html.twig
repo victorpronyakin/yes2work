@@ -1,0 +1,6 @@
+{% extends 'emails/base_email_admin.html.twig' %}
+{% block body_html %}
+    A new {{ role }} has registered on Yes2Work
+    <br><br>
+    Please click <a href="{{ link }}">here</a> to view the new {{ (role == 'candidate') ? 'applicant' : role }}’s profile.
+{% endblock %}

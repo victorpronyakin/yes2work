@@ -1,0 +1,149 @@
+<div class="popup-job-container">
+  <div class="modal-header">
+    <h4 class="modal-title">full job</h4>
+    <button type="button" class="close d-flex" aria-label="Close" (click)="closePopup('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- modal-header -->
+  <div class="modal-body jobs-body">
+    <div class="business-job-top-notification d-flex d-flex--align-center d-flex--justify-between margin-top--48 margin-bottom--32">
+      <div class="d-flex d-flex--align-center d-flex--justify-start">Application closes: {{ currentBusinessJob?.closureDate | date:'dd LLL yyyy' }}</div>
+      <div *ngIf="checkDate === 1" class="d-flex d-flex--align-center d-flex--justify-start">{{ daysBeforeClosure }} Days left</div>
+    </div>
+    <!-- business-job-top-notification -->
+    <div class="job-details-container d-flex d-flex--align-center">
+      <div class="row full-width">
+        <div class="col-md-6 leftside-column">
+          <h4 class="job-details">job details</h4>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Company Name: </span>
+            <span class="desc">{{ currentBusinessJob?.companyName }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Industry: </span>
+            <span class="desc">{{ currentBusinessJob?.industry | industryList }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Job Title: </span>
+            <span class="desc">{{ currentBusinessJob?.jobTitle }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">City: </span>
+            <span class="desc">{{ currentBusinessJob?.addressCity }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--24">
+            <span class="title">Address: </span>
+            <span class="desc">{{ currentBusinessJob?.companyAddress }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--24">
+            <span class="title">Ideal Start Date: </span>
+            <span *ngIf="!currentBusinessJob?.started">-</span>
+            <span *ngIf="currentBusinessJob?.started" class="desc">{{ currentBusinessJob?.started | date:'dd LLL yyyy' }} <span *ngIf="currentBusinessJob?.filled">- {{ currentBusinessJob?.filled | date:'dd LLL yyyy' }}</span></span>
+          </div>
+          <div class="div1 d-flex d-flex--align-center d-flex--justify-between">
+            <button type="button" class="btn btn-interview" *ngIf="currentBusinessJob?.status" (click)="closeBusinessJob(currentBusinessJob)"><i class="fas fa-times-circle"></i> Close</button>
+            <button type="button" (click)="closePopup('Cross click')" class="btn btn-interview" *ngIf="currentBusinessJob?.status" routerLink="/business/jobs/edit/{{ currentBusinessJob?.id }}"><i class="fas fa-pencil-alt"></i> Edit</button>
+            <button type="button" class="btn btn-interview" (click)="deleteBusinessJob(currentBusinessJob, currentBusinessJob?.status)"><i class="fas fa-trash-alt"></i> Delete</button>
+          </div>
+          <div class="company-description-container d-flex d-flex--align-start d-flex--direction-column">
+            <div class="company-description-container__title margin-bottom--16">Company Description</div>
+            <p>{{ currentBusinessJob?.companyDescription }}</p>
+            <div class="company-description-container__title margin-top--16 margin-bottom--16">About the Role</div>
+            <p>{{ currentBusinessJob?.roleDescription }}</p>
+          </div>
+          <div class="company-description-container d-flex d-flex--align-start d-flex--direction-column">
+            <button style="padding: 5px 10px; margin-bottom: 20px" type="button" class="btn btn-interview" disabled *ngIf="!currentBusinessJob?.spec || !currentBusinessJob['spec']?.url"><i class="fas fa-download"></i> Preview Job Spec</button>
+            <a style="padding: 5px 10px; margin-bottom: 20px" *ngIf="currentBusinessJob?.spec && currentBusinessJob['spec']?.url" [href]="currentBusinessJob['spec']?.url" target="_blank" [download]="currentBusinessJob['spec']?.name" class="btn btn-interview"><i class="fas fa-download"></i> Preview Job Spec</a>
+          </div>
+        </div>
+        <div class="col-md-6 rightside-column">
+          <div class="d-flex d-flex--align-center margin-bottom--8 total-cand">
+            <h4 class="job-details">Which candidates will see this job</h4>
+            <span><span>{{ currentBusinessJob?.candidateCount }}</span> Candidates saw your advert</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Youth Employment System Eligibility: </span>
+            <span class="desc">{{ currentBusinessJob?.eligibility | firstLetterUppercase }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Gender: </span>
+            <span class="desc">{{ currentBusinessJob?.gender }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Ethnicity: </span>
+            <span class="desc">{{ currentBusinessJob?.ethnicity }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Location: </span>
+            <span class="desc">{{ currentBusinessJob?.location }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Qualification Level: </span>
+            <span class="desc">{{ currentBusinessJob?.highestQualification }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Field: </span>
+            <span class="desc">{{ fields }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Years of work experience: </span>
+            <span class="desc">{{ yearsOfWorkExperience }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Availability: </span>
+            <span class="desc">{{ jobAvailability }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Video: </span>
+            <span class="desc">{{ jobVideo }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Month Salary: </span>
+            <span class="desc">R{{ currentBusinessJob?.salaryFrom }} - R{{ currentBusinessJob?.salaryTo }}</span>
+          </div>
+          <div class="div d-flex d-flex--align-center margin-bottom--8">
+            <span class="title">Assessment Completed: </span>
+            <span class="desc">{{(currentBusinessJob?.assessment == 1) ? 'All' : (currentBusinessJob?.assessment == 2) ? 'Yes' : 'No'  }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- job-details-container -->
+    <div class="applicants-management-container d-flex d-flex--align-center d-flex--justify-between">
+      <span *ngIf="!currentBusinessJob?.status || currentBusinessJob?.approve !== null">
+        <a class="circle-table circle-table--red" (click)="closePopup()" routerLink="/business/applicants_awaiting" [queryParams]="{jobId: currentBusinessJob?.id}">Applicants awaiting approval</a>
+        <span class="circle-cell circle-cell--red">{{ currentBusinessJob?.awaitingCount }}</span>
+      </span>
+      <span *ngIf="currentBusinessJob?.status && currentBusinessJob?.approve === null">
+        <a class="circle-table circle-table--red">Applicants awaiting approval</a>
+        <span class="circle-cell circle-cell--red">N/A</span>
+      </span>
+      <!-- applicants awaiting approval -->
+      <span *ngIf="!currentBusinessJob?.status || currentBusinessJob?.approve !== null">
+        <a class="circle-table circle-table--yellow" (click)="closePopup()" routerLink="/business/applicants_shortlist" [queryParams]="{jobId: currentBusinessJob?.id}">Shortlisted candidates</a>
+        <span class="circle-cell circle-cell--yellow">{{ currentBusinessJob?.shortListCount }}</span>
+      </span>
+      <span *ngIf="currentBusinessJob?.status && currentBusinessJob?.approve === null">
+        <a class="circle-table circle-table--yellow">Shortlisted candidates</a>
+        <span class="circle-cell circle-cell--yellow">N/A</span>
+      </span>
+      <!-- shortlisted candidates -->
+      <span *ngIf="!currentBusinessJob?.status || currentBusinessJob?.approve !== null">
+        <a class="circle-table circle-table--green" (click)="closePopup()" routerLink="/business/applicants_approved" [queryParams]="{jobId: currentBusinessJob?.id}">Applicants approved for interview </a>
+        <span class="circle-cell circle-cell--green">{{ currentBusinessJob?.approvedCount }}</span>
+      </span>
+      <span *ngIf="currentBusinessJob?.status && currentBusinessJob?.approve === null">
+        <a class="circle-table circle-table--green">Applicants approved for interview </a>
+        <span class="circle-cell circle-cell--green">N/A</span>
+      </span>
+      <!-- applicants approved for interview -->
+    </div>
+  </div>
+  <!-- modal-body -->
+
+  <div *ngIf="loaderPopup" id="preloaderPopup">
+    <div id="loaderPopup" style="position: absolute"></div>
+  </div>
+
+</div>

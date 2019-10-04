@@ -1,0 +1,10 @@
+<div class="error-container full-width">
+  <h4>404 error</h4>
+  <h3>oops, something went wrong</h3>
+  <span>The page aou are looking for can`t be found</span>
+  <button class="btn primary-button" routerLink="/admin/dashboard">Back to Dashboard</button>
+</div>
+
+<div *ngIf="sharedService.preloaderView" id="preloaderView">
+  <div id="loader"></div>
+</div>

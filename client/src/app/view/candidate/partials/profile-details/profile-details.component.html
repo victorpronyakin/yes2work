@@ -1,0 +1,664 @@
+<div class="title-description margin-bottom--32">
+  <div class="d-flex d-flex--align-center margin-bottom--24 profile-tabs-mobile">
+    <h3 style="margin-right: 45px;">my profile</h3>
+    <div class="tabs-items jobs-button-desktop">
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/profile_details" routerLinkActive="active">Personal Information</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/qualification" routerLinkActive="active">Qualification</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/achievements" routerLinkActive="active">Work Experience </a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/video" routerLinkActive="active">My Video</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/preferences" routerLinkActive="active">Preferences</a>
+    </div>
+    <select class="form-control field--medium input-form select-form jobs-button-mobile min-width--100" #filter1 (change)="routerApplicants(filter1.value)">
+      <option value="/candidate/profile_details">Personal Information</option>
+      <option value="/candidate/qualification">Qualification</option>
+      <option value="/candidate/achievements">Work Experience</option>
+      <option value="/candidate/video">My Video</option>
+      <option value="/candidate/preferences">Preferences</option>
+    </select>
+  </div>
+  <p *ngIf="_sharedService.visibleErrorVideoIcon || _sharedService.visibleErrorProfileIcon">Please make sure you upload a copy of your ID and video before you can apply for a job.</p>
+  <p *ngIf="!_sharedService.visibleErrorProfileIcon && !_sharedService.visibleErrorVideoIcon">Your profile is complete enough to be viewed by clients and to receive new job postings.</p>
+</div>
+<div class="row margin-top--32 margin-bottom--32" *ngIf="!_sharedService.visibleErrorProfileIcon && !_sharedService.visibleErrorVideoIcon">
+  <div class="col-md-8 padding-left--0 candidate-dashboard-notification">
+    <div class="row margin-bottom--8">
+      <div class="col-8 col-md-10 padding-left--0">
+        <label class="label-text">I am looking for a job</label>
+      </div>
+      <div class="col-2 col-md-2 d-flex">
+        <label class="label-text">No</label>
+        <div class="switch__container margin-left--5 margin-right--5">
+          <input id="switch-shadow8" class="switch switch--shadow" type="checkbox" [(ngModel)]="checkLooking" (ngModelChange)="changeStatusCandidate('looking', checkLooking)">
+          <label for="switch-shadow8" [ngClass]="{'test-shadow': visibilityLooking}"></label>
+        </div>
+        <label class="label-text">Yes</label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row progress-info margin-bottom--32">
+  <ngb-progressbar class="full-width" [value]="_sharedService.progressBar" type="warning" [max]="100">{{ _sharedService.progressBar }}% Complete</ngb-progressbar>
+</div>
+<div class="row">
+  <div class="custom-form">
+    <form [formGroup]="candidateForm">
+      <div class="table-information full-width achievements-mobile">
+        <div class="body">
+          <div class="row-table">
+            <input type="checkbox" class="accordions__checkbox" id="1">
+            <label class="accordions__heading" for="1">Personal information <span class="accordion-item-cta">&#9650;</span></label>
+            <div class="content-row d-flex accordions__content">
+              <div class="row">
+                <h4 class="title-row margin-bottom--24">Personal information</h4>
+              </div>
+              <div class="row d-flex--direction-column">
+                <div class="row margin-top--16">
+                  <div class="col-md-6 padding-left--0">
+                    <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+                      <input type="text" class="form-control input-form full-width" placeholder="First Name" formControlName="firstName">
+                      <span class="required-icon">*</span>
+                    </div>
+                    <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="candidateForm.controls['firstName']?.errors?.required && candidateForm.controls['firstName'].touched">
+                      First Name is required
+                    </span>
+                    <!-- First Name-->
+                    <div class="last-mobile form-group list-input d-flex d-flex--align-center required-icon-content">
+                      <span class="required-icon">*</span>
+                      <input type="text" class="form-control input-form full-width" placeholder="Last Name" formControlName="lastName">
+                    </div>
+                    <span class="last-mobile help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="candidateForm.controls['lastName']?.errors?.required && candidateForm.controls['lastName'].touched">
+                      Last Name is required
+                    </span>
+                    <!-- Last Name-->
+                    <div class="form-group d-flex d-flex--align-center d-flex--justify-between">
+                      <label class="text-desc">Citizenship:
+                        <span class="text-desc font-weight--600" *ngIf="candidateForm.controls['nationality']?.value === 1">South African Citizen</span>
+                        <span class="text-desc font-weight--600" *ngIf="candidateForm.controls['nationality']?.value === 2">Non-South African</span>
+                      </label>
+                    </div>
+                    <!-- Citizenship -->
+                    <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+                      <ng-select placeholder="BB-BEE Eligibility" formControlName="ethnicity" [searchable]="false">
+                        <ng-option [value]="'Black'">Black</ng-option>
+                        <ng-option [value]="'Coloured'">Coloured</ng-option>
+                        <ng-option [value]="'Indian'">Indian</ng-option>
+                        <ng-option [value]="'Oriental'">Oriental</ng-option>
+                        <ng-option [value]="'White'">White</ng-option>
+                      </ng-select>
+                      <span class="required-icon">*</span>
+                    </div>
+                    <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="candidateForm.controls['ethnicity']?.errors?.required && candidateForm.controls['ethnicity'].touched">
+                      BB-BEE Eligibility is required
+                    </span>
+                    <!-- Ethnicity -->
+                    <div class="form-group input-group list-input d-flex d-flex--align-center right-calendar display-year"
+                         *ngIf="candidateForm.controls['nationality'].value === 2 &&
+                                candidateForm.controls['ethnicity'].value &&
+                                candidateForm.controls['ethnicity'].value !== 'White'">
+                      <label class="text-desc">When did you arrive in South Africa?</label>
+                      <input class="form-control input-form" placeholder="Select Date" ngx-mydatepicker name="beeCheck" formControlName="beeCheck" [options]="myOptionsDate" #dp31="ngx-mydatepicker" />
+                      <span class="input-group-btn margin-right--12">
+                        <button type="button" class="btn btn-default top--0" (click)="dp31.toggleCalendar()">
+                          <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </button>
+                      </span>
+                    </div>
+                    <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+                      <ng-select placeholder="Gender" formControlName="gender" [searchable]="false">
+                        <ng-option [value]="'Male'">Male</ng-option>
+                        <ng-option [value]="'Female'">Female</ng-option>
+                      </ng-select>
+                      <span class="required-icon">*</span>
+                    </div>
+                    <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="candidateForm.controls['gender']?.errors?.required && candidateForm.controls['gender'].touched">
+                      Gender is required
+                    </span>
+                    <!-- Gender -->
+                    <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+                      <span class="required-icon">*</span>
+                      <input type="text" class="form-control input-form full-width" id="idn" placeholder="SA ID Number" formControlName="idNumber">
+                      <span id="debug"></span>
+                    </div>
+                    <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="candidateForm.controls['idNumber']?.errors?.invalidIdNumber && candidateForm.controls['idNumber'].touched">
+                      {{ candidateForm.controls['idNumber']?.errors?.invalidIdNumber }}
+                    </span>
+                    <!-- ID Number -->
+                    <div class="form-group input-group list-input d-flex d-flex--align-center right-calendar display-year">
+                      <label class="text-desc">Date of birth</label>
+                      <input class="form-control input-form" placeholder="Date of birth" ngx-mydatepicker name="dateOfBirth" formControlName="dateOfBirth" [options]="myOptionsDate" #dp3="ngx-mydatepicker" />
+                      <span class="input-group-btn margin-right--12">
+                        <button type="button" class="btn btn-default top--0" (click)="dp3.toggleCalendar()">
+                          <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </button>
+                      </span>
+                    </div>
+                    <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="candidateForm.controls['dateOfBirth'].invalid && candidateForm.controls['dateOfBirth'].touched">
+                      Date of Birth invalid
+                    </span>
+                    <!-- Date of birth -->
+                  </div>
+                  <div class="col-md-6 padding-right--0">
+                    <div class="last-mobile-end form-group list-input d-flex d-flex--align-center required-icon-content">
+                      <input type="text" class="form-control input-form full-width" placeholder="Last Name" formControlName="lastName">
+                      <span class="required-icon">*</span>
+                    </div>
+                    <span class=" last-mobile-end help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="candidateForm.controls['lastName']?.errors?.required && candidateForm.controls['lastName'].touched">
+                      Last Name is required
+                    </span>
+                    <!-- Last Name-->
+                    <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+                      <input type="text" class="form-control input-form full-width" placeholder="Personal Email" formControlName="email">
+                      <span class="required-icon">*</span>
+                    </div>
+                    <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="candidateForm.controls['email']?.errors?.required && candidateForm.controls['email'].touched">
+                      Email is required
+                    </span>
+                    <!-- Email -->
+                    <div class="form-group list-input d-flex d-flex--align-center phone-content-code required-icon-content">
+                      <int-phone-prefix class="phone-number" formControlName="phone"></int-phone-prefix>
+                      <span class="required-icon">*</span>
+                    </div>
+                    <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="candidateForm.controls['phone']?.errors?.validNumber && candidateForm.controls['phone'].touched">
+                      Please enter a valid contact number
+                    </span>
+                    <!-- Phone -->
+                    <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+                      <input type="text" #addressField (focus)="addressFocus()" class="form-control address-input input-form full-width" placeholder="Personal Address" formControlName="homeAddress" id="search1">
+                      <span class="required-icon">*</span>
+                    </div>
+                    <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="candidateForm.controls['homeAddress']?.errors?.required && candidateForm.controls['homeAddress'].touched">
+                      Personal Address is required
+                    </span>
+                    <!-- Address -->
+                    <div class="form-group list-input d-flex d-flex--align-center d-flex--justify-between">
+                      <label class="text-desc required-icon-content">Drivers license:</label>
+                      <div class="col-md-6 d-flex d-flex--justify-end padding-right--0">
+                        <div class="switch__container">
+                          <input id="switch-shadow21" class="switch switch--shadow" formControlName="driverLicense" type="checkbox" [(ngModel)]="candidateForm.value.driverLicense" (click)="driverCheck()">
+                          <label for="switch-shadow21"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Driver License -->
+                    <div class="form-group list-input d-flex d-flex--align-center required-icon-content" *ngIf="candidateForm.value.driverLicense">
+                      <span class="required-icon">*</span>
+                      <input type="text" class="form-control input-form full-width" placeholder="Driver License Number" (change)="checksDriverLicenseNumber()"  formControlName="driverNumber">
+                    </div>
+                    <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="checkDriverLicenseNumber === true && candidateForm.value.driverLicense">
+                      Please enter a valid driver license number
+                    </span>
+                    <!-- Driver License Number -->
+                    <div class="row padding-m">
+                      <div class="col-md-3 flex align-center margin-bottom--18 padding-left--0" style="padding-right: 0px;">
+                        <p class="text-desc">English Proficiency: <span class="required-icon" style="position: relative; top: -3px; right: 0px;">*</span></p>
+                      </div>
+                      <div class="col-md-3 flex align-center justify-center" style="padding: 0 0 0 5px;">
+                        <label>
+                          <input [checked]="candidateForm.controls['englishProficiency'].value === 1" type="checkbox" (click)="updateNotification(1)">
+                          <span class="lbl padding-8" style="font-size: 12px;">Below Average</span>
+                        </label>
+                      </div>
+                      <div class="col-md-2 flex align-center justify-center" style="padding: 0 0 0 5px;">
+                        <label>
+                          <input [checked]="candidateForm.controls['englishProficiency'].value === 2" type="checkbox" (click)="updateNotification(2)">
+                          <span class="lbl padding-8" style="font-size: 12px;">Average</span>
+                        </label>
+                      </div>
+                      <div class="col-md-2 flex align-center justify-center" style="padding: 0 0 0 5px;">
+                        <label>
+                          <input [checked]="candidateForm.controls['englishProficiency'].value === 3" type="checkbox" (click)="updateNotification(3)">
+                          <span class="lbl padding-8" style="font-size: 12px;">Good</span>
+                        </label>
+                      </div>
+                      <div class="col-md-2 flex align-center justify-center" style="padding: 0 0 0 5px;">
+                        <label>
+                          <input [checked]="candidateForm.controls['englishProficiency'].value === 4" type="checkbox" (click)="updateNotification(4)">
+                          <span class="lbl padding-8" style="font-size: 12px;">Exceptional</span>
+                        </label>
+                      </div>
+                      <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="checksEnglishProficiency">
+                    English Proficiency is required
+                  </span>
+                    </div>
+                    <!-- English proficiency -->
+                    <div class="form-group list-input d-flex d-flex--align-center d-flex--justify-between">
+                      <label class="text-desc">Criminal Convictions?</label>
+                      <div class="col-md-6 d-flex d-flex--justify-end padding-right--0">
+                        <div class="switch__container">
+                          <input id="switch-shadow" class="switch switch--shadow" formControlName="criminal" type="checkbox" [(ngModel)]="candidateForm.value.criminal" (click)="criminalValue()">
+                          <label for="switch-shadow"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Criminal Convictions -->
+                    <div *ngIf="candidateForm.value.criminal" class="form-group list-input d-flex d-flex--align-center">
+                      <textarea formControlName="criminalDescription" type="text" class="form-control input-form full-width" placeholder="Please provide more detail regarding your criminal conviction"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-bottom progress-info margin-bottom--32"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-information full-width achievements-mobile">
+        <div class="body">
+          <div class="row-table">
+            <input type="checkbox" class="accordions__checkbox" id="4">
+            <label class="accordions__heading" for="4">Upload <span class="accordion-item-cta">&#9650;</span></label>
+            <div class="content-row d-flex accordions__content">
+              <div class="row margin-bottom--18">
+                <h4 class="title-row">Upload</h4>
+              </div>
+              <div class="row d-flex--direction-column">
+                <div class="row margin-top--16">
+                  <div class="col-md-4">
+                    <div class="form-group d-flex d-flex--direction-column d-flex--justify-center d-flex--align-center">
+                      <div class="profile-img d-flex d-flex--justify-center" *ngFor="let picture of profilePicture">
+                        <img [ngStyle]="{'background-image': 'url(' + picture.url + ')'}">
+                      </div>
+                      <div *ngIf="profilePicture === null || profilePicture.length === 0" class="profile-img d-flex d-flex--justify-center">
+                        <img src="/assets/img/placeholders/default_avatar.jpg">
+                      </div>
+                      <div *ngIf="preloaderPicture" class="profile-img margin-bottom--0 position--absolute">
+                        <div id="preloader1">
+                          <div id="loader1"></div>
+                        </div>
+                      </div>
+                      <div class="custom-upload margin-bottom--18">
+                        <label class="btn primary-button" for="file9" data-element="custom-upload-button">Upload photo</label>
+                        <input class="custom-upload__input" (change)="updateProfileFiles('picture')" #picture id="file9" type="file" data-behaviour="custom-upload-input" value=""/>
+                      </div>
+                      <!--<input type="file" #picture class="form-control" placeholder="Upload Profile" (change)="updateCandidateProfile()">-->
+                      <a class="job-popup-delete" (click)="closePhotoPopup(true)">Take photo</a>
+                      <a class="job-popup-delete" (click)="removeFile('picture', profilePicture[0].url)">Delete picture</a>
+                    </div>
+                  </div>
+                  <div class="col-md-8 file-upload-block padding-right--0">
+                    <div class="form-group d-flex d-flex--align-start">
+                      <div class="container padding-left--0 padding-right--0">
+                        <div class="row">
+                          <div class="col-md-3 padding-left--0  required-icon-content">
+                            <label class="title-upload text-desc">Copy of ID</label>
+                            <span class="required-icon copy-if-id">*</span>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="custom-upload">
+                              <label *ngIf="copyOfIDArray !== null && copyOfIDArray.length > 0 && !checkCopyOfID" class="btn-interview" for="file87" data-element="custom-upload-button"><i class="fas fa-upload"></i> Upload another file</label>
+                              <label *ngIf="copyOfIDArray === null && !checkCopyOfID || copyOfIDArray.length === 0 && !checkCopyOfID" class="btn-interview" for="file87" data-element="custom-upload-button"><i class="fas fa-upload"></i> Browse & upload</label>
+                              <label *ngIf="checkCopyOfID" class="btn-interview" for="file4" data-element="custom-upload-button">
+                                <div class="loader--tiny-file"></div>
+                                <i class="fas fa-upload"></i> Browse & upload
+                              </label>
+                              <input class="custom-upload__input" (change)="updateProfileFiles('copyOfID')" #copyOfID id="file87" type="file" data-behaviour="custom-upload-input" value=""/>
+                            </div>
+                          </div>
+                          <div class="col-md-5 padding-right--0 d-flex d-flex--align-center d-flex--justify-end">
+                            <div class="file-container">
+                              <div class="file-info d-flex d-flex--justify-end" *ngFor="let name of copyOfIDArray">
+                                <span>{{ name.name }}</span>
+                                <button class="btn btn-default margin-left--12" (click)="removeFile('copyOfID', name.url)"><span>x</span></button>
+                              </div>
+                              <div class="file-info d-flex d-flex--justify-end" *ngIf="copyOfIDArray === null || copyOfIDArray.length === 0">
+                                <span class="decs-text">Nothing uploaded</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Copy of ID -->
+                    <div class="form-group d-flex d-flex--align-start">
+                      <div class="container padding-left--0 padding-right--0">
+                        <div class="row">
+                          <div class="col-md-3 padding-left--0  required-icon-content">
+                            <label class="title-upload text-desc">CV</label>
+                            <!--<span class="required-icon cv-files">*</span>-->
+                          </div>
+                          <div class="col-md-4">
+                            <div class="custom-upload">
+                              <label *ngIf="cvArray !== null && cvArray.length > 0 && !checkCV" class="btn-interview" for="file4" data-element="custom-upload-button"><i class="fas fa-upload"></i> Upload another file</label>
+                              <label *ngIf="cvArray === null && !checkCV || cvArray.length === 0 && !checkCV" class="btn-interview" for="file4" data-element="custom-upload-button"><i class="fas fa-upload"></i> Browse & upload</label>
+                              <label *ngIf="checkCV" class="btn-interview" for="file4" data-element="custom-upload-button">
+                                <div class="loader--tiny-file"></div>
+                                <i class="fas fa-upload"></i> Browse & upload
+                              </label>
+                              <input class="custom-upload__input" (change)="updateProfileFiles('cv')" #cv id="file4" type="file" data-behaviour="custom-upload-input" value=""/>
+                            </div>
+                            <!--<input type="file" multiple #copyOfID class="form-control">-->
+                          </div>
+                          <div class="col-md-5 padding-right--0 d-flex d-flex--align-center d-flex--justify-end">
+                            <div class="file-container">
+                              <div class="file-info d-flex d-flex--justify-end" *ngFor="let name of cvArray">
+                                <span>{{ name.name }}</span>
+                                <button class="btn btn-default margin-left--12" (click)="removeFile('cv', name.url)"><span>x</span></button>
+                              </div>
+                              <div class="file-info d-flex d-flex--justify-end" *ngIf="cvArray === null || cvArray.length === 0">
+                                <span class="decs-text">Nothing uploaded</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- CV -->
+                    <!--<div class="form-group d-flex d-flex--align-start">
+                      <div class="container padding-left--0 padding-right--0">
+                        <div class="row">
+                          <div class="col-md-3 padding-left--0">
+                            <label class="title-upload text-desc">Credit qualification</label>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="custom-upload">
+                              <label *ngIf="creditCheckArray !== null && creditCheckArray.length > 0 && !checkCreditFile" class="btn-interview" for="file3" data-element="custom-upload-button"><i class="fas fa-upload"></i> Upload another file</label>
+                              <label *ngIf="creditCheckArray === null && !checkCreditFile || creditCheckArray.length === 0 && !checkCreditFile" class="btn-interview" for="file3" data-element="custom-upload-button"><i class="fas fa-upload"></i> Browse & upload</label>
+                              <label *ngIf="checkCreditFile" class="btn-interview" for="file4" data-element="custom-upload-button">
+                                <div class="loader--tiny-file"></div>
+                                <i class="fas fa-upload"></i> Browse & upload
+                              </label>
+                              <input class="custom-upload__input" (change)="updateProfileFiles('creditCheck')" #creditCheck id="file3" type="file" data-behaviour="custom-upload-input" value=""/>
+                            </div>
+                          </div>
+                          <div class="col-md-5 padding-right--0 d-flex d-flex--align-center d-flex--justify-end">
+                            <div class="file-container">
+                              <div class="file-info d-flex d-flex--justify-end" *ngFor="let name of creditCheckArray">
+                                <span>{{ name.name }}</span>
+                                <button class="btn btn-default margin-left--12" (click)="removeFile('creditCheck', name.url)"><span>x</span></button>
+                              </div>
+                              <div class="file-info d-flex d-flex--justify-end" *ngIf="creditCheckArray === null || creditCheckArray.length === 0">
+                                <span class="decs-text">Nothing uploaded</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>-->
+                    <!-- Credit qualification -->
+                    <div class="form-group list-input d-flex d-flex--align-center d-flex--justify-between">
+                      <label class="text-desc required-icon-content">University Exemption obtained: <!--<span class="required-icon" style="position: relative; top: -3px; right: 0px;">*</span>--></label>
+                      <div class="col-md-6 d-flex d-flex--justify-end padding-right--0">
+                        <div class="switch__container">
+                          <input id="switch-shadow66" class="switch switch--shadow" formControlName="universityExemption" type="checkbox" [(ngModel)]="candidateForm.value.universityExemption" (click)="universityExemptionCheck()">
+                          <label for="switch-shadow66"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Employed -->
+                    <h3 class="font-size--15 font-weight--300 margin-bottom--24">The more documents we have the better the chance of getting an interview, please upload as many documents as you have. You can come back to this later if you would like.</h3>
+                    <h3 class="font-size--15 margin-bottom--24">Secondary Education</h3>
+                    <div class="form-group d-flex d-flex--align-start">
+                      <div class="container padding-left--0 padding-right--0">
+                        <div class="row">
+                          <div class="col-md-3 padding-left--0">
+                            <label class="title-upload text-desc">Matric Certificate</label>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="custom-upload">
+                              <label *ngIf="matricCertificateArray !== null && matricCertificateArray.length > 0 && !checkMatricCertificate" class="btn-interview" for="file" data-element="custom-upload-button"><i class="fas fa-upload"></i> Upload another file</label>
+                              <label *ngIf="matricCertificateArray === null && !checkMatricCertificate || matricCertificateArray.length === 0 && !checkMatricCertificate" class="btn-interview" for="file" data-element="custom-upload-button"><i class="fas fa-upload"></i> Browse & upload</label>
+                              <label *ngIf="checkMatricCertificate" class="btn-interview" for="file4" data-element="custom-upload-button">
+                                <div class="loader--tiny-file"></div>
+                                <i class="fas fa-upload"></i> Browse & upload
+                              </label>
+                              <input class="custom-upload__input" (change)="updateProfileFiles('matricCertificate')" #matricCertificate id="file" type="file" data-behaviour="custom-upload-input" value="" multiple/>
+                            </div>
+                            <!--<input type="file" multiple #matricCertificate class="form-control">-->
+                          </div>
+                          <div class="col-md-5 padding-right--0 d-flex d-flex--align-center d-flex--justify-end">
+                            <div class="file-container">
+                              <div class="file-info d-flex d-flex--justify-end" *ngFor="let name of matricCertificateArray">
+                                <span>{{name.name}}</span>
+                                <button class="btn btn-default margin-left--12" (click)="removeFile('matricCertificate', name.url)"><span>x</span></button>
+                              </div>
+                              <div class="file-info d-flex d-flex--justify-end" *ngIf="matricCertificateArray === null || matricCertificateArray.length === 0">
+                                <span class="decs-text">Nothing uploaded</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Matric Certificate -->
+                    <div class="form-group d-flex d-flex--align-start">
+                      <div class="container padding-left--0 padding-right--0">
+                        <div class="row">
+                          <div class="col-md-3 padding-left--0">
+                            <label class="title-upload text-desc">Matric Transcript</label>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="custom-upload">
+                              <label *ngIf="matricTranscriptArray !== null && matricTranscriptArray.length > 0 && !checkMatricTranscript" class="btn-interview" for="file1" data-element="custom-upload-button"><i class="fas fa-upload"></i> Upload another file</label>
+                              <label *ngIf="matricTranscriptArray === null && !checkMatricTranscript || matricTranscriptArray.length === 0 && !checkMatricTranscript" class="btn-interview" for="file1" data-element="custom-upload-button"><i class="fas fa-upload"></i> Browse & upload</label>
+                              <label *ngIf="checkMatricTranscript" class="btn-interview" for="file4" data-element="custom-upload-button">
+                                <div class="loader--tiny-file"></div>
+                                <i class="fas fa-upload"></i> Browse & upload
+                              </label>
+                              <input class="custom-upload__input" (change)="updateProfileFiles('matricTranscript')" #matricTranscript id="file1" type="file" data-behaviour="custom-upload-input" value="" multiple/>
+                            </div>
+                          </div>
+                          <div class="col-md-5 padding-right--0 d-flex d-flex--align-center d-flex--justify-end">
+                            <div class="file-container">
+                              <div class="file-info d-flex d-flex--justify-end" *ngFor="let name of matricTranscriptArray">
+                                <span>{{ name.name }}</span>
+                                <button class="btn btn-default margin-left--12" (click)="removeFile('matricTranscript', name.url)"><span>x</span></button>
+                              </div>
+                              <div class="file-info d-flex d-flex--justify-end" *ngIf="matricTranscriptArray === null || matricTranscriptArray.length === 0">
+                                <span class="decs-text">Nothing uploaded</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Matric Transcript -->
+                    <h3 class="font-size--15 margin-bottom--24">Tertiary Education</h3>
+                    <div class="form-group d-flex d-flex--align-start">
+                      <div class="container padding-left--0 padding-right--0">
+                        <div class="row">
+                          <div class="col-md-3 padding-left--0">
+                            <label class="title-upload text-desc">Certificate of Qualification</label>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="custom-upload">
+                              <label *ngIf="certificateOfQualificationArray !== null && certificateOfQualificationArray.length > 0 && !checkCertificateOfQualification" class="btn-interview" for="file2" data-element="custom-upload-button"><i class="fas fa-upload"></i> Upload another file</label>
+                              <label *ngIf="certificateOfQualificationArray === null && !checkCertificateOfQualification || certificateOfQualificationArray.length === 0 && !checkCertificateOfQualification" class="btn-interview" for="file2" data-element="custom-upload-button"><i class="fas fa-upload"></i> Browse & upload</label>
+                              <label *ngIf="checkCertificateOfQualification" class="btn-interview" for="file4" data-element="custom-upload-button">
+                                <div class="loader--tiny-file"></div>
+                                <i class="fas fa-upload"></i> Browse & upload
+                              </label>
+                              <input class="custom-upload__input" (change)="updateProfileFiles('certificateOfQualification')" #certificateOfQualification id="file2" type="file" data-behaviour="custom-upload-input" value="" multiple/>
+                            </div>
+                          </div>
+                          <div class="col-md-5 padding-right--0 d-flex d-flex--align-center d-flex--justify-end">
+                            <div class="file-container">
+                              <div class="file-info d-flex d-flex--justify-end" *ngFor="let name of certificateOfQualificationArray">
+                                <span>{{ name.name }}</span>
+                                <button class="btn btn-default margin-left--12" (click)="removeFile('certificateOfQualification', name.url)"><span>x</span></button>
+                              </div>
+                              <div class="file-info d-flex d-flex--justify-end" *ngIf="certificateOfQualificationArray === null || certificateOfQualificationArray.length === 0">
+                                <span class="decs-text">Nothing uploaded</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Certificate of Qualification -->
+                    <div class="form-group d-flex d-flex--align-start">
+                      <div class="container padding-left--0 padding-right--0">
+                        <div class="row">
+                          <div class="col-md-3 padding-left--0">
+                            <label class="title-upload text-desc">Academic Transcript</label>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="custom-upload">
+                              <label *ngIf="academicTranscriptArray !== null && academicTranscriptArray.length > 0 && !checkAcademicTranscript" class="btn-interview" for="file22" data-element="custom-upload-button"><i class="fas fa-upload"></i> Upload another file</label>
+                              <label *ngIf="academicTranscriptArray === null && !checkAcademicTranscript || academicTranscriptArray.length === 0 && !checkAcademicTranscript" class="btn-interview" for="file22" data-element="custom-upload-button"><i class="fas fa-upload"></i> Browse & upload</label>
+                              <label *ngIf="checkAcademicTranscript" class="btn-interview" for="file4" data-element="custom-upload-button">
+                                <div class="loader--tiny-file"></div>
+                                <i class="fas fa-upload"></i> Browse & upload
+                              </label>
+                              <input class="custom-upload__input" (change)="updateProfileFiles('academicTranscript')" #academicTranscript id="file22" type="file" data-behaviour="custom-upload-input" value="" multiple/>
+                            </div>
+                          </div>
+                          <div class="col-md-5 padding-right--0 d-flex d-flex--align-center d-flex--justify-end">
+                            <div class="file-container">
+                              <div class="file-info d-flex d-flex--justify-end" *ngFor="let name of academicTranscriptArray">
+                                <span>{{ name.name }}</span>
+                                <button class="btn btn-default margin-left--12" (click)="removeFile('academicTranscript', name.url)"><span>x</span></button>
+                              </div>
+                              <div class="file-info d-flex d-flex--justify-end" *ngIf="academicTranscriptArray === null || academicTranscriptArray.length === 0">
+                                <span class="decs-text">Nothing uploaded</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Academic Transcript -->
+                    <!-- Payslip -->
+                    <h3 class="font-size--15 margin-bottom--24">Payslip</h3>
+                    <div class="form-group d-flex d-flex--align-start">
+                      <div class="container padding-left--0 padding-right--0">
+                        <div class="row">
+                          <div class="col-md-3 padding-left--0">
+                            <label class="title-upload text-desc">Latest Payslip</label>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="custom-upload">
+                              <label *ngIf="payslipArray !== null && payslipArray.length > 0 && !checkPayslip" class="btn-interview" for="file2222" data-element="custom-upload-button"><i class="fas fa-upload"></i> Upload another file</label>
+                              <label *ngIf="payslipArray === null && !checkPayslip || payslipArray.length === 0 && !checkPayslip" class="btn-interview" for="file2222" data-element="custom-upload-button"><i class="fas fa-upload"></i> Browse & upload</label>
+                              <label *ngIf="checkPayslip" class="btn-interview" for="file2222" data-element="custom-upload-button">
+                                <div class="loader--tiny-file"></div>
+                                <i class="fas fa-upload"></i> Browse & upload
+                              </label>
+                              <input class="custom-upload__input" (change)="updateProfileFiles('payslip')" #payslip id="file2222" type="file" data-behaviour="custom-upload-input" value=""/>
+                            </div>
+                          </div>
+                          <div class="col-md-5 padding-right--0 d-flex d-flex--align-center d-flex--justify-end">
+                            <div class="file-container">
+                              <div class="file-info d-flex d-flex--justify-end" *ngFor="let name of payslipArray">
+                                <span>{{ name.name }}</span>
+                                <button class="btn btn-default margin-left--12" (click)="removeFile('payslip', name.url)"><span>x</span></button>
+                              </div>
+                              <div class="file-info d-flex d-flex--justify-end" *ngIf="payslipArray === null || payslipArray.length === 0">
+                                <span class="decs-text">Nothing uploaded</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-bottom progress-info margin-bottom--32"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row margin-bottom--24 margin-top--16">
+        <div class="col-md-12 d-flex d-flex--justify-center">
+          <button *ngIf="!buttonPreloader" class="btn primary-button position--relative" (click)="updateCandidateProfile()">Save & Continue</button>
+          <button *ngIf="buttonPreloader" class="btn primary-button position--relative">
+            <div class="loader--tiny"></div>
+            Save & Continue
+          </button>
+        </div>
+      </div>
+      <div class="border-bottom progress-info margin-bottom--32"></div>
+    </form>
+    <!-- form candidate-->
+    </div>
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<div [ngClass]="{'active': videoUploadPopup}" class="modal-video-record">
+  <div class="modal-header">
+    <h4 class="modal-title">disable profile</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeLookingPopup(false, true)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <h3 class="job-popup-title">Please note, turning this off will mean:</h3>
+    <span class="job-popup-desc margin-bottom--6">- You will no longer receive any notifications of any new jobs.</span>
+    <span class="job-popup-desc margin-bottom--6">- You will not be visible to clients browsing profiles.</span>
+    <span class="job-popup-desc margin-bottom--24">- Any current applications you have made will be cancelled</span>
+    <div class="d-flex d-flex--justify-around margin-bottom--12">
+      <button (click)="lookingJobToggle('looking', checkLooking);closeLookingPopup(false, false)" class="btn primary-button">Disable Profile</button>
+      <button (click)="closeLookingPopup(false, true)" class="btn primary-button">Go Back</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">think twice</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <h3 class="job-popup-title">Are you sure you want to leave?</h3>
+    <span class="job-popup-desc">You have made changes you have not saved. If you leave now your changes will not be saved. You can save your changes at the bottom of the page.</span>
+    <div class="d-flex d-flex--justify-around margin-bottom--12">
+      <button (click)="exitPage()" class="btn primary-button">Yes</button>
+      <button (click)="d('Cross click')" class="btn primary-button">No</button>
+    </div>
+  </div>
+</ng-template>
+
+<div [ngClass]="{'active': photoUploadPopup}" class="modal-video-record">
+  <div class="modal-header">
+    <h4 class="modal-title">take photo</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closePhotoPopup(false)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <div class="snapshot" *ngIf="webcamImage">
+      <img class="full-width" [src]="webcamImage.imageAsDataUrl"/>
+    </div>
+    <div *ngIf="showWebCamAlert">
+        <h3 class="job-popup-desc">
+          We did not detect any photo devices. 
+          Please make sure this device is connected.
+        </h3>
+        <h3 class="text-center mb-4">OR</h3>
+        <h3 class="job-popup-desc">
+          Please ensure that your browser is allowed access to your camera by unblocking it.
+        </h3>
+        <div class="d-flex d-flex--justify-around margin-bottom--18 margin-top--18">
+            <button class="btn primary-button" (click)="closePhotoPopup(false)">I understand</button>
+        </div>
+    </div>
+    <div *ngIf="!showWebCamAlert">
+        <webcam [height]="500" [width]="300"
+        [trigger]="triggerObservable"
+        (imageCapture)="handleImage($event)"
+        *ngIf="showWebcam && !webcamImage"
+        [allowCameraSwitch]="allowCameraSwitch"
+        [switchCamera]="nextWebcamObservable"
+        [videoOptions]="videoOptions"
+        [mirrorImage]="'never'"
+        (initError)="handleInitError($event)"
+        class="margin-bottom--24"
+        ></webcam>
+        <div class="d-flex d-flex--justify-around margin-bottom--18 margin-top--18">
+          <button *ngIf="!webcamImage" class="btn primary-button" (click)="triggerSnapshot();">Take Photo</button>
+          <button *ngIf="webcamImage" class="btn primary-button" (click)="uploadPhotoProfile('picture');closePhotoPopup(false)">Upload Photo</button>
+          <button *ngIf="webcamImage" class="btn danger-button" (click)="reshootPhoto()">Take New Photo</button>
+        </div>
+    </div>
+    
+    <div class="d-flex d-flex--justify-around margin-bottom--18">
+    </div>
+  </div>
+</div>

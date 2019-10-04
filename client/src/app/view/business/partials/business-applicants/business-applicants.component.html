@@ -1,0 +1,47 @@
+<div class="title-description">
+  <h3>Applicants</h3>
+</div>
+<div class="content-build">
+  <!-- shortlisted for consideration table -->
+  <div class="row margin-bottom--55 info-cell-statistic">
+    <div class="col-md-6 margin-bottom--18 padding-left--0">
+      <div class="applicants-info">
+        <div class="count-candidate red">
+          <h3 class="margin-bottom--12 text-align--center">{{ applicantsAwaitingApproval }}</h3>
+        </div>
+        <p class="margin-bottom--8 text-align--center">Applicants awaiting approval</p>
+        <button class="btn primary-button margin-bottom--12" routerLink="/business/applicants_awaiting" [queryParams]="(requestJobId > 0) ? {jobId: requestJobId} : {}">View applicants</button>
+      </div>
+    </div>
+    <div class="col-md-6 margin-bottom--18 padding-right--0">
+      <div class="applicants-info">
+        <div class="count-candidate yellow">
+          <h3 class="margin-bottom--12 text-align--center">{{ applicantsShortlisted }}</h3>
+        </div>
+        <p class="margin-bottom--8 text-align--center">Candidates shortlisted for consideration</p>
+        <button class="btn primary-button margin-bottom--12" routerLink="/business/applicants_shortlist" [queryParams]="(requestJobId > 0) ? {jobId: requestJobId} : {}">View applicants</button>
+      </div>
+    </div>
+    <div class="col-md-6 margin-bottom--18 padding-left--0">
+      <div class="applicants-info">
+        <div class="count-candidate green">
+          <h3 class="margin-bottom--12 text-align--center">{{ applicantsApproved }}</h3>
+        </div>
+        <p class="margin-bottom--8 text-align--center">Applicants approved for Interview</p>
+        <button class="btn primary-button margin-bottom--12" routerLink="/business/applicants_approved" [queryParams]="(requestJobId > 0) ? {jobId: requestJobId} : {}">View applicants</button>
+      </div>
+    </div>
+    <div class="col-md-6 margin-bottom--18 padding-right--0">
+      <div class="applicants-info">
+        <div class="count-candidate gray">
+          <h3 class="margin-bottom--12 text-align--center">{{ applicantsDeclined }}</h3>
+        </div>
+        <p class="margin-bottom--8 text-align--center">Declined applicants</p>
+        <button class="btn primary-button margin-bottom--12" routerLink="/business/applicants_declined" [queryParams]="(requestJobId > 0) ? {jobId: requestJobId} : {}">View applicants</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>

@@ -1,0 +1,10 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Dear, {{ job.user.firstName }}
+    <br><br>
+    This is a reminder that your job post, {{ job.jobTitle }}, will close on, {{ job.jobClosureDate|date('Y-m-d') }}.
+    <br><br>
+    To adjust this please follow the following <a href="{{ link }}">link</a> and change the Job Closure Date to a newly preferred one.
+    <br><br>
+    Get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

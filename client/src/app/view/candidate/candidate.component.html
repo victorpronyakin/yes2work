@@ -1,0 +1,19 @@
+<script src="../../services/shared.service.ts"></script>
+<div class="dashboard">
+  <app-candidate-navbar></app-candidate-navbar>
+  <div class="container-fluid container-page padding-left--100 padding-right--0">
+    <div class="row full-height">
+      <app-sidebar></app-sidebar>
+      <div class="content-page-column full-height position--relative">
+        <div class="content-page padding-right--100">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-candidate-footer></app-candidate-footer>
+</div>
+
+<div *ngIf="sharedService.preloaderView" id="preloaderView">
+  <div id="loader"></div>
+</div>

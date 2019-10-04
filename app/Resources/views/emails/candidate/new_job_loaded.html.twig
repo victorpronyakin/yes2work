@@ -1,0 +1,14 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Hi {{ user.firstName }}
+    <br><br>
+    Brilliant news!
+    <br><br>
+    A {{ (jse is defined and jse == true) ? 'Listed' : 'Unlisted' }} {{ industry }} business situated in {{ city }} has loaded a new {{ jobTitle }} job which you may be interested in.
+    <br><br>
+    Please click <a href="{{ link }}">here</a> to find out more and either Apply or Decline this opportunity.
+    <br><br>
+    Take note that applications close on: {{ closureDate|date('Y-m-d') }}.
+    <br><br>
+    Get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

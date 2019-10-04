@@ -1,0 +1,21 @@
+<div class="">
+  <button type="button" class="close d-flex" aria-label="Close" (click)="closePopup('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body padding--0">
+  <div class="row">
+    <div class="col-md-12 padding-left--0 padding-right--0">
+      <div *ngIf="_candidateToView?.candidateID" class="video-holder">
+        <video style="max-height: 600px" #videoPlayer width="100%" height="100%" (ended)="setStatusCandidateProfile(_candidateToView?.candidateID, 'play')" controls>
+          <source src="{{ _candidateToView?.video }}" type="video/mp4">
+        </video>
+      </div>
+      <div *ngIf="_candidateToView?.id" class="video-holder">
+        <video style="max-height: 600px" #videoPlayer width="100%" height="100%" (ended)="setStatusCandidateProfile(_candidateToView?.id, 'play')" controls>
+          <source src="{{ _candidateToView?.video }}" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+{% block body_html %}
+    Hello {{ firstName }} {{ lastName }}!<br><br>
+
+    {% for jobTitle in JobTitles %}
+        Candidates have declined your Job Post {{ jobTitle }}.<br>
+    {% endfor %}
+
+    <br>Please select this <a href="{{ link }}/business/applicants_declined">link</a> if you are interested.
+    <br><br>
+    Regards,<br>
+    the Yes2Work.
+{% endblock %}

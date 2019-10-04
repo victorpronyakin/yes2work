@@ -1,0 +1,92 @@
+
+.btn-interview{
+  outline: none;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #aacae6;
+  font-size: 12px;
+
+  &.hire{
+    background: #0073cf;
+    font-size: 13px;
+
+    & > i {
+      font-size: 22px;
+    }
+  }
+
+  & > i {
+    font-size: 13px;
+  }
+  &:hover{
+    background: #78a9d4;
+    color: #ffffff;
+  }
+}
+
+.btn-interview{
+  &.cv{
+    color: #fff !important;
+
+    &.video{
+      position: relative;
+      top: -12px;
+      left: 12px;
+      width: fit-content;
+    }
+  }
+}
+
+
+.close{
+  &.video{
+    position: absolute;
+    top: -10px;
+    right: -40px;
+    font-size: 36px;
+  }
+}
+.video-holder{
+  & > video{
+    margin-bottom: -2px;
+  }
+}
+
+.loader--tiny-file {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #aacae6;
+  z-index: 1;
+  border-radius: 20px;
+  border-bottom: 0;
+  pointer-events: none;
+  cursor: not-allowed;
+
+  &:after{
+    content: '';
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: lighten(#ffffff, 20);
+    border-top-color: #dfdfdf;
+    animation-duration: 0.4s;
+    animation-name: rotation;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+}

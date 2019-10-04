@@ -1,0 +1,57 @@
+{% block body_html %}
+    Hey {{ firstName }} {{ lastName }}!<br>
+
+    <!-- CLIENT JOB ACCEPT -->
+    {% if types.jobApprove is defined and types.jobApprove is not empty %}
+        <h3>Jobs approved({{ types.jobApprove|length }}):</h3>
+        <ol>
+            {% for item in types.jobApprove %}
+                <option>{{ loop.index }}. {{ item.job.jobTitle }} .</option>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    <!-- CLIENT JOB DECLINE -->
+    {% if types.jobDecline is defined and types.jobDecline is not empty %}
+        <h3>Jobs rejected({{ types.jobDecline|length }}):</h3>
+        <ol>
+            {% for item in types.jobDecline %}
+                <option>{{ loop.index }}. {{ item.job.jobTitle }} .</option>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    <!-- CLIENT CANDIDATE ACCEPT -->
+    {% if types.candidateAccept is defined and types.candidateAccept is not empty %}
+        <h3>Candidate accepted your invitation({{ types.candidateAccept|length }}):</h3>
+        <ol>
+            {% for item in types.candidateAccept %}
+                <option>{{ loop.index }}. The candidate {{ item.candidate.firstName }} {{ item.candidate.lastName }} for the job post {{ item.jobTitle }}.</option>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    <!-- CLIENT CANDIDATE DECLINE -->
+    {% if types.candidateDecline is defined and types.candidateDecline is not empty %}
+        <h3>Candidate rejected your invitation({{ types.candidateDecline|length }}):</h3>
+        <ol>
+            {% for item in types.candidateDecline %}
+                <option>{{ loop.index }}. The candidate {{ item.candidate.firstName }} {{ item.candidate.lastName }} for the job post {{ item.jobTitle }}.</option>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    <!-- CLIENT NEW APPLICANTS -->
+    {% if types.jobApplicant is defined and types.jobApplicant is not empty %}
+        <h3>New Applicants({{ types.jobApplicant|length }}):</h3>
+        <ol>
+            {% for item in types.jobApplicant %}
+                <option>{{ loop.index }}. New application for the job post {{ item.jobTitle }}. You need to accept or reject the application.</option>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    <br><br>
+    Regards,<br>
+    the Yes2Work.
+{% endblock %}

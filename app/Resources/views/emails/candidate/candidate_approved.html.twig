@@ -1,0 +1,11 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Dear {{ user.firstName }}
+    <br><br>
+    Your registration with Yes2Work has been successful. It is awesome to have you onboard. Now let’s get everything on track for you to be able to apply for your ideal job.
+    <br><br>
+    You can now login on <a href="{{ link }}/login">{{ link }}</a> and complete your profile.
+    Please note that before you can apply for any advertised job, you will need to complete your profile, including your pre-recorded video interview and a short online assessment.
+    <br><br>
+    Please don’t hesitate to get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

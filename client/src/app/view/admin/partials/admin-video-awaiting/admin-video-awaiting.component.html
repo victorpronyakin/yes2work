@@ -1,0 +1,133 @@
+<div class="title-description margin-bottom--32">
+  <h3 class="margin-bottom--12">CANDIDATES</h3>
+</div>
+<div class="row">
+  <h4 class="subtitle-row">New videos awaiting approval</h4>
+</div>
+<div class="row">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 20%">Name</div>
+          <div class="column-table" style="width: 20%">Video Name</div>
+          <div class="column-table" style="width: 17%">Candidate Version</div>
+          <div class="column-table" style="width: 18%">Admin Version</div>
+          <div class="column-table d-flex--justify-center" style="width: 25%">Actions</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let candidateFile of approveCandidateVideoList; let i = index">
+          <input type="checkbox" class="accordions__checkbox" id="{{ candidateFile?.userId }}">
+          <label class="accordions__heading" for="{{ candidateFile?.userId }}">{{ candidateFile?.firstName }} {{ candidateFile?.lastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 20%">
+              <div class="title-cell">Name</div>
+              <div class="description-cell">
+                <span>{{ candidateFile?.firstName }} {{ candidateFile?.lastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 20%">
+              <div class="title-cell">Video Name</div>
+              <div class="description-cell">
+                <span>{{ candidateFile?.fileName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 17%">
+              <div class="description-cell height--29">
+                <a (click)="openVerticallyCenterVideo(videoPopup, candidateFile, i, false)" target="_blank" class="btn btn-interview cv preview-admin-doc"><i class="fas fa-download"></i> Preview</a>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 18%">
+              <div class="description-cell height--29">
+                <a *ngIf="candidateFile?.adminUrl" (click)="openVerticallyCenterVideo(videoPopup, candidateFile, i, true)" target="_blank" class="btn btn-interview cv preview-admin-doc"><i class="fas fa-download"></i> Preview</a>
+                <div *ngIf="!candidateFile?.adminUrl" class="custom-upload">
+                  <label *ngIf="checkPreloaderVideo[i]?.status" class="btn-interview" data-element="custom-upload-button" style="display: flex; position: relative; width: 100px;">
+                    <div class="loader--tiny-file"></div>
+                    <i class="fas fa-upload"></i> Upload
+                  </label>
+                  <label *ngIf="!checkPreloaderVideo[i]?.status" class="btn-interview" for="{{ i }}" data-element="custom-upload-button" style="display: flex; position: relative; width: 100px;">
+                    <i class="fas fa-upload"></i> Upload
+                  </label>
+                  <input class="custom-upload__input" (change)="uploadAdminVideo(candidateFile?.userId, i, null)" #file id="{{ i }}" type="file" accept="video/mp4,video/x-m4v,video/*" data-behaviour="custom-upload-input"/>
+                </div>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 25%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-around d-flex--align-center">
+                <a class="view-popup-icon" (click)="openConfirm(confirm, approveCandidateVideoList, 'removeVideo', candidateFile, 'true')"><i class="fas fa-times-circle"></i></a>
+                <button [disabled]="!candidateFile?.adminUrl" class="btn primary-button" (click)="openConfirm(confirm, approveCandidateVideoList, 'managedCandidateVideo', candidateFile, 'true')">Approve</button>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #videoPopup let-cd="close" let-dd="dismiss">
+            <div class="">
+              <button type="button" class="close d-flex video" aria-label="Close" (click)="dd('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body padding--0">
+              <div class="row">
+                <div class="col-md-12 padding-left--0 padding-right--0">
+                  <div class="video-holder">
+                    <video *ngIf="!checkDataVideo" #videoPlayer width="100%" height="100%" controls style="margin-bottom: 24px; max-height: 600px">
+                      <source src="{{ dataVideo?.url }}" type="video/mp4">
+                    </video>
+                    <a *ngIf="!checkDataVideo" href="{{ dataVideo.url }}" download="" target="_blank" class="btn btn-interview cv video preview-admin-doc" style="width: 180px"><i class="fas fa-download"></i> Download Video</a>
+
+                    <video *ngIf="checkDataVideo" #videoPlayer width="100%" height="100%" controls style="margin-bottom: 24px; max-height: 600px">
+                      <source src="{{ dataVideo?.adminUrl }}" type="video/mp4">
+                    </video>
+                    <div class="d-flex margin-bottom--20 padding-left--10" *ngIf="checkDataVideo">
+                      <a href="{{ dataVideo.adminUrl }}" download="" target="_blank" class="btn btn-interview cv video preview-admin-doc " style="width: 180px; top: 0; left: 0; margin-right: 15px;"><i class="fas fa-download"></i> Download Video</a>
+
+                      <div *ngIf="checkDataVideo" class="custom-upload">
+                        <label *ngIf="checkPreloaderVideo[videoIndex]?.status" class="btn-interview" data-element="custom-upload-button" style="display: flex; position: relative; width: 100px;">
+                          <div class="loader--tiny-file"></div>
+                          <i class="fas fa-upload"></i> Upload another
+                        </label>
+                        <label *ngIf="!checkPreloaderVideo[videoIndex]?.status" class="btn-interview" for="video" data-element="custom-upload-button" style="display: flex; position: relative; height: 31px;">
+                          <i class="fas fa-upload"></i> Upload another
+                        </label>
+                        <input class="custom-upload__input" (change)="uploadAdminVideo(dataVideo?.userId, videoIndex, 'video')" #video id="video" type="file" accept="video/mp4,video/x-m4v,video/*" data-behaviour="custom-upload-input"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <div class="row-table not-found-search" *ngIf="approveCandidateVideoList.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Videos not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="loadMoreCheck && !paginationLoader" class="job-popup-delete" (click)="loadPagination()">Load more</span>
+    <div *ngIf="paginationLoader" class="loader-table margin-bottom--12" id="loader-6">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<ng-template #confirm let-c="close" let-d="dismiss">
+  <app-admin-confirm-popup [closePopup]="d"
+                           [confirmArray]="confirmArray"
+                           [confirmFunction]="confirmFunction"
+                           [confirmData]="confirmData"
+                           [confirmStatus]="confirmStatus"
+  ></app-admin-confirm-popup>
+</ng-template>

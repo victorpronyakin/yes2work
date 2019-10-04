@@ -1,0 +1,220 @@
+<div class="title-description margin-bottom--32">
+  <h3 class="margin-bottom--12">clients</h3>
+</div>
+
+<div class="row">
+  <h4 class="subtitle-row">New clients awaiting approval</h4>
+</div>
+
+<div class="row margin-top--18 margin-bottom--18">
+  <div class="col-md-4 d-flex d-flex--justify-start d-flex--align-center padding-right--0 padding-left--0">
+    <input type="text" class="input-form full-width padding-right--40" placeholder="Search clients" #search (keyup.enter)="resetArrayPagination();resetSorting();getApproveBusiness(search.value)">
+    <button class="btn btn-search margin-left--12" (click)="resetArrayPagination();resetSorting();getApproveBusiness(search.value)"><i class="fas fa-search"></i></button>
+  </div>
+</div>
+
+<div class="row">
+
+  <ul *ngIf="totalItems > 0" class="pagination top">
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(1)">First</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(pager.currentPage - 1)">Previous</button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+      <button [ngClass]="{'primary-button': pager.currentPage === page}" class="btn default-button"
+              (click)="setPage(page)">{{page}}</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.currentPage + 1)">Next</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.totalPages)">Last</button>
+    </li>
+  </ul>
+
+  <div class="col-md-12 padding-left--0 padding-right--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div (click)="sortCandidate('Name')" class="column-table d-flex--justify-between " style="width: 16%">
+            <span class="title-column">Name</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Name'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Name'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('Company')" class="column-table d-flex--justify-between " style="width: 16%">
+            <span class="title-column">Company</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Company'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Company'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('Email')" class="column-table d-flex--justify-between " style="width: 30%">
+            <span class="title-column">Email</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Email'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Email'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('Phone')" class="column-table d-flex--justify-between " style="width: 14%">
+            <span class="title-column">Tel Number</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Phone'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Phone'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div class="column-table d-flex--justify-center" style="width: 24%">Actions</div>
+        </div>
+      </div>
+      <div class="body">
+
+        <div *ngIf="paginationLoader" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-6">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-table" *ngFor="let businessProfile of approveBusinessList">
+          <input type="checkbox" class="accordions__checkbox" id="{{ businessProfile?.id }}">
+          <label class="accordions__heading" for="{{ businessProfile?.id }}">{{ businessProfile?.firstName }} {{ businessProfile?.lastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 16%">
+              <div class="title-cell">Name</div>
+              <div class="description-cell">
+                <span>{{ businessProfile?.firstName }} {{ businessProfile?.lastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 16%">
+              <div class="title-cell">Company</div>
+              <div class="description-cell">
+                <span>{{ businessProfile?.companyName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 30%">
+              <div class="title-cell">Email</div>
+              <div class="description-cell">
+                <a [href]="'mailto:' + businessProfile?.email">{{ businessProfile?.email }}</a>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 14%">
+              <div class="title-cell">Tel Number</div>
+              <div class="description-cell">
+                <span>{{ businessProfile?.phone }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 24%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-between d-flex--align-center">
+                <a class="view-popup-icon" (click)="openVerticallyCentered(contentBusiness, businessProfile?.id)"><i class="fa fa-eye"></i></a>
+                <a class="view-popup-icon" (click)="openConfirm(confirm, approveBusinessList, 'managedBusinessUser', businessProfile, 'false')"><i class="fas fa-times-circle"></i></a>
+                <button class="btn primary-button" (click)="openConfirm(confirm, approveBusinessList, 'managedBusinessUser', businessProfile, 'true')">Approve</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-table not-found-search" *ngIf="approveBusinessList.length === 0 && !paginationFilter && !paginationLoader">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Clients not found</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="approveBusinessList.length === 0 && paginationFilter" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-44">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <ul *ngIf="totalItems > 0" class="pagination bottom">
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(1)">First</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(pager.currentPage - 1)">Previous</button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+      <button [ngClass]="{'primary-button': pager.currentPage === page}" class="btn default-button"
+              (click)="setPage(page)">{{page}}</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.currentPage + 1)">Next</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.totalPages)">Last</button>
+    </li>
+  </ul>
+
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<ng-template #contentBusiness let-cb="close" let-db="dismiss">
+  <app-client-profile-popup [closePopup]="db" [currentBusinessId]="selectedBusinessId" [businessList]="approveBusinessList"></app-client-profile-popup>
+</ng-template>
+
+<ng-template #confirm let-c="close" let-d="dismiss">
+  <app-admin-confirm-popup [closePopup]="d"
+                           [confirmArray]="confirmArray"
+                           [confirmFunction]="confirmFunction"
+                           [confirmData]="confirmData"
+                           [confirmStatus]="confirmStatus"
+  ></app-admin-confirm-popup>
+</ng-template>

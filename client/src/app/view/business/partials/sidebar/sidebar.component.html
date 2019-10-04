@@ -1,0 +1,55 @@
+<div class="sidebar-column" [ngClass]="{'active': this.sharedService.checkSidebar}">
+  <div class="sidebar">
+    <ul class="accordion css-accordion">
+      <li class="accordion-item mobile-display">
+        <span (click)="openSidebar()" class="mobile-close-icon"><i class="fas fa-times"></i></span>
+      </li>
+      <li class="accordion-item">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" routerLink="/business/dashboard" routerLinkActive="active-link"><img class="margin-right--12" src="/assets/img/icons/dashboard_icon.png"> dashboard</label>
+      </li>
+      <li class="accordion-item" routerLinkActive="active-link">
+        <input class="accordion-item-input" type="checkbox" name="accordion" id="item1"
+               [(ngModel)]="applicantLinkStatus"/>
+        <label routerLinkActive="active-link" for="item1" class="accordion-item-hd"><img class="margin-right--12" src="/assets/img/icons/applicants_icon.png"> applicants<span class="accordion-item-hd-cta">&#9650;</span></label>
+        <div class="accordion-item-bd" routerLinkActive="active-link">
+          <ul>
+            <li class="cursor outline--none" routerLink="/business/applicants" routerLinkActive="active-link"><a>All Applicants <span *ngIf="sharedService.sidebarBusinessBadges.applicantAll > 0" class="alert-budger">{{ sharedService.sidebarBusinessBadges.applicantAll }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/business/applicants_awaiting" routerLinkActive="active-link"><a>Applicants awaiting approval <span *ngIf="sharedService.sidebarBusinessBadges.applicantAwaiting > 0" class="alert-budger">{{ sharedService.sidebarBusinessBadges.applicantAwaiting }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/business/applicants_shortlist" routerLinkActive="active-link"><a>Shortlisted for consideration <span *ngIf="sharedService.sidebarBusinessBadges.applicantShortlist > 0" class="alert-budger">{{ sharedService.sidebarBusinessBadges.applicantShortlist }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/business/applicants_approved" routerLinkActive="active-link"><a>Approved applicants <span *ngIf="sharedService.sidebarBusinessBadges.applicantApprove > 0" class="alert-budger">{{ sharedService.sidebarBusinessBadges.applicantApprove }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/business/applicants_declined" routerLinkActive="active-link"><a>Declined applicants <span *ngIf="sharedService.sidebarBusinessBadges.applicantDecline > 0" class="alert-budger">{{ sharedService.sidebarBusinessBadges.applicantDecline }}</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="accordion-item" routerLinkActive="active-link">
+        <input class="accordion-item-input" type="checkbox" name="accordion" id="item2"
+               [(ngModel)]="jobLinkStatus"/>
+        <label for="item2" class="accordion-item-hd"><img class="margin-right--12" src="/assets/img/icons/jobs_icon.png"> my jobs<span class="accordion-item-hd-cta">&#9650;</span></label>
+        <div class="accordion-item-bd" routerLinkActive="active-link">
+          <ul>
+            <li class="cursor outline--none" routerLink="/business/awaiting_job" routerLinkActive="active-link"><a>Jobs Awaiting Approval <span *ngIf="sharedService.sidebarBusinessBadges.jobAwaiting > 0" class="alert-budger">{{ sharedService.sidebarBusinessBadges.jobAwaiting }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/business/approved_job" routerLinkActive="active-link"><a>Approved Jobs <span *ngIf="sharedService.sidebarBusinessBadges.jobApproved > 0" class="alert-budger">{{ sharedService.sidebarBusinessBadges.jobApproved }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/business/old_jobs" routerLinkActive="active-link"><a>Old Jobs <span *ngIf="sharedService.sidebarBusinessBadges.jobOld > 0" class="alert-budger">{{ sharedService.sidebarBusinessBadges.jobOld }}</span></a></li>
+            <li class="cursor outline--none">
+              <button class="btn primary-button" routerLink="/business/jobs/add" routerLinkActive="active-link">Add New Job</button>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <!-- <li class="accordion-item">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label routerLink="/business/candidates" routerLinkActive="active-link" class="accordion-item-hd"><img class="margin-right--12" src="/assets/img/icons/candidates_icon.png">browse all candidates</label>
+      </li> -->
+      <li class="accordion-item mobile-display">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" routerLink="/business/my_account" routerLinkActive="active-link">my account</label>
+      </li>
+      <li class="accordion-item mobile-display">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" (click)="logout()">logout</label>
+      </li>
+    </ul>
+  </div>
+</div>
+

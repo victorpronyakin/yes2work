@@ -1,0 +1,49 @@
+<div class="sidebar-column" [ngClass]="{'active': this.sharedService.checkSidebar}">
+  <div class="sidebar">
+    <ul class="accordion css-accordion">
+      <li class="accordion-item mobile-display">
+        <span (click)="openSidebar()" class="mobile-close-icon"><i class="fas fa-times"></i></span>
+      </li>
+      <li class="accordion-item">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" routerLink="/candidate/dashboard" routerLinkActive="active-link"><img class="margin-right--12" src="/assets/img/icons/dashboard_icon.png"> dashboard</label>
+      </li>
+      <li class="accordion-item" routerLinkActive="active-link">
+        <input class="accordion-item-input" type="checkbox" name="accordion" id="item1"
+               [(ngModel)]="profileLinkStatus"/>
+        <label routerLinkActive="active-link" for="item1" class="accordion-item-hd"><img class="margin-right--12" src="/assets/img/icons/user.png"> my profile<span class="accordion-item-hd-cta">&#9650;</span></label>
+        <div class="accordion-item-bd" routerLinkActive="active-link">
+          <ul>
+            <li class="cursor outline--none" routerLink="/candidate/profile_details" routerLinkActive="active-link"><a>Personal Information <i *ngIf="sharedService.visibleErrorProfileIcon" class="fas fa-exclamation error-profile-response"></i></a></li>
+            <li class="cursor outline--none" routerLink="/candidate/qualification" routerLinkActive="active-link"><a>Qualifications</a></li>
+            <li class="cursor outline--none" routerLink="/candidate/achievements" routerLinkActive="active-link"><a>Work Experience</a></li>
+            <li class="cursor outline--none" routerLink="/candidate/video" routerLinkActive="active-link"><a>My Video <i *ngIf="sharedService.visibleErrorVideoIcon" class="fas fa-exclamation error-profile-response"></i></a></li>
+            <li class="cursor outline--none" routerLink="/candidate/preferences" routerLinkActive="active-link"><a>Preferences</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="accordion-item" routerLinkActive="active-link">
+        <input class="accordion-item-input" type="checkbox" name="accordion" id="item2"
+               [(ngModel)]="jobLinkStatus"/>
+        <label for="item2" class="accordion-item-hd"><img class="margin-right--12" src="/assets/img/icons/jobs_icon.png"> job opportunities<span class="accordion-item-hd-cta">&#9650;</span></label>
+        <div class="accordion-item-bd" routerLinkActive="active-link">
+          <ul>
+            <li class="cursor outline--none" routerLink="/candidate/opportunities" routerLinkActive="active-link"><a>Your Opportunities</a></li>
+            <li class="cursor outline--none third-link" routerLink="/candidate/job_alerts_new" routerLinkActive="active-link"><a>Job Alerts <span *ngIf="sharedService.sidebarCandidateBadges.jobAlertsNew > 0" class="alert-budger">{{ sharedService.sidebarCandidateBadges.jobAlertsNew }}</span></a></li>
+            <li class="cursor outline--none third-link" routerLink="/candidate/job_alerts_declined" routerLinkActive="active-link"><a>Opportunities you declined <span *ngIf="sharedService.sidebarCandidateBadges.jobAlertsDeclined > 0" class="alert-budger">{{ sharedService.sidebarCandidateBadges.jobAlertsDeclined }}</span></a></li>
+            <li class="cursor outline--none third-link" routerLink="/candidate/job_alerts_expired" routerLinkActive="active-link"><a>Expired opportunities <span *ngIf="sharedService.sidebarCandidateBadges.jobAlertsExpired > 0" class="alert-budger">{{ sharedService.sidebarCandidateBadges.jobAlertsExpired }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/candidate/applications" routerLinkActive="active-link"><a>Your Application Status</a></li>
+            <li class="cursor outline--none third-link" routerLink="/candidate/awaiting_approval" routerLinkActive="active-link"><a>Awaiting approval <span *ngIf="sharedService.sidebarCandidateBadges.applicantAwaiting > 0" class="alert-budger">{{ sharedService.sidebarCandidateBadges.applicantAwaiting }}</span></a></li>
+            <li class="cursor outline--none third-link" routerLink="/candidate/approved_applications" routerLinkActive="active-link"><a>Approved applications <span *ngIf="sharedService.sidebarCandidateBadges.applicantApproved > 0" class="alert-budger">{{ sharedService.sidebarCandidateBadges.applicantApproved }}</span></a></li>
+            <li class="cursor outline--none third-link" routerLink="/candidate/declined_applications" routerLinkActive="active-link"><a>Declined applications <span *ngIf="sharedService.sidebarCandidateBadges.applicantDeclined > 0" class="alert-budger">{{ sharedService.sidebarCandidateBadges.applicantDeclined }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/candidate/request_interviews" routerLinkActive="active-link"><a>Employer Requested Interviews <span *ngIf="sharedService.sidebarCandidateBadges.interviewRequest > 0" class="alert-budger">{{ sharedService.sidebarCandidateBadges.interviewRequest }}</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="accordion-item mobile-display">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" (click)="logout()">logout</label>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,398 @@
+<div class="title-description margin-bottom--32">
+  <div class="row">
+    <div class="all-candidates col-md-12 padding-right--0 padding-left--0 d-flex d-flex--justify-between d-flex--align-center title-description">
+      <h3>CANDIDATES</h3>
+      <div class="sub-buttons-title d-flex d-flex--align-center">
+        <h4 class="job-popup-delete margin-bottom--0 margin-right--15" (click)="exportDataCSV()">Export CSV</h4>
+        <button class="btn primary-button float--right" routerLink="/admin/add_new_candidate">Add new candidate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <h4 class="subtitle-row">All candidates</h4>
+</div>
+
+<div class="row margin-top--18 margin-bottom--18">
+  <div class="col-md-4 d-flex d-flex--justify-start d-flex--align-center padding-right--0 padding-left--0">
+    <input type="text" class="input-form full-width padding-right--40" placeholder="Search all Candidates" #search (keyup.enter)="resetArrayPagination();resetSorting();getAllCandidateList()">
+    <button class="btn btn-search margin-left--12" (click)="resetArrayPagination();resetSorting();getAllCandidateList()"><i class="fas fa-search"></i></button>
+  </div>
+</div>
+
+<div class="row margin-bottom--24 filter-title">
+  <div #filterItem (click)="openMoreFilters()" class="filter-item d-flex d-flex--justify-between full-width">
+    <span>Advanced Filter
+      <i *ngIf="!checkOpenFilters" class="fas fa-angle-down"></i>
+      <i *ngIf="checkOpenFilters" class="fas fa-angle-up"></i>
+    </span>
+    <a #openButton>Open more filters</a>
+  </div>
+</div>
+
+<div class="filter-background" #filterFont></div>
+
+<div class="row more-filter" #openFilters>
+  <div class="col-md-12 select-groups d-flex d-flex--align-center d-flex--justify-start d-flex--wrap">
+    <form [formGroup]="filterForm" class="d-flex--justify-between col-md-12 d-flex d-flex--align-center d-flex--wrap">
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ng-select placeholder="Youth Employment System Eligibility"
+                   formControlName="eligibility"
+                   #eligibility
+                   (change)="resetEthnicity(eligibility.selectedValues[0]);getApplicantsCount()"
+                   [searchable]="false">
+          <ng-option [value]="'applicable'">YES Applicable Candidates Only</ng-option>
+          <ng-option [value]="'all'">All candidates</ng-option>
+        </ng-select>
+      </div>
+      <!-- Youth Employment System Eligibility -->
+      <div class="form-group margin-right--12 d-flex d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="ethnicityOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configEthnicity"
+                                 [(ngModel)]="ethnicityModel"
+                                 #ethnicity
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="ethnicity"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- ethnicity -->
+      <div class="form-group margin-right--12 d-flex d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="genderOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configGender"
+                                 [(ngModel)]="genderModel"
+                                 #gender
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="gender"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- gender -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ss-multiselect-dropdown [options]="locationOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configLocation"
+                                 [(ngModel)]="locationModel"
+                                 #location
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="location"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- location -->
+      <div class="form-group d-flex--direction-column margin-right--12"></div>
+      <h3 style="width: 100%; color: #002855; text-transform: uppercase; font-size: 16px; font-weight: 600; margin-bottom: 15px;">Highest Qualification</h3>
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ss-multiselect-dropdown [options]="qualificationLevelOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configQualificationLevels"
+                                 [(ngModel)]="qualificationLevelModel"
+                                 #qualificationLevel
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="highestQualification"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- Qualification Level -->
+      <h3 style="width: 100%; color: #002855; text-transform: uppercase; font-size: 16px; font-weight: 600; margin-bottom: 15px;">Work Experience</h3>
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ss-multiselect-dropdown [options]="specializationOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configSpecialization"
+                                 [(ngModel)]="specializationModel"
+                                 #specialization
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="field"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- Specialization -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ss-multiselect-dropdown [options]="yearsWorkOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configYearsWorks"
+                                 [(ngModel)]="yearsWorkModel"
+                                 #yearsWork
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="yearsOfWorkExperience"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- Years Work -->
+      <div class="form-group d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="availabilityOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="_sharedService.configAvailability"
+                                 [(ngModel)]="availabilityModel"
+                                 #availability
+                                 (ngModelChange)="getApplicantsCount()"
+                                 formControlName="availability"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- availability -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ng-select placeholder="Video"
+                   formControlName="video"
+                   #video
+                   [searchable]="false"
+                   (change)="getApplicantsCount()">
+          <ng-option [value]="'Yes'">Yes</ng-option>
+          <ng-option [value]="'No'">No</ng-option>
+        </ng-select>
+      </div>
+      <!-- video -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ng-select placeholder="Assessment Completed"
+                   formControlName="assessmentCompleted"
+                   #assessmentCompleted
+                   [searchable]="false">
+          <ng-option [value]="'Yes'">Yes</ng-option>
+          <ng-option [value]="'No'">No</ng-option>
+        </ng-select>
+      </div>
+      <!-- Assessment Completed -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ng5-slider [(value)]="minValue"
+                    [(highValue)]="maxValue"
+                    (userChangeEnd)="getApplicantsCount()"
+                    [options]="options"></ng5-slider>
+      </div>
+      <!-- Most Recent Annual Salary -->
+      <div class="form-group d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="enabledOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="configEnabled"
+                                 [(ngModel)]="enabledModel"
+                                 #enabled
+                                 formControlName="enabled"
+                                 (ngModelChange)="getApplicantsCount()"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- Enabled -->
+      <div class="form-group d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="profileOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="configProfile"
+                                 [(ngModel)]="profileModel"
+                                 #profileComplete
+                                 formControlName="profileComplete"
+                                 (ngModelChange)="getApplicantsCount()"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- profileComplete -->
+    </form>
+
+    <div class="row full-width d-flex--justify-end">
+      <button class="btn reset-btn" (click)="resetFilterForm()">
+        <i class="fas fa-redo-alt"></i> reset filters
+      </button>
+      <span class="total-count margin-left--16"><span>{{ candidatesCountMatchingCriteria }}</span> Candidates</span>
+      <button class="btn primary-button margin-left--16" (click)="resetArrayPagination();openMoreFilters();resetSorting();getAllCandidateList()">Search</button>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+  <ul *ngIf="totalItems > 0" class="pagination top">
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(1)">First</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(pager.currentPage - 1)">Previous</button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+      <button [ngClass]="{'primary-button': pager.currentPage === page}" class="btn default-button"
+              (click)="setPage(page)">{{ page }}</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.currentPage + 1)">Next</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.totalPages)">Last</button>
+    </li>
+  </ul>
+
+  <div class="col-md-12 padding-left--0 padding-right--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div (click)="sortCandidate('Name')" class="column-table d-flex--justify-between " style="width: 17%">
+            <span class="title-column">Name</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Name'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Name'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('Email')" class="column-table d-flex--justify-between " style="width: 30%">
+            <span class="title-column">Email</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Email'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Email'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('Phone')" class="column-table d-flex--justify-between " style="width: 20%">
+            <span class="title-column">Tel Number</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Phone'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Phone'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div class="column-table d-flex--justify-center" style="width: 12%">Actions</div>
+          <div class="column-table d-flex--justify-center" style="width: 13%">Profile Completed</div>
+          <div class="column-table d-flex--justify-center" style="width: 8%">Active</div>
+        </div>
+      </div>
+      <div class="body">
+
+        <div *ngIf="paginationLoader" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-6">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-table" *ngFor="let candidateProfile of approveCandidateList">
+          <input type="checkbox" class="accordions__checkbox" id="{{ candidateProfile?.id }}">
+          <label class="accordions__heading" for="{{ candidateProfile?.id }}">{{ candidateProfile?.firstName }} {{ candidateProfile?.lastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 17%">
+              <div class="title-cell">Name</div>
+              <div class="description-cell">
+                <span>{{ candidateProfile?.firstName }} {{ candidateProfile?.lastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 30%">
+              <div class="title-cell">Email</div>
+              <div class="description-cell">
+                <a [href]="'mailto:' + candidateProfile?.email">{{ candidateProfile?.email }}</a>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 20%">
+              <div class="title-cell">Tel Number</div>
+              <div class="description-cell">
+                <span>{{ candidateProfile?.phone }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell border-right-table" style="width: 12%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex d-flex--justify-around d-flex--align-center">
+                <a class="view-popup-icon" routerLink="/admin/edit_candidate" [queryParams]="{ candidateId: candidateProfile?.id}"><i class="fa fa-eye"></i></a>
+                <a class="view-popup-icon" (click)="openVerticallyCenter(content)"><i class="fas fa-times-circle"></i></a>
+              </div>
+            </div>
+            <div class="column-table border-right-table d-flex d-flex--justify-center d-flex--align-center" style="width: 13%">
+              <div class="title-cell">Profile Completed</div>
+              <div class="description-cell">
+                <span class="green-yes" *ngIf="candidateProfile?.percentage > 50 && candidateProfile?.video && candidateProfile?.copyOfID && candidateProfile?.copyOfID.length > 0">Yes</span>
+                <span class="red-no" *ngIf="candidateProfile?.percentage < 50 || !candidateProfile?.video || !candidateProfile?.copyOfID || candidateProfile?.copyOfID.length === 0">No</span>
+              </div>
+            </div>
+            <div class="column-table d-flex d-flex--justify-center d-flex--align-center" style="width: 8%">
+              <div class="title-cell">Active</div>
+              <div class="description-cell">
+                <div class="switch__container d-flex d-flex--justify-center d-flex--align-center">
+                  <input id="{{ candidateProfile?.phone }}" class="switch switch--shadow" type="checkbox" [(ngModel)]="candidateProfile.enabled" (click)="updateCandidateStatus(candidateProfile?.id, candidateProfile?.enabled)">
+                  <label for="{{ candidateProfile?.phone }}"></label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #content let-c="close" let-d="dismiss">
+            <div class="modal-header">
+              <h4 class="modal-title">think twice</h4>
+              <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h3 class="job-popup-title margin-bottom--16" style="font-size: 18px">Are you sure you want to delete candidate?</h3>
+              <button (click)="deleteCandidateProfile(candidateProfile?.id)" class="btn primary-button job-popup-button">Yes</button>
+              <a (click)="d('Cross click')" class="job-popup-delete">No</a>
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="row-table not-found-search" *ngIf="approveCandidateList.length === 0 && !paginationFilter && !paginationLoader">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Candidates not found</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="approveCandidateList.length === 0 && paginationFilter" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-44">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <ul *ngIf="totalItems > 0" class="pagination bottom">
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(1)">First</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(pager.currentPage - 1)">Previous</button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+      <button [ngClass]="{'primary-button': pager.currentPage === page}" class="btn default-button"
+              (click)="setPage(page)">{{ page }}</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.currentPage + 1)">Next</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.totalPages)">Last</button>
+    </li>
+  </ul>
+
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<ng-template #contentCandidate let-cc="close" let-dc="dismiss">
+  <app-candidate-profile-popup [closePopup]="dc" [currentId]="selectedId" [candidateList]="approveCandidateList"></app-candidate-profile-popup>
+</ng-template>

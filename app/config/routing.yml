@@ -1,0 +1,38 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+handle_options:
+    path: /{path}
+    methods: OPTIONS
+    defaults: { _controller: AppBundle:Default:handleOptions, path: "" }
+    requirements:
+        path: "^.+"
+
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+api:
+    resource: "@AppBundle/Controller/Api/"
+    type:     annotation
+    prefix:   /api
+
+api_business:
+    resource: "@AppBundle/Controller/Api/Business/"
+    type:     annotation
+    prefix:   /api/business
+
+api_candidate:
+    resource: "@AppBundle/Controller/Api/Candidate/"
+    type:     annotation
+    prefix:   /api/candidate
+
+api_admin:
+    resource: "@AppBundle/Controller/Api/Admin/"
+    type:     annotation
+    prefix:   /api/admin
+
+front:
+    path:     /{path}
+    defaults: { _controller: AppBundle:Default:index, path: "" }
+    requirements:
+        path: "^(?!api).+"

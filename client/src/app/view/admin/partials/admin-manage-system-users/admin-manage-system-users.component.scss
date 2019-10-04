@@ -1,0 +1,29 @@
+.sub-text-system{
+  font-weight: 300;
+  font-size: 14px;
+  color: #767676;
+  line-height: 22px;
+}
+.manage-system{
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  & > h3{
+    margin-bottom: 15px;
+  }
+}
+
+.candidate-profile-general{
+  display: flex;
+  align-items: center;
+
+  & > span{
+    color: #767676;
+    font-size: 14px;
+    font-weight: 300;
+    font-family: Open Sans,sans-serif;
+    line-height: 24px;
+    margin-right: 20px;
+  }
+}

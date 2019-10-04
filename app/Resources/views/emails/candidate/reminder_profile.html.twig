@@ -1,0 +1,10 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Hi {{ candidate.firstName }}
+    <br><br>
+    Please note that your profile on Yes2Work is incomplete and you are currently unable to view any jobs advertised on Yes2Work. Please ensure that you have uploaded your CV and other requested information and recorded a Video Interview.
+    <br><br>
+    Click <a href="{{ link }}">here</a> to update your Profile.
+    <br><br>
+    Get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

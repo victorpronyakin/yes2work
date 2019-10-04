@@ -1,0 +1,10 @@
+<button type="button" class="close" aria-label="Close" (click)="closePopup()">
+  <span aria-hidden="true">&times;</span>
+</button>
+<div class="modal-body">
+  <h3 class="job-popup-title">Are you sure?</h3>
+  <div class="confirm-popup d-flex">
+    <button (click)="confirmPopup()" class="btn primary-button">Yes</button>
+    <button (click)="closePopup()" class="btn danger-button">No</button>
+  </div>
+</div>

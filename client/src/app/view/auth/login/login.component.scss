@@ -1,0 +1,31 @@
+@media screen and (max-width: 450px){
+  .login-form{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+.after-registration-cloud{
+  width: 100%;
+  max-width: 100%;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  & > h3{
+    color: #ffffff;
+    text-shadow: 0px 3.5px 7.4px rgba(0, 0, 0, 0.28);
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  .first{
+    width: 450px;
+  }
+}
+
+.reactive-sub{
+  font-weight: 600 !important;
+  color: #000 !important;
+  line-height: 20px;
+}

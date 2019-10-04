@@ -1,0 +1,103 @@
+<div *ngIf="checkVideo && checkPercentage >= 50 && checkVideo?.approved" class="title-description">
+  <h3>Find jobs</h3>
+</div>
+<div *ngIf="checkVideo && checkPercentage >= 50 && checkVideo?.approved" class="row margin-top--32">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 12%">Date posted</div>
+          <div class="column-table" style="width: 15%">Industry</div>
+          <div class="column-table" style="width: 17%">Position</div>
+          <div class="column-table" style="width: 16%">Location</div>
+          <div class="column-table" style="width: 16%">Distance from home</div>
+          <div class="column-table" style="width: 16%">Days Left</div>
+          <div class="column-table d-flex--justify-center" style="width: 8%"></div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let job of findJobsArray; let i = index">
+          <input type="checkbox" class="accordions__checkbox" id="{{ job?.id }}">
+          <label class="accordions__heading" for="{{ job?.id }}">{{ job?.jobTitle }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table border-right-table" style="width: 12%">
+              <div class="title-cell">Date posted</div>
+              <div class="description-cell">
+                <span>{{ job?.createdDate | date: 'dd LLL yyyy' }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Industry</div>
+              <div class="description-cell">
+                <span>{{ job?.industry | industryList }}</span>
+              </div>
+            </div>
+            <div class="column-table acc border-right-table" style="width: 17%">
+              <div class="title-cell">Position</div>
+              <div class="description-cell">
+                <span>{{ job?.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 16%">
+              <div class="title-cell">Location</div>
+              <div class="description-cell">
+                <span>{{ job?.addressCity }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 16%">
+              <div class="title-cell">Distance from home</div>
+              <div class="description-cell">
+                <span>{{ distance[i] }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 16%">
+              <div class="title-cell">Days Left</div>
+              <div class="description-cell">
+                <span>{{ job?.endDate | dateLeft }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center button-cell center-button" style="width: 8%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-around">
+                <a class="view-popup-icon" (click)="openVerticallyCentered(candidateJobPopup, job)"><i class="fa fa-eye"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table not-found-search" *ngIf="findJobsArray.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Jobs not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="loadMoreCheck && !paginationLoader" class="job-popup-delete" (click)="loadPagination()">Load more</span>
+    <div *ngIf="paginationLoader" class="loader-table margin-bottom--12" id="loader-6">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</div>
+<div *ngIf="checkVideo === null || !checkVideo?.approved || checkPercentage < 50" class="row d-flex d-flex--align-center d-flex--justify-center d-flex--direction-column full-width full-height">
+  <div class="title-description margin-bottom--32">
+    <h3 class="margin-bottom--24">Sorry... You can not look for jobs</h3>
+    <p class="text-align--center">Your profile needs to be 50% completed for find jobs.</p>
+    <p class="text-align--center">Please make sure you upload a copy of your ID and video before you can apply for a job.</p>
+  </div>
+  <button class="btn primary-button" routerLink="/candidate/profile_details">Complete Profile</button>
+</div>
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<ng-template #candidateJobPopup let-cc="close" let-dc="dismiss">
+  <app-candidate-job-popup [closePopup]="dc"
+                           [jobArray]="findJobsArray"
+                           [job]="job"
+  ></app-candidate-job-popup>
+</ng-template>
+

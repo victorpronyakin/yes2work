@@ -1,0 +1,798 @@
+<div class="row margin-bottom--24" style="margin-top: 35px;">
+  <h4 class="title-row">Clients</h4>
+</div>
+<div class="row">
+  <h4 class="subtitle-row">New clients awaiting approval</h4>
+</div>
+<div class="row margin-bottom--18">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 16%">Name</div>
+          <div class="column-table" style="width: 16%">Company</div>
+          <div class="column-table" style="width: 30%">Email</div>
+          <div class="column-table" style="width: 14%">Tel Number</div>
+          <div class="column-table d-flex--justify-center" style="width: 24%">Actions</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let businessProfile of approveBusinessList">
+          <input type="checkbox" class="accordions__checkbox" id="{{ businessProfile?.id }}">
+          <label class="accordions__heading" for="{{ businessProfile?.id }}">{{ businessProfile?.firstName }} {{ businessProfile?.lastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 16%">
+              <div class="title-cell">Name</div>
+              <div class="description-cell">
+                <span>{{ businessProfile?.firstName }} {{ businessProfile?.lastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 16%">
+              <div class="title-cell">Company</div>
+              <div class="description-cell">
+                <span>{{ businessProfile?.companyName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 30%">
+              <div class="title-cell">Email</div>
+              <div class="description-cell">
+                <a [href]="'mailto:' + businessProfile?.email">{{ businessProfile?.email }}</a>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 14%">
+              <div class="title-cell">Tel Number</div>
+              <div class="description-cell">
+                <span>{{ businessProfile?.phone }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 24%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-between d-flex--align-center">
+                <a class="view-popup-icon" (click)="openVerticallyCentered(contentBusiness, businessProfile?.id)"><i class="fa fa-eye"></i></a>
+                <a class="view-popup-icon" (click)="openConfirm(confirm, approveBusinessList, 'managedBusinessUser', businessProfile, 'false')"><i class="fas fa-times-circle"></i></a>
+                <button class="btn primary-button" (click)="openConfirm(confirm, approveBusinessList, 'managedBusinessUser', businessProfile, 'true')">Approve</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table not-found-search" *ngIf="approveBusinessList.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Clients not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="approveBusinessList.length > 0" class="job-popup-delete" routerLink="/admin/new_clients">View All</span>
+  </div>
+</div>
+<div class="row">
+  <h4 class="subtitle-row">Client documents awaiting approval</h4>
+</div>
+<div class="row margin-bottom--18">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 20%">Name</div>
+          <div class="column-table" style="width: 20%">Document</div>
+          <div class="column-table" style="width: 17%">Client Version</div>
+          <div class="column-table" style="width: 18%">Admin Version</div>
+          <div class="column-table d-flex--justify-center" style="width: 25%">Actions</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let clientFile of approveClientFileList; let i = index">
+          <input type="checkbox" class="accordions__checkbox" id="{{ clientFile?.jobId + clientFile?.url }}">
+          <label class="accordions__heading" for="{{ clientFile?.jobId + clientFile?.url }}">{{ clientFile?.firstName }} {{ clientFile?.lastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 20%">
+              <div class="title-cell">Name</div>
+              <div class="description-cell">
+                <span>{{ clientFile?.firstName }} {{ clientFile?.lastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 20%">
+              <div class="title-cell">Document</div>
+              <div class="description-cell">
+                <span>{{ clientFile?.fileName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 17%">
+              <div class="title-cell">Client Version</div>
+              <div class="description-cell height--29">
+                <a (click)="openVerticallyCenterFileClient(contentCv, clientFile, i, false)" target="_blank" class="btn btn-interview cv preview-admin-doc"><i class="fas fa-download"></i> Preview</a>
+              </div>
+            </div>
+            <div class="column-table downoload-button-cell border-right-table" style="width: 18%">
+              <div class="title-cell">Admin Version</div>
+              <div class="description-cell height--29">
+                <a *ngIf="clientFile?.adminUrl" (click)="openVerticallyCenterFileClient(contentCv, clientFile, i, true)" target="_blank" class="btn btn-interview cv preview-admin-doc"><i class="fas fa-download"></i> Preview</a>
+                <div *ngIf="!clientFile?.adminUrl" class="custom-upload">
+                  <label *ngIf="checkPreloader[i]?.status" class="btn-interview" data-element="custom-upload-button" style="display: flex; position: relative; width: 100px;">
+                    <div class="loader--tiny-file"></div>
+                    <i class="fas fa-upload"></i> Upload
+                  </label>
+                  <label *ngIf="!checkPreloader[i]?.status" class="btn-interview" for="{{ clientFile?.time }}" data-element="custom-upload-button" style="display: flex; position: relative; width: 100px;">
+                    <i class="fas fa-upload"></i> Upload
+                  </label>
+                  <input class="custom-upload__input testcas" (change)="uploadAdminFilesClient(clientFile?.jobId, clientFile?.time, i, null)" #fileClient id="{{ clientFile?.time }}" type="file" data-behaviour="custom-upload-input"/>
+                </div>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 25%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-around d-flex--align-center">
+                <a class="view-popup-icon" (click)="openConfirm(confirm, approveClientFileList, 'managedClientFile', clientFile, 'false')"><i class="fas fa-times-circle"></i></a>
+                <button [disabled]="!clientFile?.adminUrl" class="btn primary-button" (click)="openConfirm(confirm, approveClientFileList, 'managedClientFile', clientFile, 'true')">Approve</button>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #contentCv let-c="close" let-d="dismiss">
+            <button type="button" class="close cv" aria-label="Close" (click)="d('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-body cv">
+              <div class="iframe-cv">
+                <iframe *ngIf="!checkDataFile" class="doc" [src]="dataFile.url | urlType" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                <a *ngIf="!checkDataFile" href="{{ dataFile.url }}" download="{{ dataFile.name }}" style="width: 180px" target="_blank" class="btn btn-interview doc-t preview-admin-doc margin-right--12"><i class="fas fa-download"></i> Download Document</a>
+
+                <iframe *ngIf="checkDataFile" class="doc" [src]="dataFile.adminUrl | urlType" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                <a *ngIf="checkDataFile" href="{{ dataFile.adminUrl }}" download="{{ dataFile.adminUrl }}" style="width: 180px" target="_blank" class="btn btn-interview doc-t preview-admin-doc margin-right--12"><i class="fas fa-download"></i> Download Document</a>
+
+                <div *ngIf="checkDataFile" class="custom-upload" style="display: inline-block;">
+                  <label *ngIf="checkPreloader[fileIndex]?.status" class="btn-interview" data-element="custom-upload-button" style="display: flex; position: relative; width: 100px;">
+                    <div class="loader--tiny-file"></div>
+                    <i class="fas fa-upload"></i> Upload another
+                  </label>
+                  <label *ngIf="!checkPreloader[fileIndex]?.status" class="btn-interview" for="fileList" data-element="custom-upload-button" style="display: flex; position: relative">
+                    <i class="fas fa-upload"></i> Upload another
+                  </label>
+                  <input class="custom-upload__input" (change)="uploadAdminFilesClient(dataFile?.jobId, dataFile?.time, fileIndex, 'fileList')" #fileList id="fileList" type="file" data-behaviour="custom-upload-input"/>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <div class="row-table" *ngIf="approveClientFileList.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Files not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="approveClientFileList.length > 0" class="job-popup-delete" routerLink="/admin/client_document">View All</span>
+  </div>
+</div>
+<div class="border-bottom margin-bottom--32 full-width"></div>
+<div class="row margin-bottom--24">
+  <h4 class="title-row">Candidates</h4>
+</div>
+<!--<div class="row">
+  <h4 class="subtitle-row">New candidates awaiting approval</h4>
+</div>
+<div class="row margin-bottom&#45;&#45;18">
+  <div class="col-md-12 padding-right&#45;&#45;0 padding-left&#45;&#45;0">
+    <div class="table-information full-width margin-bottom&#45;&#45;24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 20%">Name</div>
+          <div class="column-table" style="width: 30%">Email</div>
+          <div class="column-table" style="width: 25%">Tel Number</div>
+          <div class="column-table d-flex&#45;&#45;justify-center" style="width: 25%">Actions</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let candidateProfile of approveCandidateList">
+          <input type="checkbox" class="accordions__checkbox" id="{{ candidateProfile?.id }}">
+          <label class="accordions__heading" for="{{ candidateProfile?.id }}">{{ candidateProfile?.firstName }} {{ candidateProfile?.lastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 20%">
+              <div class="title-cell">Name</div>
+              <div class="description-cell">
+                <span>{{ candidateProfile?.firstName }} {{ candidateProfile?.lastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 30%">
+              <div class="title-cell">Email</div>
+              <div class="description-cell">
+                <span>{{ candidateProfile?.email }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 25%">
+              <div class="title-cell">Tel Number</div>
+              <div class="description-cell">
+                <span>{{ candidateProfile?.phone }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 25%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex&#45;&#45;justify-between d-flex&#45;&#45;align-center">
+                <a class="view-popup-icon" (click)="openVerticallyCentered(contentCandidate, candidateProfile?.id)"><i class="fa fa-eye"></i></a>
+                <a class="view-popup-icon" (click)="openConfirm(confirm, approveCandidateList, 'managedCandidateUser', candidateProfile, 'false')"><i class="fas fa-times-circle"></i></a>
+                <button class="btn primary-button" (click)="openConfirm(confirm, approveCandidateList, 'managedCandidateUser', candidateProfile, 'true')">Approve</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table" *ngIf="approveCandidateList.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex&#45;&#45;justify-center" style="width: 100%">
+              <span>Candidates not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="approveCandidateList.length > 0" class="job-popup-delete" routerLink="/admin/new_candidates">View All</span>
+  </div>
+</div>-->
+<div class="row">
+  <h4 class="subtitle-row">Candidate documents awaiting approval</h4>
+</div>
+<div class="row margin-bottom--18">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 20%">Name</div>
+          <div class="column-table" style="width: 20%">Document</div>
+          <div class="column-table" style="width: 17%">Candidate Version</div>
+          <div class="column-table" style="width: 18%">Admin Version</div>
+          <div class="column-table d-flex--justify-center" style="width: 25%">Actions</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let candidateFile of approveCandidateFileList; let i = index">
+          <input type="checkbox" class="accordions__checkbox" id="{{ candidateFile?.userId + candidateFile?.url }}">
+          <label class="accordions__heading" for="{{ candidateFile?.userId + candidateFile?.url }}">{{ candidateFile?.firstName }} {{ candidateFile?.lastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 20%">
+              <div class="title-cell">Name</div>
+              <div class="description-cell">
+                <span>{{ candidateFile?.firstName }} {{ candidateFile?.lastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 20%">
+              <div class="title-cell">Document</div>
+              <div class="description-cell">
+                <span>{{ candidateFile?.fileName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 17%">
+              <div class="title-cell">Candidate Version</div>
+              <div class="description-cell height--29">
+                <a (click)="openVerticallyCenterFile(contentCv, candidateFile, i, false)" target="_blank" class="btn btn-interview cv preview-admin-doc"><i class="fas fa-download"></i> Preview</a>
+              </div>
+            </div>
+            <div class="column-table downoload-button-cell border-right-table" style="width: 18%">
+              <div class="title-cell">Admin Version</div>
+              <div class="description-cell height--29">
+                <a *ngIf="candidateFile?.adminUrl" (click)="openVerticallyCenterFile(contentCv, candidateFile, i, true)" target="_blank" class="btn btn-interview cv preview-admin-doc"><i class="fas fa-download"></i> Preview</a>
+                <div *ngIf="!candidateFile?.adminUrl" class="custom-upload">
+                  <label *ngIf="checkPreloader[i]?.status" class="btn-interview" data-element="custom-upload-button" style="display: flex; position: relative; width: 100px;">
+                    <div class="loader--tiny-file"></div>
+                    <i class="fas fa-upload"></i> Upload
+                  </label>
+                  <label *ngIf="!checkPreloader[i]?.status" class="btn-interview" for="{{ i }}" data-element="custom-upload-button" style="display: flex; position: relative; width: 100px;">
+                    <i class="fas fa-upload"></i> Upload
+                  </label>
+                  <input class="custom-upload__input" (change)="uploadAdminFiles(candidateFile?.fieldName, candidateFile?.url, candidateFile?.userId, i, null)" #file id="{{ i }}" type="file" data-behaviour="custom-upload-input"/>
+                </div>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 25%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-around d-flex--align-center">
+                <a class="view-popup-icon" (click)="openConfirm(confirm, approveCandidateFileList, 'managedCandidateFile', candidateFile, 'false')"><i class="fas fa-times-circle"></i></a>
+                <button class="btn primary-button" (click)="openConfirm(confirm, approveCandidateFileList, 'managedCandidateFile', candidateFile, 'true')">Approve</button>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #contentCv let-c="close" let-d="dismiss">
+            <button type="button" class="close cv" aria-label="Close" (click)="d('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-body cv">
+              <div class="iframe-cv">
+                <iframe *ngIf="!checkDataFile" class="doc" [src]="dataFile.url | urlType" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                <a *ngIf="!checkDataFile" href="{{ dataFile.url }}" download="{{ dataFile.name }}" style="width: 180px" target="_blank" class="btn btn-interview doc-t preview-admin-doc margin-right--12"><i class="fas fa-download"></i> Download Document</a>
+
+                <iframe *ngIf="checkDataFile" class="doc" [src]="dataFile.adminUrl | urlType" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                <a *ngIf="checkDataFile" href="{{ dataFile.adminUrl }}" download="{{ dataFile.adminUrl }}" style="width: 180px" target="_blank" class="btn btn-interview doc-t preview-admin-doc margin-right--12"><i class="fas fa-download"></i> Download Document</a>
+
+                <div *ngIf="checkDataFile" class="custom-upload" style="display: inline-block;">
+                  <label *ngIf="checkPreloader[fileIndex]?.status" class="btn-interview" data-element="custom-upload-button" style="display: flex; position: relative; width: 100px;">
+                    <div class="loader--tiny-file"></div>
+                    <i class="fas fa-upload"></i> Upload another
+                  </label>
+                  <label *ngIf="!checkPreloader[fileIndex]?.status" class="btn-interview" for="file" data-element="custom-upload-button" style="display: flex; position: relative">
+                    <i class="fas fa-upload"></i> Upload another
+                  </label>
+                  <input class="custom-upload__input" (change)="uploadAdminFiles(dataFile?.fieldName, dataFile?.url, dataFile?.userId, fileIndex, 'file')" #file id="file" type="file" data-behaviour="custom-upload-input"/>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <div class="row-table" *ngIf="approveCandidateFileList.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Files not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="approveCandidateFileList.length > 0" class="job-popup-delete" routerLink="/admin/candidate_document">View All</span>
+  </div>
+</div>
+<div class="border-bottom margin-bottom--32 full-width"></div>
+<div class="row margin-bottom--24">
+  <h4 class="title-row">Jobs</h4>
+</div>
+<div class="row">
+  <h4 class="subtitle-row">New jobs awaiting approval</h4>
+</div>
+<div class="row margin-bottom--18">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 15%">Date</div>
+          <div class="column-table" style="width: 15%">Company</div>
+          <div class="column-table" style="width: 15%">Job Title</div>
+          <div class="column-table" style="width: 15%">Contact</div>
+          <div class="column-table" style="width: 15%">Email</div>
+          <div class="column-table" style="width: 15%">Tel</div>
+          <div class="column-table d-flex--justify-center" style="width: 10%">Actions</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let job of jobsAwaitingApprove">
+          <input type="checkbox" class="accordions__checkbox" id="{{ job?.id }}">
+          <label class="accordions__heading" for="{{ job?.id }}">{{ job?.jobTitle }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table border-right-table" style="width: 13%">
+              <div class="title-cell">Date</div>
+              <div class="description-cell">
+                <span>{{ job?.jobDate | date: 'LLL`yy' }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Company</div>
+              <div class="description-cell">
+                <span>{{ job.companyName }}</span>
+              </div>
+            </div>
+            <div class="column-table acc border-right-table" style="width: 15%">
+              <div class="title-cell">Job Title</div>
+              <div class="description-cell">
+                <span>{{ job.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Contact</div>
+              <div class="description-cell">
+                <span>{{ job?.firstName }} {{ job?.lastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Email</div>
+              <div class="description-cell">
+                <a [href]="'mailto:' + job?.email">{{ job?.email }}</a>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Tel</div>
+              <div class="description-cell">
+                <span>{{ job.phone }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell overflow--none" style="width: 10%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-center d-flex--align-center">
+                <!--<div ngbDropdown placement="center-right" class="d-inline-block jobs-button-desktop">
+                  <button class="drop-jobs" id="dropdownBasic1" ngbDropdownToggle><i class="fas fa-ellipsis-v"></i></button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="jobs-drop">
+                    <button class="dropdown-item" (click)="openVerticallyCentered(businessJobPopup, job?.id)">View</button>
+                    <button class="dropdown-item" (click)="openConfirm(confirm, jobsAwaitingApprove, 'approveJob', job, 'true')">Accept</button>
+                    <button class="dropdown-item" (click)="openConfirm(confirm, jobsAwaitingApprove, 'approveJob', job, 'false')">Decline</button>
+                  </div>
+                </div>-->
+                <a class="view-popup-icon" (click)="openVerticallyCenterJob(businessJobPopup, job, jobsAwaitingApprove, true)"><i class="fa fa-eye"></i></a>
+                <!--<button class="btn primary-button jobs-button-mobile" (click)="openConfirm(confirm, jobsAwaitingApprove, 'approveJob', job, 'true')">Accept</button>
+                <button class="btn danger-button jobs-button-mobile" (click)="openConfirm(confirm, jobsAwaitingApprove, 'approveJob', job, 'false')">Decline</button>-->
+                <!--<a class="view-popup-icon jobs-button-mobile" (click)="approveJob(job?.id, false)"><i class="fas fa-times-circle"></i></a>-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table" *ngIf="jobsAwaitingApprove.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Jobs not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="jobsAwaitingApprove.length > 0" class="job-popup-delete" routerLink="/admin/new_jobs">View All</span>
+  </div>
+</div>
+<div class="border-bottom margin-bottom--32 full-width"></div>
+<div class="row margin-bottom--24">
+  <h4 class="title-row">Successful applicants</h4>
+</div>
+<div class="row">
+  <h4 class="subtitle-row">Applications Awaiting Approval</h4>
+</div>
+<div class="row margin-bottom--18">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 25%">Candidate</div>
+          <div class="column-table" style="width: 25%">Company</div>
+          <div class="column-table" style="width: 25%">Position wanted</div>
+          <div class="column-table" style="width: 15%">Days lapsed</div>
+          <div class="column-table d-flex--justify-center" style="width: 10%">Action</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let applicantAwaiting of applicantsAwaiting">
+          <input type="checkbox" class="accordions__checkbox" id="{{ applicantAwaiting?.id }}">
+          <label class="accordions__heading" for="{{ applicantAwaiting?.id }}">{{ applicantAwaiting?.candidateFirstName }} {{ applicantAwaiting?.candidateLastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 25%">
+              <div class="title-cell">Candidate</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="routeCandidate(applicantAwaiting?.candidateID)">{{ applicantAwaiting?.candidateFirstName }} {{ applicantAwaiting?.candidateLastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 25%">
+              <div class="title-cell">Company</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenteredCompany(contentBusiness, applicantAwaiting?.clientID)">{{ applicantAwaiting?.companyName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 25%">
+              <div class="title-cell">Position wanted</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenterClientJob(businessJobPopup, applicantAwaiting?.jobID, applicantAwaiting?.clientID, contentBusiness)">{{ applicantAwaiting?.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Days lapsed</div>
+              <div class="description-cell">
+                <span>{{ applicantAwaiting?.created | daysLapped }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 10%">
+              <div class="title-cell">Action</div>
+              <div class="description-cell d-flex--justify-center d-flex--align-center">
+                <a class="view-popup-icon" (click)="openVerticallyCentered(contentBusiness, applicantAwaiting?.clientID)"><i class="fa fa-eye"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table not-found-search" *ngIf="applicantsAwaiting.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Applicants not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="applicantsAwaiting.length > 0" class="job-popup-delete" routerLink="/admin/applications_awaiting">View All</span>
+  </div>
+</div>
+<div class="row">
+  <h4 class="subtitle-row">Shortlisted for consideration</h4>
+</div>
+<div class="row margin-bottom--18">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 25%">Candidate</div>
+          <div class="column-table" style="width: 25%">Company</div>
+          <div class="column-table" style="width: 25%">Position wanted</div>
+          <div class="column-table" style="width: 15%">Days lapsed</div>
+          <div class="column-table d-flex--justify-center" style="width: 10%">Action</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let applicantShortlist of applicantsShortlist">
+          <input type="checkbox" class="accordions__checkbox" id="{{ applicantShortlist?.id }}">
+          <label class="accordions__heading" for="{{ applicantShortlist?.id }}">{{ applicantShortlist?.candidateFirstName }} {{ applicantShortlist?.candidateLastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 25%">
+              <div class="title-cell">Candidate</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="routeCandidate(applicantShortlist?.candidateID)">{{ applicantShortlist?.candidateFirstName }} {{ applicantShortlist?.candidateLastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 25%">
+              <div class="title-cell">Company</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenteredCompany(contentBusiness, applicantShortlist?.clientID)">{{ applicantShortlist?.companyName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 25%">
+              <div class="title-cell">Position wanted</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenterClientJob(businessJobPopup, applicantShortlist?.jobID, applicantShortlist?.clientID, contentBusiness)">{{ applicantShortlist?.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Days lapsed</div>
+              <div class="description-cell">
+                <span>{{ applicantShortlist?.created | daysLapped }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 10%">
+              <div class="title-cell">Action</div>
+              <div class="description-cell d-flex--justify-center d-flex--align-center">
+                <a class="view-popup-icon" (click)="openVerticallyCentered(contentBusiness, applicantShortlist?.clientID)"><i class="fa fa-eye"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table not-found-search" *ngIf="applicantsShortlist.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Applicants not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="applicantsShortlist.length > 0" class="job-popup-delete" routerLink="/admin/applications_shortlist">View All</span>
+  </div>
+</div>
+<div class="row">
+  <h4 class="subtitle-row">Interviews to be set up</h4>
+</div>
+<div class="row">
+  <h5 class="subtitle-row behind-subtitle-row">Candidate applications</h5>
+</div>
+<div class="row margin-bottom--18">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 25%">Candidate</div>
+          <div class="column-table" style="width: 25%">Company</div>
+          <div class="column-table" style="width: 20%">Position wanted</div>
+          <div class="column-table" style="width: 15%">Days lapsed</div>
+          <div class="column-table d-flex--justify-center" style="width: 15%">Action</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let interview of setUpInterviewListCandidate; let i = index">
+          <input type="checkbox" class="accordions__checkbox" id="interviewSetUpCandidate{{ interview?.id }}">
+          <label class="accordions__heading" for="interviewSetUpCandidate{{ interview?.id }}">{{ interview?.candidateFirstName }} {{ interview?.candidateLastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 25%">
+              <div class="title-cell">Candidate</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="routeCandidate(interview?.candidateID)">{{ interview?.candidateFirstName }} {{ interview?.candidateLastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 25%">
+              <div class="title-cell">Company</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenteredCompany(contentBusiness, interview?.clientID)">{{ interview?.companyName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 20%">
+              <div class="title-cell">Position wanted</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenterClientJob(businessJobPopup, interview?.jobID, interview?.clientID, contentBusiness)">{{ interview?.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Days lapsed</div>
+              <div class="description-cell">
+                <span>{{ interview?.created | daysLapped }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 15%">
+              <div class="title-cell">Action</div>
+              <div class="description-cell d-flex--justify-center d-flex--align-center">
+                <div class="switch__container">
+                  <input id="interviewSetUpCandidate{{i}}" class="switch switch--shadow" [(ngModel)]="interview.enabled" type="checkbox" (click)="adminSetUpInterview(interview, setUpInterviewListCandidate, interview.enabled)">
+                  <label for="interviewSetUpCandidate{{i}}"></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table" *ngIf="setUpInterviewListCandidate.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Candidate applications not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="setUpInterviewListCandidate.length > 0" class="job-popup-delete" routerLink="/admin/set_up_interview">View All</span>
+  </div>
+</div>
+<div class="row">
+  <h5 class="subtitle-row behind-subtitle-row">Employer requested interviews</h5>
+</div>
+<div class="row margin-bottom--18">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 25%">Candidate</div>
+          <div class="column-table" style="width: 25%">Company</div>
+          <div class="column-table" style="width: 20%">Position wanted</div>
+          <div class="column-table" style="width: 15%">Days lapsed</div>
+          <div class="column-table d-flex--justify-center" style="width: 15%">Action</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let interview of setUpInterviewListClient; let i = index">
+          <input type="checkbox" class="accordions__checkbox" id="interviewSetUpClient{{ interview?.id }}">
+          <label class="accordions__heading" for="interviewSetUpClient{{ interview?.id }}">{{ interview?.candidateFirstName }} {{ interview?.candidateLastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 25%">
+              <div class="title-cell">Candidate</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="routeCandidate(interview?.candidateID)">{{ interview?.candidateFirstName }} {{ interview?.candidateLastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 25%">
+              <div class="title-cell">Company</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenteredCompany(contentBusiness, interview?.clientID)">{{ interview?.companyName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 20%">
+              <div class="title-cell">Position wanted</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenterClientJob(businessJobPopup, interview?.jobID, interview?.clientID, contentBusiness)">{{ interview?.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Days lapsed</div>
+              <div class="description-cell">
+                <span>{{ interview?.created | daysLapped }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 15%">
+              <div class="title-cell">Action</div>
+              <div class="description-cell d-flex--justify-center d-flex--align-center">
+                <div class="switch__container">
+                  <input id="interviewSetUpClient{{i}}" class="switch switch--shadow" [(ngModel)]="interview.enabled" type="checkbox" (click)="adminSetUpInterview(interview, setUpInterviewListClient, interview.enabled)">
+                  <label for="interviewSetUpClient{{i}}"></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table" *ngIf="setUpInterviewListClient.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Employer requested interviews not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="setUpInterviewListClient.length > 0" class="job-popup-delete" routerLink="/admin/set_up_interview">View All</span>
+  </div>
+</div>
+<div class="row">
+  <h4 class="subtitle-row behind-subtitle-row">Interviews pending</h4>
+</div>
+<div class="row margin-bottom--18">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 20%">Candidate</div>
+          <div class="column-table" style="width: 20%">Company</div>
+          <div class="column-table" style="width: 20%">Position wanted</div>
+          <div class="column-table" style="width: 12%">Days lapsed</div>
+          <div class="column-table d-flex--justify-center" style="width: 28%">Actions</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let pendingInterview of pendingInterviewList">
+          <input type="checkbox" class="accordions__checkbox" id="{{ pendingInterview?.id }}">
+          <label class="accordions__heading" for="{{ pendingInterview?.id }}">{{ pendingInterview?.candidateFirstName }} {{ pendingInterview?.candidateLastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 20%">
+              <div class="title-cell">Candidate</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="routeCandidate(pendingInterview?.candidateID)">{{ pendingInterview?.candidateFirstName }} {{ pendingInterview?.candidateLastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 20%">
+              <div class="title-cell">Company</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenteredCompany(contentBusiness, pendingInterview?.clientID)">{{ pendingInterview?.companyName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 20%">
+              <div class="title-cell">Position wanted</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenterClientJob(businessJobPopup, pendingInterview?.jobID, pendingInterview?.clientID, contentBusiness)">{{ pendingInterview?.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 12%">
+              <div class="title-cell">Days lapsed</div>
+              <div class="description-cell">
+                <span>{{ pendingInterview?.created | daysLapped }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 28%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-around d-flex--align-center">
+                <button type="button" class="btn btn-interview hire" (click)="openConfirm(confirm, pendingInterviewList, 'adminPendingInterview', pendingInterview, 'true')"><i class="fas fa-check-circle"></i> Hire</button>
+                <button type="button" class="btn btn-interview hire" (click)="openConfirm(confirm, pendingInterviewList, 'adminPendingInterview', pendingInterview, 'false')"><i class="fas fa-times-circle"></i> Decline</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table" *ngIf="pendingInterviewList.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Interview pending not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="pendingInterviewList.length > 0" class="job-popup-delete" routerLink="/admin/pending_interview">View All</span>
+  </div>
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<ng-template #contentBusiness let-cb="close" let-db="dismiss">
+  <app-client-profile-popup [closePopup]="db"
+                            [currentBusinessId]="selectedBusinessJobId"
+                            [businessList]="approveBusinessList"
+  ></app-client-profile-popup>
+</ng-template>
+
+<ng-template #contentCandidate let-cc="close" let-dc="dismiss">
+  <app-candidate-profile-popup [closePopup]="dc"
+                               [currentId]="selectedBusinessJobId"
+                               [candidateList]="approveCandidateList"></app-candidate-profile-popup>
+</ng-template>
+
+<ng-template #businessJobPopup let-cc="close" let-dc="dismiss">
+  <app-business-job-view-popup [closePopup]="dc"
+                               [selectedBusinessJob]="selectedBusinessJob"
+                               [selectedBusinessJobArray]="selectedBusinessJobArray"
+                               [selectedBusinessJobStatus]="selectedBusinessJobStatus"
+  ></app-business-job-view-popup>
+</ng-template>
+
+<ng-template #confirm let-c="close" let-d="dismiss">
+  <app-admin-confirm-popup [closePopup]="d"
+                           [confirmArray]="confirmArray"
+                           [confirmFunction]="confirmFunction"
+                           [confirmData]="confirmData"
+                           [confirmStatus]="confirmStatus"
+  ></app-admin-confirm-popup>
+</ng-template>
+
+
+

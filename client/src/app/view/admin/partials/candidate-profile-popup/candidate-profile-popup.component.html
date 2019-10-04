@@ -1,0 +1,87 @@
+<div class="popup-job-container">
+  <div class="modal-header">
+    <h4 class="modal-title">profile details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closePopup('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="candidateForm">
+      <div class="row">
+        <div class="col-md-6 padding-left--0">
+          <h3 class="subtitle-row margin-bottom--18">CONTACT PROFILE</h3>
+          <div class="form-group required-icon-content">
+            <input type="text" class="form-control input-form full-width" formControlName="firstName" placeholder="Your name" required>
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="candidateForm.controls.firstName.invalid && !candidateForm.controls.firstName.untouched">Please enter the Name</span>
+          </div>
+          <div class="form-group required-icon-content">
+            <input type="text" class="form-control input-form full-width" formControlName="lastName" placeholder="Your surname" required>
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="candidateForm.controls.lastName.invalid && !candidateForm.controls.lastName.untouched">Please enter the Surname</span>
+          </div>
+          <div class="form-group phone-content-code required-icon-content">
+            <int-phone-prefix class="phone-number" formControlName="phone"></int-phone-prefix>
+            <span class="required-icon">*</span>
+          </div>
+          <span class="help-bpx margin-bottom--15" *ngIf="candidateForm.controls.phone.invalid && !candidateForm.controls.phone.untouched">Please enter a valid contact number</span>
+          <div class="form-group required-icon-content">
+            <input type="text" class="form-control input-form full-width" formControlName="email" placeholder="Work email address" required >
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="candidateForm.controls.email.invalid && !candidateForm.controls.email.untouched">Please enter the Email</span>
+          </div>
+        </div>
+        <div class="col-md-6 padding-right--0">
+          <h4 class="subtitle-row margin-bottom--18">Profile details</h4>
+          <div class="form-group required-icon-content">
+            <ng-select placeholder="Articles Firm" #label formControlName="articlesFirm" [searchable]="false" (change)="checkStatusArticlesFirm(label.selectedValues[0])">
+              <ng-option *ngFor="let c of articles" [value]="c">{{ c }}</ng-option>
+            </ng-select>
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="candidateForm.controls.articlesFirm.invalid && !candidateForm.controls.articlesFirm.untouched">Please select the Articles Firm</span>
+          </div>
+          <div *ngIf="articlesOther" class="form-group required-icon-content">
+            <input type="text" class="form-control input-form full-width" formControlName="articlesFirmName" placeholder="Articles Firm Name">
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="candidateForm.controls.articlesFirmName.invalid && !candidateForm.controls.articlesFirmName.untouched">Please enter the Articles Firm Name</span>
+          </div>
+          <!-- SAICA number -->
+          <div class="form-group required-icon-content">
+            <ng-select placeholder="SAICA Status" #saica formControlName="saicaStatus" [searchable]="false" (change)="checkSaicaStatus(saica.selectedValues[0])">
+              <ng-option [value]="1">Registered CA</ng-option>
+              <ng-option [value]="2">Eligible to register as a CA</ng-option>
+              <ng-option [value]="3">Completing articles whereafter I will register</ng-option>
+            </ng-select>
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="candidateForm.controls.saicaStatus.invalid && !candidateForm.controls.saicaStatus.untouched">Please select the SAICA status</span>
+          </div>
+          <!-- SAICA status -->
+          <div *ngIf="saicaStatus" class="form-group required-icon-content">
+            <input type="text" class="form-control input-form full-width" formControlName="saicaNumber" placeholder="Saica number">
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="candidateForm.controls.saicaNumber.invalid && !candidateForm.controls.saicaNumber.untouched">Please enter the SAICA number</span>
+          </div>
+          <!-- SAICA number -->
+          <div class="form-group input-group list-input d-flex d-flex--align-center right-calendar display-year required-icon-content">
+            <input class="form-control input-form select-form" placeholder="Date Articles Complete" ngx-mydatepicker name="dateArticlesCompleted" formControlName="dateArticlesCompleted" [options]="myOptionsDate" #dp1="ngx-mydatepicker" />
+            <span class="required-icon">*</span>
+            <span class="input-group-btn margin-right--12">
+              <button type="button" class="btn btn-default top--0 " (click)="dp1.toggleCalendar()">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </button>
+            </span>
+          </div>
+          <span class="help-bpx" *ngIf="candidateForm.controls.dateArticlesCompleted.invalid && !candidateForm.controls.dateArticlesCompleted.untouched">Please enter the Date Articles Complete</span>
+          <!-- SAICA number -->
+        </div>
+      </div>
+      <div class="row d-flex d-flex--align-center d-flex--justify-end">
+        <button class="btn primary-button margin-bottom--18" [disabled]="candidateForm.invalid" (click)="updateCandidateProfile()" style="float: right">Update</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="preloaderPopup" id="preloaderPopup">
+    <div id="loaderPopup"  style="position: absolute"></div>
+  </div>
+</div>

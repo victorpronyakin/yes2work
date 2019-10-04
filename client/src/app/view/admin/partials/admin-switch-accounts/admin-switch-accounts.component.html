@@ -1,0 +1,201 @@
+<div class="title-description margin-bottom--32">
+  <h3 class="margin-bottom--12">accounts</h3>
+</div>
+
+<div class="row margin-top--18 margin-bottom--18">
+  <div class="col-md-4 d-flex d-flex--justify-start d-flex--align-center padding-right--0 padding-left--0">
+    <input type="text" class="input-form full-width padding-right--40" placeholder="Search accounts" #search (keyup.enter)="resetArrayPagination();resetSorting();getSwitchAccountUsers(search.value)">
+    <button class="btn btn-search margin-left--12" (click)="resetArrayPagination();resetSorting();getSwitchAccountUsers(search.value)"><i class="fas fa-search"></i></button>
+  </div>
+</div>
+
+<div class="row">
+
+  <ul *ngIf="totalItems > 0" class="pagination top">
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(1)">First</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(pager.currentPage - 1)">Previous</button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+      <button [ngClass]="{'primary-button': pager.currentPage === page}" class="btn default-button"
+              (click)="setPage(page)">{{page}}</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.currentPage + 1)">Next</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.totalPages)">Last</button>
+    </li>
+  </ul>
+
+  <div class="col-md-12 padding-left--0 padding-right--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div (click)="sortCandidate('firstName')" class="column-table d-flex--justify-between " style="width: 15%">
+            <span class="title-column">First Name</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='firstName'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'firstName'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('lastName')" class="column-table d-flex--justify-between " style="width: 15%">
+            <span class="title-column">Last Name</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='lastName'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'lastName'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('email')" class="column-table d-flex--justify-between " style="width: 26%">
+            <span class="title-column">Email</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='email'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'email'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('phone')" class="column-table d-flex--justify-between " style="width: 20%">
+            <span class="title-column">Tel Number</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='phone'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'phone'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div class="column-table d-flex--justify-center" style="width: 24%"></div>
+        </div>
+      </div>
+      <div class="body">
+
+        <div *ngIf="paginationLoader" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-6">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-table" *ngFor="let user of users">
+          <input type="checkbox" class="accordions__checkbox" id="{{ user?.id }}">
+          <label class="accordions__heading" for="{{ user?.id }}">{{ user?.firstName }} {{ user?.lastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 15%">
+              <div class="title-cell">First Name</div>
+              <div class="description-cell">
+                <span>{{ user?.firstName }}</span>
+              </div>
+            </div>
+            <div class="column-table acc border-right-table" style="width: 15%">
+              <div class="title-cell">Last Name</div>
+              <div class="description-cell">
+                <span>{{ user?.lastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 26%">
+              <div class="title-cell">Email</div>
+              <div class="description-cell">
+                <a [href]="'mailto:' + user?.email">{{ user?.email }}</a>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 20%">
+              <div class="title-cell">Tel Number</div>
+              <div class="description-cell">
+                <span>{{ user?.phone }}</span>
+              </div>
+            </div>
+            <div class="column-table button-cell" style="width: 24%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-between d-flex--align-center">
+                <button class="btn primary-button" (click)="switchToAccount(user)">Switch to Account</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-table not-found-search" *ngIf="users.length === 0 && !paginationFilter && !paginationLoader">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Accounts not found</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="users.length === 0 && paginationFilter" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-44">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <ul *ngIf="totalItems > 0" class="pagination bottom">
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(1)">First</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(pager.currentPage - 1)">Previous</button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+      <button [ngClass]="{'primary-button': pager.currentPage === page}" class="btn default-button"
+              (click)="setPage(page)">{{page}}</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.currentPage + 1)">Next</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.totalPages)">Last</button>
+    </li>
+  </ul>
+
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>

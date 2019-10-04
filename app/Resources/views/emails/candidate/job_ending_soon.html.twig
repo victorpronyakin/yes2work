@@ -1,0 +1,16 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Hi {{ user.firstName }}
+    <br><br>
+    {% if endingJobs is not empty %}
+        {% for endingJob in endingJobs %}
+            The {{ endingJob.jobTitle }} job at a {{ (endingJob.jse is defined and endingJob.jse == true) ? 'Listed' : 'Unlisted' }} {{ endingJob.industry }} business situated in {{ endingJob.city }} is expiring in a days’ time.
+            <br><br>
+        {% endfor %}
+    {% endif %}
+    Don’t miss out on this opportunity!
+    <br><br>
+    Please click <a href="{{ link }}">here</a> to find out more and either Apply or Decline this opportunity.
+    <br><br>
+    Get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

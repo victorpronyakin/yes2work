@@ -1,0 +1,16 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Hi {{ firstName }}
+    <br><br>
+    {% for job in jobs|jobTitle %}
+        {% if (job.countApplicants is defined and job.countApplicants > 0) %}
+            You have received {{ job.countApplicants }} applications for the {{ jobTitle }} job you posted on Yes2Work.
+            <br><br>
+        {% endif %}
+        {% if job.link is defined %}
+            Please click <a href="{{ job.link }}">here</a> to view the applicant’s profile.
+            <br><br>
+        {% endif %}
+    {% endfor %}
+    Get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

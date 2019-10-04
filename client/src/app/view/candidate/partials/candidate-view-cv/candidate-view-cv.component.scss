@@ -1,0 +1,36 @@
+.doc{
+  width: 100%;
+  min-height: 400px;
+  margin-bottom: 10px;
+}
+.close{
+  position: absolute;
+  right: 6px;
+  top: 1px;
+  color: #000;
+  opacity: .9;
+  font-size: 28px;
+  z-index: 1;
+}
+.modal-body{
+  padding: 30px;
+}
+.btn-interview{
+  width: 180px;
+  padding: 5px;
+  justify-content: center;
+  margin-bottom: 30px;
+  color: #fff !important;
+}
+.reference-block {
+  padding: 10px 0;
+  border-top: 1px solid #e1e1e1;
+
+  p {
+    line-height: 18px;
+  }
+
+  &:first-child {
+    border-top: none;
+  }
+}

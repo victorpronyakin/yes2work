@@ -1,0 +1,50 @@
+.form-group{
+  margin-bottom: 18px;
+}
+.terms{
+  font-size: 14px;
+
+  & > a{
+    color: #0073cf;
+    cursor: pointer;
+  }
+}
+.form-control:focus{
+  border-color: #aaaaaa;
+  box-shadow: none;
+}
+.after-registration-cloud{
+  width: 100%;
+  max-width: 100%;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  & > h3{
+    color: #ffffff;
+    text-shadow: 0px 3.5px 7.4px rgba(0, 0, 0, 0.28);
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  .first{
+    width: 450px;
+  }
+}
+.modal-body{
+  padding: 28px;
+  .title-row{
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .btn{
+    width: 100%;
+  }
+}
+
+.dropbtn{
+  height: 49px;
+}
+

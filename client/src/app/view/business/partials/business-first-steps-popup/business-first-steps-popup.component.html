@@ -1,0 +1,111 @@
+<div class="modal-body first-popup">
+  <button style="top: 5px; position: absolute; right: 10px;" type="button" class="close d-flex" aria-label="Close" (click)="closePopup('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <h4 class="modal-title margin-bottom--24">5 easy steps to hire a YES Candidate</h4>
+  <div class="row margin-bottom--24">
+    <div class="col-md-1"></div>
+    <div class="col-md-2">
+      <div class="cursors">
+        <div class="img-popup">
+          <img src="/assets/img/icons/first_popup_1.png" alt="">
+        </div>
+        <div class="text-popup">
+          <p>1. Y2W will WhatsApp & email your vacancy to 100’s of newly qualified Y2W for them to accept or decline</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="cursors">
+        <div class="img-popup">
+          <img src="/assets/img/icons/first_popup_2.png" alt="">
+        </div>
+        <div class="text-popup">
+          <p>2. Filter the interested applicants to meet your specifications and requirements</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="cursors">
+        <div class="img-popup">
+          <img src="/assets/img/icons/first_popup_31.png" style="height: 56px; width: 60px;">
+        </div>
+        <div class="text-popup">
+          <p>3. Watch the applicants’ introductory videos to determine culture fit and suitability.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="cursors">
+        <div class="img-popup">
+          <img src="/assets/img/icons/first_popup_4.png" alt="">
+        </div>
+        <div class="text-popup">
+          <p>4. The Y2W team will set up the interviews for the candidates you select</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="cursors">
+        <div class="img-popup">
+          <img src="/assets/img/icons/first_popup_5.png" alt="">
+        </div>
+        <div class="text-popup">
+          <p>5. Hire the perfect YES candidate at only R5000</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+  <div class="row margin-bottom--24">
+    <div class="col-md-12">
+      <div class="video-step">
+        <video width="100%" #video height="320" controls>
+          <source src="/assets/video/CAsOnline.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <!--<div class="col-md-12" *ngIf="stepsVideo === 2">-->
+      <!--<div class="video-step">-->
+        <!--<video #videoPlayer width="100%" height="320" controls>-->
+          <!--<source src="/assets/video/CAs%20Online%20Video%20for%20Website.mp4" type="video/mp4">-->
+        <!--</video>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-12" *ngIf="stepsVideo === 3">-->
+      <!--<div class="video-step">-->
+        <!--<video #videoPlayer width="100%" height="320" controls>-->
+          <!--<source src="https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4">-->
+        <!--</video>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-12" *ngIf="stepsVideo === 4">-->
+      <!--<div class="video-step">-->
+        <!--<video #videoPlayer width="100%" height="320" controls>-->
+          <!--<source src="https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4">-->
+        <!--</video>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-12" *ngIf="stepsVideo === 5">-->
+      <!--<div class="video-step">-->
+        <!--<video #videoPlayer width="100%" height="320" controls>-->
+          <!--<source src="https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4">-->
+        <!--</video>-->
+      <!--</div>-->
+    <!--</div>-->
+  </div>
+  <div class="row modal-popup-footer">
+    <div class="col-md-12 margin-bottom--24">
+      <div class="d-flex d-flex--justify-center">
+        <label>
+          <input id="policy" class="margin-right--12" type="checkbox" (click)="changeStatus()">
+          <span class="lbl padding-8">Don't show this again</span>
+        </label>
+      </div>
+    </div>
+    <div class="col-md-12 d-flex d-flex--justify-center">
+      <!--[disabled]="!checkStatus"-->
+      <button class="btn primary-button" (click)="setStatusFirstPopUp()">Got it</button>
+    </div>
+  </div>
+</div>

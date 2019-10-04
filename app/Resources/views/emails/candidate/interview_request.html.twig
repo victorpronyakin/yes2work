@@ -1,0 +1,13 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Hi {{ user.firstName }}
+    <br><br>
+    Brilliant news!
+    <br><br>
+    A {{ (jse is defined and jse == true) ? 'Listed' : 'Unlisted' }} {{ industry }} business situated in {{ city }} is interested in interviewing you
+    {{ (jobTitle is defined and jobTitle is not empty) ? 'for a '~jobTitle~' role position' : '' }}!
+    <br><br>
+    One of our consultants at Yes2Work will be in touch with you shortly to discuss this with you.
+    <br><br>
+    Please don’t hesitate to get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

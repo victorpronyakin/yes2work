@@ -1,0 +1,123 @@
+<div class="title-description margin-bottom--24">
+  <h3>YOUR OPPORTUNITIES</h3>
+</div>
+<div class="border-bottom margin-bottom--24"></div>
+<div class="row margin-bottom--24">
+  <div class="col-md-4 padding-left--0 padding-right--0 d-flex d-flex--align-center">
+    <h3 class="title-row">Expired opportunities</h3>
+  </div>
+  <div class="col-md-8 filter-candidate-cell d-flex padding-left--0 padding-right--0 d-flex--align-center d-flex--justify-end">
+    <div class="rowmobile">
+      <h4 class="subtitle-row margin-bottom--0 margin-right--12">Filter</h4>
+    </div>
+    <div class="rowmobile">
+      <div class="col-md-12 padding-right--0 padding-left--0 d-flex d-flex--align-center">
+        <div class="input-group margin-right--12 display-year">
+          <input placeholder="Date Start" class="form-control input-form" ngx-mydatepicker #dateStart [ngModel]="modelStartDate" [options]="myOptionsDate" #dp1="ngx-mydatepicker" />
+          <span class="input-group-btn margin-right--12">
+      <button type="button" class="btn btn-default" (click)="dp1.toggleCalendar()">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+      </button>
+    </span>
+        </div>
+        <div class="input-group display-year">
+          <input placeholder="Date End" class="form-control input-form" ngx-mydatepicker #dateEnd [ngModel]="modelEndDate" [options]="myOptionsDate" #dp2="ngx-mydatepicker"  />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" (click)="dp2.toggleCalendar()">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <button class="btn primary-button margin-left--12" (click)="resetArrayPagination();getOpportunitiesMissed(dateStart.value, dateEnd.value)">Date apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="border-bottom margin-bottom--24"></div>
+<div class="row margin-bottom--24">
+  <div class="col-md-12 padding-left--0 padding-right--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 15%">Date Closed</div>
+          <div class="column-table" style="width: 19%">Industry</div>
+          <div class="column-table" style="width: 18%">Position</div>
+          <div class="column-table" style="width: 18%">Location</div>
+          <div class="column-table" style="width: 15%">Distance from home</div>
+          <div class="column-table d-flex--justify-center" style="width: 15%">Action</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let job of missedOpportunities; let i = index">
+          <input type="checkbox" class="accordions__checkbox" id="{{ job?.id }}">
+          <label class="accordions__heading" for="{{ job?.id }}">{{ job?.jobTitle }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Date Closed</div>
+              <div class="description-cell">
+                <span>{{ job?.createdDate | date: 'dd LLL yyyy' }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 19%">
+              <div class="title-cell">Industry</div>
+              <div class="description-cell">
+                <span>{{ job?.industry | industryList  }}</span>
+              </div>
+            </div>
+            <div class="column-table acc border-right-table" style="width: 18%">
+              <div class="title-cell">Position</div>
+              <div class="description-cell">
+                <span>{{ job?.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 18%">
+              <div class="title-cell">Location</div>
+              <div class="description-cell">
+                <span>{{ job?.addressCity }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Distance from home</div>
+              <div class="description-cell">
+                <span>{{ distanceMissedOpportunities[i] }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center button-cell center-button" style="width: 15%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-center">
+                <a class="view-popup-icon" (click)="openVerticallyCentered(candidateJobPopup, missedOpportunities, job, 0)"><i class="fa fa-eye"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table not-found-search" *ngIf="missedOpportunities.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Expired opportunities not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="loadMoreCheck && !paginationLoader" class="job-popup-delete" (click)="loadPagination(dateStart.value, dateEnd.value)">Load more</span>
+    <div *ngIf="paginationLoader" class="loader-table margin-bottom--12" id="loader-6">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<ng-template #candidateJobPopup let-cc="close" let-dc="dismiss">
+  <app-candidate-job-popup [closePopup]="dc"
+                           [job]="currentJob"
+                           [jobArray]="jobArray"
+                           [statusButtonJob]="statusButtonJob"
+  ></app-candidate-job-popup>
+</ng-template>
+

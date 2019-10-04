@@ -1,0 +1,373 @@
+<div class="login-box" *ngIf="afterRegistration">
+  <h4 *ngIf="afterRegistration" class="title-row d-flex margin-bottom--12 d-flex--justify-center">Youth Candidate Registration</h4>
+  <h3 *ngIf="afterRegistration" class="subs-text subs-text-custom d-flex margin-bottom--32 d-flex--justify-center">
+    <span class="text-center" style="font-size: 13px;">If you are between the ages of 18 and 35, register here to find your ideal job.</span>
+  </h3>
+  <div *ngIf="afterRegistration" class="col-lg-12 login-form padding--0">
+    <div class="col-lg-12 login-form padding--0">
+      <div class="col-md-10 centerify">
+        <form [formGroup]="candidateRegisterForm">
+          <div class="form-group position--relative">
+            <input type="text" class="form-control auth-input" formControlName="firstName" placeholder="Your name" required>
+            <label class="requared-label">We require this</label>
+          </div>
+          <span class="help-bpx margin-bottom--12" *ngIf="candidateRegisterForm.controls.firstName.invalid && !candidateRegisterForm.controls.firstName.untouched">Please enter the Name</span>
+          <div class="form-group position--relative">
+            <input type="text" class="form-control auth-input" formControlName="lastName" placeholder="Your surname" required>
+            <label class="requared-label">We require this</label>
+          </div>
+          <span class="help-bpx margin-bottom--12" *ngIf="candidateRegisterForm.controls.lastName.invalid && !candidateRegisterForm.controls.lastName.untouched">Please enter the Surname</span>
+          <div class="container-phone">
+            <div class="form-group position--relative req-p">
+              <int-phone-prefix [defaultCountry]="'za'" class="phone-number registration-phone phone-block" formControlName="phone"></int-phone-prefix>
+              <label class="requared-label">We require this</label>
+            </div>
+          </div>
+          <span class="help-bpx margin-bottom--12" *ngIf="candidateRegisterForm.controls.phone.invalid && !candidateRegisterForm.controls.phone.untouched">Please enter a valid phone number.</span>
+          <div class="form-group position--relative">
+            <input type="text" class="form-control auth-input" formControlName="email" placeholder="Email" required>
+            <label class="requared-label">We require this</label>
+          </div>
+          <span class="help-bpx margin-bottom--12" *ngIf="!emailCheck && candidateRegisterForm.controls.email.invalid && !candidateRegisterForm.controls.email.untouched">Please enter a valid email address.</span>
+          <span class="help-bpx margin-bottom--12" *ngIf="emailCheck">{{ errorEmail }}</span>
+          <div class="form-group position--relative">
+            <input type="text" class="form-control auth-input" formControlName="idNumber" placeholder="SA ID Number" required>
+            <label class="requared-label">We require this</label>
+          </div>
+          <span class="help-bpx margin-bottom--12" *ngIf="candidateRegisterForm.controls.idNumber?.errors?.invalidIdNumber && !candidateRegisterForm.controls.idNumber?.untouched">
+            {{ candidateRegisterForm.controls['idNumber']?.errors?.invalidIdNumber }}
+          </span>
+          <div class="form-group position--relative">
+            <input type="password" class="form-control auth-input" formControlName="password" placeholder="Password" required>
+            <label class="requared-label">We require this</label>
+          </div>
+          <span class="help-bpx margin-bottom--12" *ngIf="candidateRegisterForm.controls.password.invalid && !candidateRegisterForm.controls.password.untouched">Password must contain a minimum of 6 characters.</span>
+          <div class="form-group position--relative">
+            <input type="password" class="form-control auth-input" formControlName="verifyPassword" placeholder="Verify password" required>
+            <label class="requared-label">We require this</label>
+          </div>
+          <span class="help-bpx margin-bottom--12" *ngIf="candidateRegisterForm.controls.verifyPassword.invalid && !candidateRegisterForm.controls.verifyPassword.untouched">Passwords do not match</span>
+          <div class="form-group">
+            <label>
+              <input [checked]="!check" type="checkbox" (click)="cutCheckTerms()">
+              <span class="lbl padding-8"></span>
+            </label>
+            <label class="terms">I accept the <a (click)="openPopup()">Terms and Conditions</a></label>
+          </div>
+          <div class="form-group" *ngIf="errorRegistration">
+            <span class="help-bpx" *ngFor="let error of errorRegistration">{{ error }}</span>
+          </div>
+          <div class="form-group" *ngIf="ageCheck">
+            <span class="help-bpx">Sorry, the YES Program is only eligible for South Africans that are between the ages of 18 and 35.</span>
+          </div>
+          <button *ngIf="!buttonPreloader" [disabled]="!candidateRegisterForm.valid || check || !checkSaica" type="submit" class="btn primary-button full-width" (click)="createCandidateUser()">Register</button>
+          <button *ngIf="buttonPreloader" class="btn primary-button position--relative full-width">
+            <div class="loader--tiny"></div>
+            Register
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="terms" class="col-lg-12 login-form padding-left--0 padding-right--0">
+    <div class="col-lg-12 login-form padding-left--0 padding-right--0">
+      <div class="modal-head">
+        <h4 class="modal-title">Terms and Conditions</h4>
+        <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body terms-body margin-bottom--24">
+        <h5 class="center">CAs ONLINE Portal Agreement for Permanent and Fixed Term Placements</h5>
+        <h5>1.	Scope</h5>
+        <p>1.1	BR carries on the business of recruitment services and has developed the CAs ONLINE Portal as a means of granting the Client access to a catalogue of Candidates, allowing the Client to self-select Candidates for particular roles.</p>
+        <p>1.2	The Client acknowledges that by registering on the CAS ONLINE Portal that it has agreed to and is bound by this Agreement.</p>
+        <p>1.3	Any use by the Client of any CV or further details relating to a Candidate, provided to it by BR for employment or any other purposes will constitute acceptance by the Client of the Agreement.</p>
+        <h5>2.	 Precedence</h5>
+        <p>2.1	This Agreement relates to the specific services carried out by BR through the CAs Online Portal only, as detailed in clause 4 below. Any existing agreements between the Parties relating to any other service provided by BR to the Client do not fall within the scope of this Agreement and will not be superseded by it.</p>
+        <h5>3.	Defined Terms</h5>
+        <p>In this Agreement, the following words shall have the following meanings unless the context dictates otherwise:</p>
+        <p>3.1	<b>“Agreement”</b> means the terms and conditions contained in this agreement, the provisions of which the Client acknowledges it has agreed to by registering as a user on the CAs ONLINE Portal;</p>
+        <p>3.2	<b>“BR”</b> means Blue Recruiting (Pty) Ltd, registered in South Africa with registration number, 2014/001282/007, whose principal place of business is KPMG Crescent 85 Empire Road Parktown, 2193, South Africa.</p>
+        <p>3.3	<b>“CAs ONLINE Portal”</b> means the secure online portal available at www.casonline.co.za and which requires the Client to register as a user in order to view Candidate information and CVs.</p>
+        <p>3.4	<b>“Candidate”</b> means any individual listed on the CAs ONLINE Portal.</p>
+        <p>3.5	<b>“Client”</b> means you, any of your ultimate holding company and all of its subsidiaries, and includes any of your representatives or representatives of your ultimate holding company and all of its subsidiaries.</p>
+        <p>3.6	<b>“Commencement Date”</b> means the date on which the Client registers as a user on the CAs ONLINE Portal.</p>
+        <p>3.7	<b>“Confidential Information”</b> includes, without limitation, all secret knowledge, technical information and specifications, manufacturing techniques, designs, circuit diagrams, instruction manuals, blueprints, electronic artwork, samples, device, demonstrations, formulae, know-how, information concerning materials, marketing and business information generally and any other materials of whatever nature in which either Party regards as confidential , save for the exclusions set out in clause 12 below but includes any communication between the Parties marked  “confidential”.</p>
+        <p>3.8	<b>“CV”</b> means any Candidate curriculum vitae and any other information relating to the Candidate provided to the Client by BR.</p>
+        <p>3.9	<b>“Data Subject”</b> shall have the meaning ascribed to it in Chapter 1 of POPI.</p>
+        <p>3.10	<b>“Fixed Term Placement”</b> means any Candidate introduced to the Client who becomes employed or engaged directly or indirectly by the Client on a fixed term contract for a specified period.</p>
+        <p>3.11	<b>“Intellectual Property”</b> means any and all tangible and intangible (i) rights associated with works of authorship, including copyright, moral rights and derivative rights thereof; (ii) registered and unregistered trade marks and trade names and any associated goodwill in such trade marks and trade names; (iii) trade secrets and know-how, (iv) patents, design and other industrial property rights; and (v) all other intellectual property rights, of any kind and nature however designated, whether arising by operation of law, treaty, contract, licence or otherwise, together with all registrations, initial applications, renewals, extensions, continuations, divisions or reissues thereof.</p>
+        <p>3.12	<b>“Introduced / Introduction / Introduce”</b> means the communicating of a Candidate’s CV, a long or short list of Candidates and / or details of a Candidate by BR to the Client or any other verbal or written communication between BR and the Client that enables the Candidate to be identified. </p>
+        <p>3.13	<b>“Parties”</b> means collectively BR and the Client.</p>
+        <p>3.14	<b>“Personal Information”</b> shall have the meaning ascribed to it in Chapter 1 of POPI. </p>
+        <p>3.15	<b>“Placement”</b> is reached when a Candidate accepts the offer of employment or fixed term contract from the Client. “Placing” will have a corresponding meaning.</p>
+        <p>3.16	<b>“Placement Fees”</b> means the fees due to BR in relation to a specific Placement calculated in accordance with this Agreement and set out in clause 8 below.</p>
+        <p>3.17	<b>“Placement Start Date”</b> means the date on which a Candidate begins his/her Placement at the Client. </p>
+        <p>3.18	<b>“POPI”</b> means the Protection of Personal Information Act, No 4 of 2013, as amended from time to time, including any regulations and/or code of conduct made under the Act.</p>
+        <p>3.19	<b>“Privacy and Data Protection Conditions”</b> means the statutory prescribed conditions for the lawful Processing of Personal Information which is entered into a Record and such conditions are listed in Section 4(1) of POPI and are dealt with in detail in Part A of Chapter 3 of POPI.</p>
+        <p>3.20	<b>“Processing”</b> shall have the meaning ascribed to it in Chapter 1 of POPI.</p>
+        <p>3.21	<b>“Record”</b> shall have the meaning ascribed to it in Chapter 1 of POPI.</p>
+        <p>3.22	<b>“Remuneration Package”</b> means the annualised anticipated gross remuneration package for a Candidate (on a ‘total cost to company’ basis) which includes gross annual salary, applicable benefits for which there is a cash equivalent paid to the Candidate, living allowances, travel allowances, medical benefits, overseas allowances, joining inducements and any guaranteed bonuses, including all guaranteed income, thirteenth cheques and performance bonuses.</p>
+        <p>3.23	<b>“Responsible Party”</b> shall have the meaning ascribed to it in Chapter 1 of POPI.</p>
+        <p>3.24	<b>“Services”</b> means the permitted use of the CAs ONLINE Portal and any other work performed by BR in relation to permanent or Fixed Term Placements as set out in clause 4 below.</p>
+        <p>3.25	<b>“Successful CAs ONLINE Placement”</b> means a Placement resulting from the Client’s use of the CAs ONLINE Portal and the Services.</p>
+        <p>3.26	<b>“VAT”</b> means valued added tax as defined in the Value-Added Tax Act 89 of 1991.</p>
+        <h5>4.	Services</h5>
+        <p>4.1	The Services include BR:</p>
+        <span>4.1.1	granting the Client access to the CAs ONLINE Portal so that the Client can self-select Candidates for particular roles; and </span>
+        <span>4.1.2	facilitating any engagements between the Client and any selected Candidate, including interviews and salary negotiations.</span>
+        <p>4.2	In the event that the Client does not wish to make use of the CAs ONLINE Portal to self-select a Candidate and requires BR to conduct a search for a Candidate on its behalf, the Placement Fees set out in clause 8.2 will apply. In such circumstances, the Client will not benefit from the discounted Placement Fees set out in clause 8.1.  </p>
+        <p>4.3	The Client acknowledges that the decision of whether or not to accept a position offered by the Client ultimately rests with the Candidate. BR has made no representation or guarantee that a selected Candidate will be available, interested in the position or accept the position offered to him / her. That decision will always remain within the discretion of the Candidate.</p>
+        <h5>5.	Obligations and Undertakings of the Client</h5>
+        <p>5.1	The Client shall:</p>
+        <span>5.1.1	always act in good faith and adhere to all the terms and conditions set out in this Agreement;</span>
+        <span>5.1.2	notify BR immediately if a Candidate accepts employment with the Client or a third party to whom the Client has referred the Candidate, including the start date of the employment and full details of the Remuneration Package agreed;</span>
+        <span>5.1.3	notify BR immediately if a Candidate’s Fixed Term Placement is extended or made permanent and agrees to pay the remaining success fee excluding VAT  of the Candidate’s annual total cost to company, less the amount already paid; and</span>
+        <span>5.1.4	always pay the agreed Placement Fee within 30 (thirty) days of the Candidate’s Placement Start Date; </span>
+        <p>5.2	The Client shall not:</p>
+        <span>5.2.1	engage in any direct communication with a Candidate without BR’s prior written consent; and</span>
+        <span>5.2.2	under any circumstances whatsoever, introduce a Candidate that they have encountered on the CAs ONLINE Portal to any other third party without BR’s knowledge and consent.</span>
+        <h5>6.	Obligations and Undertakings of BR</h5>
+        <p>6.1	BR shall:</p>
+        <span>6.1.1	always act in good faith and adhere to all the terms and conditions set out in this Agreement;</span>
+        <span>6.1.2	provide the Client with an invoice, in the currency of the Candidate’s Remuneration Package, setting out the agreed Placement Fees only there has been a Successful CAs ONLINE Placement; and</span>
+        <span>6.1.3	endeavour to ensure that the CAs ONLINE Portal is current and updated regularly to reflect only Candidates who are available for employment. </span>
+        <h5>7.	Limitation of Liability and Warranties</h5>
+        <p>7.1	BR is not liable for any direct losses, indirect or consequential losses incurred by the Client as a result of a Candidate’s acts or omissions in the performance of their roles and duties in terms of their permanent or fixed-term placement with the Client.</p>
+        <p>7.2	Where a Candidate or a third party provides information, such as academic or professional qualifications, professional background and experience, relating to the Candidate, BR provides no warranty or representation as to the accuracy of such information. Whilst BR will always use its best endeavours to ensure the accuracy of such information, BR will not be liable for any loss or damage, of whatsoever nature, that the Client might incur as a result of such inaccurate or misleading information. </p>
+        <p>7.3	BR makes no representation or warranty that any Candidate selected by the Client for a position will accept the position offered. The Client acknowledges that this decision remains solely within the discretion of the Candidate. BR is not liable in any way or form for a Candidate not accepting a position offered by the Client.</p>
+        <h5>8.	Placement Fees</h5>
+        <p>8.1	For all Successful CAs ONLINE Placements, the Placement Fee will be 8.5 % (eight and a half per cent), of the Candidate’s Remuneration Package.</p>
+        <p>8.2	Where the Client has chosen not to use the CAs ONLINE Portal and has instead requested BR to search and select a suitable Candidate on its behalf, unless otherwise agreed between the Parties, the Placement Fee will be 17.5% (seventeen and a half per cent), of the Candidate’s Remuneration Package.</p>
+        <p>8.3	The Placement Fees for Fixed Term Placements shall be calculated against the equivalent full-time Remuneration Package, pro-rated to the length of the Fixed Term Placement at the agreed rate.</p>
+        <p>8.3	The Placement Fees for Fixed Term Placements shall be calculated against the equivalent full-time Remuneration Package, pro-rated to the length of the Fixed Term Placement at the agreed rate.</p>
+        <p>8.5	All Placement Fees are exclusive of any VAT, which will be charged by BR at the applicable rate. </p>
+        <h5>9.	Payment Terms</h5>
+        <p>9.1	The Client shall pay all BR invoices in full, within thirty (30) days of the Placement Start Date of the appointed Candidate.</p>
+        <p>9.2	The Client does not have any right of set off in respect of invoiced amounts owed to BR.</p>
+        <p>9.3	Except as otherwise agreed in writing between the Parties, all Placement Fees shall be invoiced on the Placement Start Date of the appointed candidate at the Client. </p>
+        <p>9.4	Overdue amounts owed to BR by the Client are subject to compound interest from the due date of the amount until the date of payment, at a rate of 2.5% per annum above the base rate of First National Bank at the time. </p>
+        <p>9.5	The guarantees as set out in clause 11 below are subject to the Client complying fully with the payment terms set out in this clause 9. </p>
+        <p>9.6	Any third party costs or expenses, including legal fees and other professional fees incurred by BR in recovering amounts overdue by the Client pursuant to the Agreement shall be payable by the Client.</p>
+        <h5>10.	Additional Circumstances in which Placement Fees Become Due</h5>
+        <p>10.1	The Client shall inform BR as soon as reasonably practical and not more than seven (7) days from the date of the occurrence of any of the happening of any of the events envisaged in clause 10.2 below.</p>
+        <p>10.2	The Client shall remain liable to pay the Placement Fee that would have been due to BR for a Placement in the following circumstances:</p>
+        <span>10.2.1	BR has introduced a Candidate to the Client and that Candidate is employed or engaged by the Client within twelve (12) months from the Introductions;</span>
+        <span>10.2.2	the Client has made an offer of employment or engagement which is accepted by the Candidate but, through no fault of the Candidate, no final Placement results; or</span>
+        <span>10.2.3	the Candidate is introduced by the Client to a third party within twelve (12) months of the date of Introduction by BR of the Candidate to the Client and such results in the Candidate being employed by that third party, whether such Placement is made through another recruitment agency, third party or by the Client directly.</span>
+        <p>10.3	The Client must notify BR immediately if a Candidate accepts employment with the Client or any other third party to whom the Client has referred the Candidate, including the start date of the employment and full details of the Remuneration Package agreed. </p>
+        <h5>11.	Guarantees and Rebates</h5>
+        <p>11.1	Where there has been a Successful CAs ONLINE Placement and the engagement terminates within a period of 90 (ninety) days from the Candidate’s Placement Start Date,  provided the conditions set out in clause 11.2 below are all met, BR commits to the following:</p>
+        <span>the Client will be awarded a CAs ONLINE Portal credit which will allow them to select and hire another suitable Candidate at no extra cost;</span>
+        <span>11.1.2	The credit envisaged in clauses 11.1.1 above is limited to the replacement of the initial Candidate and no additional CAs ONLINE credit will be granted to replace a so-called “replacement” Candidate;</span>
+        <span>11.1.3	if the Client is unable to find a suitable replacement Candidate within 2 (two) months of the termination as contemplated in clause 11.1 above, BR shall reimburse the Client a portion of the Placement Fee on a pro rata basis. Based on the proportion of the 90 (ninety) days as set out in clause 11.1 that the candidate did not complete in employment with the client. </span>
+        <p>11.2	The commitments by BR contemplated in clause 11.1 above are conditional on the following conditions being met:</p>
+        <span>11.2.1	the Placement must be a Successful CAs ONLINE Placement, as contemplated in this Agreement;</span>
+        <span>11.2.2	the Candidate must leave the Placement of their own volition and not due to any redundancy measures, change in job description or change in work conditions;</span>
+        <span>11.2.3	BR’s invoices have been settled by the Client in accordance with the Agreement;</span>
+        <span>11.2.4	the Client has complied with all of its legal and other obligations to the Candidate;</span>
+        <span>11.2.5	the request by the Client for a replacement Candidate is made exclusively to BR;</span>
+        <span>11.2.6	the replacement role is the same as that of the initial Placement; and</span>
+        <span>11.2.7	BR is informed by the Client in writing of the Candidate’s termination of the Placement within fourteen (14) days of the Client becoming aware of such termination.</span>
+        <h5>12.	Confidentiality </h5>
+        <p>12.1	Any CVs or details of the Candidate provided to the Client by BR shall remain the Confidential Information of BR.</p>
+        <p>12.2	The Party receiving Confidential Information (the <b>“Receiving Party”</b>) from the other Party (the <b>“Disclosing Party”</b>) undertakes to maintain the confidentiality of all the Confidential Information imparted to it by the Disclosing Party pursuant to this Agreement and it may not divulge or permit to be divulged to any person any aspect of such Confidential Information otherwise than for the purpose of this Agreement.</p>
+        <p>12.3	The Receiving Party shall use the Confidential Information imparted to it for the provision of the Services pursuant to this Agreement only and for no other purpose, without the Disclosing Party’s prior written consent.</p>
+        <p>12.4	After the termination or cancellation of this Agreement, for any reason whatsoever, the Receiving Party shall not make use of the Confidential Information in any manner whatsoever, nor shall it disclose such Confidential Information to any other persons, in any manner whatsoever.</p>
+        <p>12.5	The contents of this Agreement is considered to be Confidential Information and shall not be given by the Receiving Party, in any form whatsoever, to a third party without the Disclosing Party’s prior written consent, unless required by law or order of a competent court. </p>
+        <p>12.6	Confidential Information excludes information which:</p>
+        <span>12.6.1	is in the public domain on the Commencement Date;</span>
+        <span>12.6.2	comes into the public domain after the Commencement Date other than as a result of the conduct of the Receiving Party;</span>
+        <span>12.6.3	is independently in the possession of the Receiving Party at the Commencement Date;</span>
+        <span>12.6.4	is required to be disclosed to a third party in order to give effect to this Agreement;</span>
+        <span>12.6.5	is approved for release upon the prior written confirmation of the Disclosing Party; and</span>
+        <span>12.6.6	is required by law to be disclosed by the Receiving Party.</span>
+        <p>12.7	The provisions of this clause 12 will survive the termination or cancellation, for any reason whatsoever, of this Agreement. </p>
+        <h5>13.	Protection of Personal Information</h5>
+        <p>13.1	The Parties shall fully comply with the statutory obligations contained in POPI when Processing Personal Information obtained by a Responsible Party and such Personal Information is entered into a Record.</p>
+        <p>13.2	Without limiting the generality of clause 13.1, a Responsible Party shall ensure that the Privacy and Data Protection Conditions are strictly adhered to when Processing the Data Subject’s Personal Information.</p>
+        <p>13.3	The Parties shall comply with the security and information protection obligations equivalent to those imposed on them in terms of POPI and other applicable data protection legislation, and failing such legislation, they shall take, implement and maintain all such technical and organisational security procedures and measures necessary or appropriate to preserve the security and confidentiality of the Personal Information in its possession and to protect such Personal Information against unauthorised or unlawful disclosure, access or processing, accidental loss, destruction or damage.</p>
+        <p>13.4	The Client hereby indemnifies and holds BR harmless from any liability whatsoever arising from the Client’s failure to comply with its statutory obligations contained in POPI.</p>
+        <h5>14.	Dispute Resolution</h5>
+        <p>14.1	Any dispute arising out of or in connection with this Agreement, including any question regarding its existence, validity or termination, shall be referred to and finally resolved by arbitration as set out in this clause 14.</p>
+        <p>14.2	Any Party invoking a dispute arising out of or in connection with this Agreement must inform the other Party to this Agreement in writing of such dispute within 7 (seven) calendar days of such dispute having arisen, which notification must contain comprehensive details of the dispute.</p>
+        <p>14.3	Following the notice referred to in clause 14.2, the dispute shall be submitted to the senior executives of the Parties who shall endeavour to resolve the dispute, within 14 (fourteen) days, of the dispute having been referred to them</p>
+        <p>14.4	Should such dispute not be resolved in the aforesaid manner, then the dispute will be submitted to and determined by arbitration in accordance with the rules of the Arbitration Foundation of Southern Africa (“AFSA”), as amended. </p>
+        <p>14.5	One arbitrator who is a qualified attorney or advocate with ten years’ legal experience shall conduct the arbitration. </p>
+        <p>14.6	The appointment of the arbitrator will be agreed upon between the Parties, but failing agreement between them within a period of 14 (fourteen) days after the arbitration has been demanded by any Party by written notice, either Party will be entitled to request the chairperson of AFSA to make the appointment. </p>
+        <p>14.7	The arbitrator will have the powers conferred upon an arbitrator under AFSA rules, as amended.</p>
+        <p>14.8	The arbitration shall be held in Johannesburg unless otherwise agreed by the Parties and will be held in a summary manner with a view to it being completed as soon as possible.</p>
+        <p>14.9	Either Party will have the right to appeal against the decision of the arbitrator in accordance with the AFSA rules. The decision resulting from such appeal will be final and binding on the Parties, and may be made an order of any court of competent jurisdiction. </p>
+        <p>14.10	Each of the Parties hereby submits itself to the jurisdiction of the South Gauteng High Court (Johannesburg) should any Party wish to make the arbitrator's decision an order of that Court.</p>
+        <p>14.11	The Parties agree that all arbitration proceedings, including the subject matter of the arbitration proceedings and the evidence heard during the arbitration proceedings shall constitute Confidential Information. The Parties agree not to disclose any aspect of the arbitration proceedings to anyone except for the purposes of the arbitration proceedings or any appeal instituted in terms of clause 14.9, or for the purposes of obtaining an order in terms of clause 14.10.</p>
+        <p>14.12	Nothing herein contained shall preclude any of the Parties from approaching a court of competent jurisdiction for an interdict or for relief on an urgent basis.</p>
+        <p>14.13	The Parties shall share the costs of the arbitrator equally.</p>
+        <h5>15.	Termination of Agreement</h5>
+        <p>15.1	The Parties agree that clause 4 (Services), clause 5 (Obligations and Undertakings of the Client), clause 6 (Obligations and Undertakings by BR), clause 9 (Payment Terms), clause 10 (Additional Circumstances in which Placement Fees Become Due), clause 12 (Confidentiality) and clause 13 (Protection of Personal Information) are deemed to be material terms and conditions of this Agreement.</p>
+        <p>15.2	In the event that one of the Parties (the <b>“defaulting party”</b>) commits a breach of any of the material terms and conditions of the Agreement and remains in default for a period of 10 (ten) days after receipt by it of written notice from the other party (the <b>“aggrieved party”</b>) calling for such breach to be remedied, the aggrieved party shall be entitled, without prejudice to any other rights it may have hereunder or in law, to terminate this Agreement by written notice to the defaulting party.</p>
+        <p>15.3	Notwithstanding the provisions of clause 15.1 above, any Party may terminate the Agreement at any time by giving of such termination to the defaulting party if:</p>
+        <span>15.3.1	the defaulting party is, other than for the purposes of reconstruction or amalgamation, placed under voluntary or compulsory liquidation, under judicial management, under receivership or under the equivalent of the foregoing;</span>
+        <span>15.3.2	a final and unappealable judgment against the defaulting party remains unsatisfied for a period of 14 (fourteen) days or more, after it comes to the attention of the defaulting party;</span>
+        <span>15.3.3	the defaulting party makes any arrangement or composition with its creditors generally or ceases or threatens to cease to carry on business; or</span>
+        <span>15.3.4	the defaulting Party is amalgamated with, purchased by or through any corporate reconstruction process becomes a part or member of or associated with a competitor of the aggrieved party.</span>
+        <p>15.4	Any termination pursuant to the preceding provisions of this clause 15 shall be without prejudice to any claim either Party may have in respect of any prior breach of the terms and conditions of this Agreement by the other Party.</p>
+        <p>15.5	The provisions of this clause 15 are notwithstanding any other right the aggrieved party may have in law.</p>
+        <p>15.6	The defaulting party shall be liable for all costs and expenses (calculated on an attorney-and-own-client scale) incurred as a result of or in connection with the default. </p>
+        <h5>16.	Notices and Domicila</h5>
+        <p>16.1	The Parties choose the following as their addresses for the receipt of any notices or documents in terms of this agreement, including any documents that may be issued by a court of law:</p>
+        <span>16.1.1 <b>BR</b>: <br>
+        85 Empire Road <br>
+        Parktown <br>
+        Johannesburg <br>
+        2193 <br>
+        +2710 110 1550 <br>
+         contact@bluerecruiting.co.za <br>
+        Graeme Marais <br>
+        </span>
+        <span>16.1.2	The Client agrees that for the purposes of giving any notice, the serving of any process and for any other purposes arising from these terms of use, its chosen domicilium address shall be deemed to be any of the physical, postal or email addresses or the cellular telephone number submitted to BR through your use of the CAs ONLINE Portal.</span>
+        <p>16.2	Either party may change the address given above on written notice to the other, provided that the address is a physical place of business or residence, and not merely a postal address.</p>
+        <p>16.3	Any notice delivered in terms of this Agreement shall be in writing and shall:</p>
+        <span>16.3.1	if delivered by hand, be deemed to have been duly received by the addressee on the date of delivery;</span>
+        <span>16.3.2	if posted by prepaid registered post, be deemed to have been received by the addressee on the 7th (seventh) day following the date of such posting; and</span>
+        <span>16.3.3	if transmitted by email or facsimile, be deemed to have been received by the addressee one day after the transmission.</span>
+        <p>16.4	Notwithstanding anything to the contrary contained in this Agreement, a written notice or communication actually received by one party from the other, including by way of email or facsimile transmission, shall be adequate written notice or communication to such party.</p>
+        <h5>17.	Force Majeure</h5>
+        <p>17.1	Neither party shall be in breach of this agreement, where the inability to comply with any obligation is caused by force majeure. Force majeure shall include: war, riots, civil commotion, natural physical disaster, strike or industrial action by either party’s employees, any action by government or public authority, and circumstances wholly beyond the control of the parties.</p>
+        <p>17.2	Notice of an occurrence of force majeure shall be given to a party as soon as reasonably possible, but no later than three business days, and shall include details of the event, and the likely effect it may have on either of the party’s obligations in terms of this Agreement.</p>
+        <p>17.3	Should such force majeure continue for a period of more than 14 (fourteen) days, either party shall be entitled to cancel this Agreement in respect of any obligations still to be performed hereunder.</p>
+        <h5>18.	General</h5>
+        <p>18.1	If any clause in this Agreement is held by a court of competent jurisdiction to be illegal or unenforceable, that part will be severed from all other terms without affecting the validity or enforceability of all other provisions of the Agreement.</p>
+        <p>18.2	Where possible, liabilities should under all lawful means be limited or excluded entirely. In the event of this not being possible, the maximum liability of each party shall be limited to 125% (one hundred and twenty-five percent) of the Placement Fee. </p>
+        <p>18.3	Clauses 12 and 13, in particular, and any other clause which, by its nature, is intended to continue to have effect following termination or expiry of the Agreement shall survive and continue to bind the Parties.</p>
+        <p>18.4	No variation, alteration or consensual cancellation of this Agreement shall be of any force or effect, unless in writing and signed by all of the Parties.</p>
+        <p>18.5	No indulgence which either Party may grant to the other shall constitute a waiver of any of the rights of that Party, who shall not thereby be precluded from exercising any of its rights against the other Party which may have arisen in the past or which might arise in the future.</p>
+        <p>18.6	Both Parties and the persons signing on behalf of the parties, warrant their authority to     conclude this Agreement.</p>
+        <p>18.7	Both parties further warrant that there is nothing contrary to the Memorandum of Incorporation of their respective entities which may influence or prevent any of the provisions of this Agreement from being enforced.</p>
+        <p>18.8	The Parties indemnify and shall keep one another indemnified and save and hold each other harmless from and against any liability, penalties, losses, damages, costs, expenses, attorney’s fees, causes of action or claims of whatsoever nature, and whether or not the same arise during the currency or after the termination of this Agreement, which a Party may at any time sustain or incur by reason or in consequence of a breach by the other Party of the material terms and conditions of this Agreement, as set out in clause 15 above.</p>
+        <p>18.9	This Agreement constitutes the entire agreement between the Parties, and no representation by any of the Parties or their agents, whether made prior or subsequent to the signing of this Agreement shall be binding on any of the Parties unless in writing and signed by the Parties.</p>
+        <p>18.10	Prior drafts of this Agreement shall not be admissible in any proceedings as evidence of any matter relating to any negotiations preceding the signature of this Agreement.</p>
+        <p>18.11	Neither Party may cede or assign any of their rights or delegate any of its obligations in terms of this Agreement to any person, without the prior written consent of the other Party, which consent shall not be unreasonably withheld.</p>
+        <p>18.12	No Party shall have any claim or right of action arising from any undertaking, express or implied term, representation, warranty, promise or the like not included in this Agreement.</p>
+        <p>18.13	This Agreement does not make either Party the agent of the other or create a partnership, joint venture or similar relationship between the Parties and neither Party will have the power to, nor shall it purport to obligate or bind the other Party in any manner whatsoever. The Parties are, in all respects, independent contractors.</p>
+        <p>18.14	This Agreement may be signed electronically by the Client.</p>
+        <p>18.15	This Agreement shall be governed, construed and interpreted in accordance with the laws of the Republic of South Africa.</p>
+        <p>18.16	Each Party warrants that it is acting as a principal and not as an agent for an undisclosed principal.</p>
+        <p>18.17	The Parties shall observe the principles of good faith towards each other at all times in the performance of their obligations in terms of this Agreement.</p>
+      </div>
+      <div class="modal-footer terms-footer">
+        <button style="width: 80%" type="submit" class="btn primary-button float--right position--relative" (click)="checkTerms()">I Accept</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="beforeRegistration" class="refer-box">
+  <h4 class="title-row d-flex margin-bottom--12 d-flex--justify-center">Refer a friend</h4>
+  <h3 class="subs-text subs-text-custom d-flex margin-bottom--32 d-flex--justify-center">Refer a friend by filling in their name and email addresses in the below fields OR share this via the social media</h3>
+  <div class="col-lg-12 margin-bottom--24 login-form padding--0">
+    <div class="col-lg-12 login-form padding--0">
+      <div class="col-md-10 centerify">
+        <form #friendForm [formGroup]="referFriendForm">
+
+          <div class="item-refer-block">
+            <div class="form-group position--relative">
+              <input type="text" class="form-control auth-input" formControlName="firstFriend"
+                     placeholder="First friend" required>
+              <label class="requared-label">We require this</label>
+            </div>
+            <div class="form-group position--relative">
+              <input type="text" class="form-control auth-input" formControlName="firstEmail" placeholder="Email" required>
+              <label class="requared-label">We require this</label>
+            </div>
+            <span class="invalid" *ngIf="blokArr[0]">
+              Fill in both fields correctly
+            </span>
+          </div>
+
+          <div class="item-refer-block">
+            <div class="form-group position--relative">
+              <input type="text" class="form-control auth-input" formControlName="secondFriend"
+                     placeholder="Second friend" required>
+              <label class="requared-label">We require this</label>
+            </div>
+            <div class="form-group position--relative">
+              <input type="text" class="form-control auth-input" formControlName="secondEmail" placeholder="Email" required>
+              <label class="requared-label">We require this</label>
+            </div>
+            <span class="invalid" *ngIf="blokArr[1]">
+              Fill in both fields correctly
+            </span>
+          </div>
+
+          <div class="item-refer-block">
+            <div class="form-group position--relative">
+              <input type="text" class="form-control auth-input" formControlName="thirdFriend"
+                     placeholder="Third friend" required>
+              <label class="requared-label">We require this</label>
+            </div>
+            <div class="form-group position--relative">
+              <input type="text" class="form-control auth-input" formControlName="thirdEmail" placeholder="Email" required>
+              <label class="requared-label">We require this</label>
+            </div>
+            <span class="invalid" *ngIf="blokArr[2]">
+              Fill in both fields correctly
+            </span>
+          </div>
+
+          <div class="item-refer-block">
+            <div class="form-group position--relative">
+              <input type="text" class="form-control auth-input" formControlName="fourthFriend"
+                     placeholder="Fourth friend" required>
+              <label class="requared-label">We require this</label>
+            </div>
+            <div class="form-group position--relative">
+              <input type="text" class="form-control auth-input" formControlName="fourthEmail" placeholder="Email" required>
+              <label class="requared-label">We require this</label>
+            </div>
+            <span class="invalid" *ngIf="blokArr[3]">
+              Fill in both fields correctly
+            </span>
+          </div>
+
+          <span class="invalid" *ngIf="blokArr[4]">
+              Fill in the data for at least one friend
+          </span>
+
+          <span class="confirmation-message" *ngIf="blokArr[5]">
+              Thank you for referring a friend. You are welcome to invite more friends by completing the above form again
+          </span>
+
+          <button  type="submit" class="btn primary-button full-width margin-bottom--15" (click)="sendReferFriends()">Send</button>
+          <button  type="submit" class="btn primary-button full-width" (click)="backToLogin()">Login</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10 centerify share-social-content d-flex d-flex--align-center d-flex--justify-between">
+    <span class="subs-text subs-text-custom">Shared with your friends:</span>
+    <div class="social-buttons-content">
+      <share-button [theme]="'modern-dark'"
+                    [button]="'facebook'"
+                    [url]="'https://dev.yes2work.co.za/login'"
+                    class="facebook-button-share"
+                    style="color: #ffffff;"
+      >
+        <i class="fab fa-facebook-f"></i>
+      </share-button>
+      <share-button [theme]="'modern-dark'"
+                    [button]="'twitter'"
+                    [url]="'https://dev.yes2work.co.za/login'"
+                    [description]="'Yes2Work'"
+                    [tags]="'#yes2work'"
+                    class="twitter-button-share"
+                    style="color: #ffffff;"
+      >
+        <i class="fab fa-twitter"></i>
+      </share-button>
+    </div>
+  </div>
+</div>
+

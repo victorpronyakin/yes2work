@@ -1,0 +1,8 @@
+{% extends 'emails/base_email_admin.html.twig' %}
+{% block body_html %}
+    You have received a request from {{ candidate.firstName }} {{ candidate.lastName }} to have their video done professionally.
+    <br><br>
+    Please make contact on <a href="mailto:{{ candidate.email }}">{{ candidate.email }}</a> or <a href="tel:{{ candidate.phone }}">{{ candidate.phone }}</a>
+    <br><br>
+    Please click <a href="{{ link }}">here</a> to view the applicant's profile.
+{% endblock %}

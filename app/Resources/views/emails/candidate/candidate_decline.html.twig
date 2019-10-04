@@ -1,0 +1,11 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Dear {{ user.firstName }}
+    <br><br>
+    Thank you for registering on Yes2Work. Unfortunately, your registration has been unsuccessful.
+    <br><br>
+    Please note that Yes2Work is limited to South African citizens between the ages of 18 and 35 years old.
+    <br><br>
+    Please don’t hesitate to get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you qualify to register and you think your application has been declined in error.
+
+{% endblock %}

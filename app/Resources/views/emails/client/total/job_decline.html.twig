@@ -1,0 +1,13 @@
+{% block body_html %}
+    Hello {{ firstName }} {{ lastName }}!<br><br>
+
+    {% for jobTitle in JobTitles %}
+        Job Post {{ jobTitle }} declined. Unfortunately your job post has been declined by Yes2Work.<br>
+    {% endfor %}
+
+    <br>A support staff from Yes2Work will be in touch to explain why.
+
+    <br><br>
+    Regards,<br>
+    the Yes2Work.
+{% endblock %}

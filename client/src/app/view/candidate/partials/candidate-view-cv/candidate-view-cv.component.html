@@ -1,0 +1,291 @@
+<!--
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-6 col-md-6">
+      <div class="image-profile">
+        <div class="img-block">
+          <img *ngIf="candidate?.profile?.picture === null" src="/assets/img/placeholders/placeholder.png" alt="candidate image" class="applicant_image" onerror="this.style.opacity='0'">
+          <img *ngIf="candidate?.profile?.picture !== null && candidate?.profile?.picture.length > 0" src="{{ candidate?.profile?.picture[0].url }}" alt="candidate image" class="applicant_image" onerror="this.style.opacity='0'">
+        </div>
+        <div class="img-description">
+          <h3 class="candidate-details__name margin-bottom&#45;&#45;16">{{ candidate?.user?.firstName | uppercase }} {{ candidate?.user?.lastName.charAt(0) | uppercase }}</h3>
+          <a *ngIf="cv === null || cv.length === 0" href="#" class="btn btn-interview margin-right&#45;&#45;12 disabled"><i class="fas fa-download"></i> Preview CV</a>
+          <a *ngIf="cv.length > 0" (click)="openVerticallyCentered(content)" class="btn btn-interview margin-right&#45;&#45;12"><i class="fas fa-download"></i> Preview CV</a>
+        </div>
+      </div>
+      <div class="video-holder">
+        <video *ngIf="candidate?.profile?.video?.url" #videoPlayer width="100%" height="100%" controls class="margin-bottom&#45;&#45;32" style="max-height: 350px">
+          <source src="{{ candidate?.profile?.video?.url }}" type="video/mp4">
+        </video>
+        &lt;!&ndash; video &ndash;&gt;
+        <div class="candidate-details__panels margin-top&#45;&#45;32">
+          <ngb-accordion #acc="ngbAccordion" activeIds="one, two, three, fourth">
+            <ngb-panel class="candidate-details__panels-title" id="one" title="Academic Certificates" *ngIf="academicCertificates?.length > 0">
+              <ng-template ngbPanelContent>
+                <ul class="certificaltes-list d-flex d-flex&#45;&#45;align-start d-flex&#45;&#45;direction-column">
+                  <li *ngFor="let certificate of academicCertificates">
+                    <a class="certificat-link" href="{{ certificate?.url }}" download="{{ certificate?.name }}">{{ certificate?.name }}</a>
+                  </li>
+                </ul>
+              </ng-template>
+            </ngb-panel>
+            <ngb-panel class="candidate-details__panels-title" title="Academic Transcripts" *ngIf="academicTranscripts?.length > 0" id="two">
+              <ng-template ngbPanelContent>
+                <ul class="certificaltes-list d-flex d-flex&#45;&#45;align-start d-flex&#45;&#45;direction-column">
+                  <li *ngFor="let transcript of academicTranscripts">
+                    <a class="certificat-link" href="{{ transcript?.url }}" download="{{ transcript?.name }}">{{ transcript?.name }}</a>
+                  </li>
+                </ul>
+              </ng-template>
+            </ngb-panel>
+            <ngb-panel class="candidate-details__panels-title" title="Credit & Criminal Checks" *ngIf="creditChecks?.length > 0" id="three">
+              <ng-template ngbPanelContent>
+                <ul class="certificaltes-list d-flex d-flex&#45;&#45;align-start d-flex&#45;&#45;direction-column">
+                  <li *ngFor="let check of creditChecks">
+                    <a class="certificat-link" href="{{ check?.url }}" download="{{ check?.name }}">{{ check?.name }}</a>
+                  </li>
+                </ul>
+              </ng-template>
+            </ngb-panel>
+            <ngb-panel class="candidate-details__panels-title" title="References" *ngIf="referencesArray.length > 0" id="fourth">
+              <ng-template ngbPanelContent>
+                <div class="reference-block" *ngFor="let reference of referencesArray">
+                  <p class="title">{{ reference?.firstName }} &lt;!&ndash;<span *ngIf="reference?.permission">{{ reference?.lastName }} - </span>&ndash;&gt;- {{ reference?.role }} - {{ reference?.company }}</p>
+                  &lt;!&ndash;<p class="email" *ngIf="reference?.permission; else noPermission">{{ reference?.email }}</p>&ndash;&gt;
+                  &lt;!&ndash;<ng-template class="email" #noPermission>Permission to contact</ng-template>&ndash;&gt;
+                  <p class="desc margin-top&#45;&#45;12">"{{ reference?.comment }}"</p>
+                </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-6">
+      <div class="candidate-details full-width d-flex d-flex&#45;&#45;align-start d-flex&#45;&#45;direction-column">
+        <div class="candidate-details__records full-width d-flex d-flex&#45;&#45;align-start d-flex&#45;&#45;direction-column">
+          <div class="candidate-details__record padding&#45;&#45;0">
+            <div class="row"></div>
+          </div>
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Gender</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.profile?.gender">{{ candidate?.profile?.gender }}</span>
+                <span *ngIf="!candidate?.profile?.gender">-</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Ethnicity</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.profile?.ethnicity">{{ candidate?.profile?.ethnicity }}</span>
+                <span *ngIf="!candidate?.profile?.ethnicity">-</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Nationality</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="nationality">{{ nationality }}</span>
+                <span *ngIf="!nationality">-</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Articles Firm</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <img *ngIf="candidate?.profile?.articlesFirm" class="logo-table" src="/assets/img/logo_table/{{ candidate?.profile?.articlesFirm | notSpace }}.jpg" #img (load)="hideArticlesFirm(img)" onerror="this.style.display='none';this.style.opacity='0'">
+                <span *ngIf="candidate?.profile?.articlesFirm !== 'Other'" class="after_no-img">{{ candidate?.profile?.articlesFirm }}</span>
+                <span *ngIf="candidate?.profile?.articlesFirm === 'Other'">{{ candidate?.profile?.articlesFirmName }}</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Date Articles Completed</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.profile?.dateArticlesCompleted">{{ candidate?.profile?.dateArticlesCompleted | date:"MMM ‘yy" }}</span>
+                <span *ngIf="!candidate?.profile?.dateArticlesCompleted">-</span>
+              </div>
+            </div>
+          </div>
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Availability</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="availability">{{ availability }}</span>
+                <span *ngIf="availability === null">-</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Boards</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="boards">{{ boards }}</span>
+                <span *ngIf="!boards">-</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Most recent role</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.profile?.mostRole">{{ candidate?.profile?.mostRole }}</span>
+                <span *ngIf="!candidate?.profile?.mostRole">-</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Most recent employer</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.profile?.mostEmployer">{{ candidate?.profile?.mostEmployer }}</span>
+                <span *ngIf="!candidate?.profile?.mostEmployer">-</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Desired Work Location</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell work-location">
+                <span *ngIf="candidate?.profile?.citiesWorking">{{ candidate?.profile?.citiesWorking }}</span>
+                <span *ngIf="!candidate?.profile?.citiesWorking">-</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          <div class="candidate-details__record">
+            <div class="row d-flex d-flex&#45;&#45;direction-column">
+              <div class="col-sm-12 title-popup-cell">
+                <span>Achievements</span>
+              </div>
+              <div class="col-sm-12 padding-left&#45;&#45;0 d-flex&#45;&#45;justify-start margin-top&#45;&#45;18" style=" color: #767676; font-weight: 300; font-size: 13px;" *ngFor="let achievement of achievementsArray">
+                <span>{{ achievement?.description }}</span>
+              </div>
+              <div class="col-sm-12 padding-left&#45;&#45;0 d-flex&#45;&#45;justify-start margin-top&#45;&#45;18" style=" color: #767676; font-weight: 300; font-size: 13px;" *ngIf="achievementsArray.length === 0">
+                <span>-</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          <div class="candidate-details__record">
+            <div class="row d-flex d-flex&#45;&#45;direction-column">
+              <div class="col-sm-12 title-popup-cell">
+                <span>Other qualifications</span>
+              </div>
+              <div class="col-sm-12 padding-left&#45;&#45;0 d-flex&#45;&#45;justify-start margin-top&#45;&#45;18" style=" color: #767676; font-weight: 300; font-size: 13px;">
+                <span *ngIf="candidate?.profile?.otherQualifications">{{ candidate?.profile?.otherQualifications }}</span>
+                <span *ngIf="!candidate?.profile?.otherQualifications">-</span>
+              </div>
+            </div>
+          </div>
+          &lt;!&ndash; candidate-details__record &ndash;&gt;
+          &lt;!&ndash;<div class="candidate-details__record candidate-details__criminal">
+            <div class="row">
+              <div class="col-sm-4 title-popup-cell">
+                <span>Criminal Conviction</span>
+              </div>
+              <div *ngIf="candidate?.profile?.criminal === true && candidate?.profile?.criminalDescription !== null" class="col-sm-4 description-popup-cell d-flex&#45;&#45;align-center" style="justify-content: center">
+                <span>Yes</span>
+              </div>
+              <div *ngIf="candidate?.profile?.criminal === true && candidate?.profile?.criminalDescription === null" class="col-sm-8 description-popup-cell d-flex&#45;&#45;align-center" style="justify-content: flex-end">
+                <span>Yes</span>
+              </div>
+              <div *ngIf="!candidate?.profile?.criminal || candidate?.profile?.criminal === false" class="col-sm-8 description-popup-cell d-flex&#45;&#45;align-center" style="justify-content: flex-end">
+                <span>No</span>
+              </div>
+              <div *ngIf="candidate?.profile?.criminal === true && candidate?.profile?.criminalDescription !== null" class="col-sm-4 find-more d-flex&#45;&#45;justify-end padding-right&#45;&#45;0">
+                <a (click)="moreCriminal()" class="job-popup-delete margin-bottom&#45;&#45;0 float&#45;&#45;right">Find out more</a>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="criminalMore && candidate?.profile?.criminalDescription !== null" class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-12 description-popup-cell padding-left&#45;&#45;0" style="justify-content: flex-start">
+                <span>{{ candidate?.profile?.criminalDescription }}</span>
+              </div>
+            </div>
+          </div>&ndash;&gt;
+          &lt;!&ndash; candidate criminal conviction &ndash;&gt;
+          &lt;!&ndash;<div class="candidate-details__record candidate-details__criminal">
+            <div class="row">
+              <div class="col-sm-4 title-popup-cell">
+                <span>Credit History</span>
+              </div>
+              <div *ngIf="candidate?.profile?.credit === true && candidate?.profile?.creditDescription !== null" class="col-sm-4 description-popup-cell d-flex&#45;&#45;align-center" style="justify-content: center">
+                <span>Yes</span>
+              </div>
+              <div *ngIf="candidate?.profile?.credit === true && candidate?.profile?.creditDescription === null" class="col-sm-8 description-popup-cell d-flex&#45;&#45;align-center" style="justify-content: flex-end">
+                <span>Yes</span>
+              </div>
+              <div *ngIf="!candidate?.profile?.credit || candidate?.profile?.credit === false" class="col-sm-8 description-popup-cell d-flex&#45;&#45;align-center" style="justify-content: flex-end">
+                <span>No</span>
+              </div>
+              <div *ngIf="candidate?.profile?.credit === true && candidate?.profile?.creditDescription !== null" class="col-sm-4 find-more d-flex&#45;&#45;justify-end padding-right&#45;&#45;0">
+                <a (click)="moreCredit()" class="job-popup-delete margin-bottom&#45;&#45;0 float&#45;&#45;right">Find out more</a>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="creditMore && candidate?.profile?.creditDescription !== null" class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-12 description-popup-cell padding-left&#45;&#45;0" style="justify-content: flex-start">
+                <span>{{ candidate?.profile?.creditDescription }}</span>
+              </div>
+            </div>
+          </div>&ndash;&gt;
+          &lt;!&ndash; candidate credit history &ndash;&gt;
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+&lt;!&ndash; modal-body &ndash;&gt;
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <div class="iframe-cv"  *ngFor="let file of cv">
+      <iframe class="doc" [src]="file?.url | urlType" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      <a *ngIf="file.approved" href="{{ file?.url }}" download="{{ file?.url }}" target="_blank" class="btn btn-interview doc-t margin-right&#45;&#45;12"><i class="fas fa-download"></i> Download CV</a>
+    </div>
+  </div>
+</ng-template>
+-->

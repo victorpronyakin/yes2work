@@ -1,0 +1,444 @@
+<div class="title-description margin-bottom--32">
+  <div class="d-flex d-flex--align-center margin-bottom--24 profile-tabs-mobile">
+    <h3 style="margin-right: 45px;">my profile</h3>
+    <div class="tabs-items jobs-button-desktop">
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/profile_details" routerLinkActive="active">Personal Information</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/qualification" routerLinkActive="active">Qualification</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/achievements" routerLinkActive="active">Work Experience </a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/video" routerLinkActive="active">My Video</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/preferences" routerLinkActive="active">Preferences</a>
+    </div>
+    <select class="form-control field--medium input-form select-form jobs-button-mobile min-width--100" #filter1 (change)="routerApplicants(filter1.value)">
+      <option value="/candidate/profile_details">Personal Information</option>
+      <option value="/candidate/qualification">Qualification</option>
+      <option value="/candidate/achievements">Work Experience</option>
+      <option value="/candidate/video">My Video</option>
+      <option value="/candidate/preferences">Preferences</option>
+    </select>
+  </div>
+  <p *ngIf="_sharedService.visibleErrorVideoIcon || _sharedService.visibleErrorProfileIcon">Please make sure you upload a copy of your ID and video before you can apply for a job.</p>
+  <p *ngIf="!_sharedService.visibleErrorProfileIcon && !_sharedService.visibleErrorVideoIcon">Your profile is complete enough to be viewed by clients and to receive new job postings.</p>
+</div>
+<div class="row margin-top--32 margin-bottom--32" *ngIf="candidateProfileDetails?.profile?.percentage > 50 &&
+                                                         candidateProfileDetails?.profile?.copyOfID &&
+                                                         candidateProfileDetails?.profile?.copyOfID[0] &&
+                                                         ((candidateProfileDetails?.allowVideo === true) ||
+                                                         (candidateProfileDetails?.profile?.video &&
+                                                         candidateProfileDetails?.profile?.video?.approved === true))">
+  <div class="col-md-8 padding-left--0 candidate-dashboard-notification">
+    <div class="row margin-bottom--8">
+      <div class="col-8 col-md-10 padding-left--0">
+        <label class="label-text">I am looking for a job</label>
+      </div>
+      <div class="col-2 col-md-2 d-flex">
+        <label class="label-text">No</label>
+        <div class="switch__container margin-left--5 margin-right--5">
+          <input id="switch-shadow8" class="switch switch--shadow" type="checkbox" [(ngModel)]="checkLooking" (ngModelChange)="changeStatusCandidate('looking', checkLooking)">
+          <label for="switch-shadow8" [ngClass]="{'test-shadow': visibilityLooking}"></label>
+        </div>
+        <label class="label-text">Yes</label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row progress-info">
+  <ngb-progressbar class="full-width" [value]="progressBar" type="warning" [max]="100">{{ progressBar }}% Complete</ngb-progressbar>
+</div>
+<div class="row margin-bottom--16 margin-top--32">
+  <div class="col-md-12 padding-left--0 padding-right--0">
+    <div class="contant-profile">
+      <div class="table-information full-width achievements-mobile">
+        <div class="body">
+          <div class="row-table">
+            <input type="checkbox" class="accordions__checkbox" id="1">
+            <label class="accordions__heading" for="1">My Qualifications <span class="accordion-item-cta">&#9650;</span></label>
+            <div class="content-row d-flex accordions__content">
+              <!-- Progress bar -->
+              <div class="row">
+                <div class="col-md-12 padding-left--0 padding-right--0">
+                  <h4 class="title-row margin-bottom--16">My Qualifications</h4>
+                </div>
+              </div>
+              <!-- title achievements -->
+              <div class="row">
+                <div class="col-md-12 padding-bottom--12 margin-bottom--12 padding-left--0 padding-right--0" *ngIf="qualificationArray.length > 0">
+                  <div class="qualification-row margin-top--16 margin-bottom--16" *ngFor="let achievements of qualificationArray">
+                    <div class="qualification-content-row">
+                      <p *ngIf="achievements?.type === 1">NQF 4 - Matric</p>
+                      <p *ngIf="achievements?.type === 2">NQF 2 - Grade 10</p>
+                      <p *ngIf="achievements?.type === 3">Tertiary Qualification</p>
+                      <div class="margin-top--12" *ngIf="achievements?.type === 1">
+                        <p class="description-span-st margin-bottom--3">School Name: {{ achievements?.schoolName }}</p>
+                        <p class="description-span-st margin-bottom--3">Year Matriculated: {{ achievements?.matriculatedYear }}</p>
+                      </div>
+                      <div class="margin-top--12" *ngIf="achievements?.type === 3">
+                        <p class="description-span-st margin-bottom--3" *ngIf="achievements?.tertiaryInstitution !== 'Other'">Tertiary Institution: {{ achievements?.tertiaryInstitution }}</p>
+                        <p class="description-span-st margin-bottom--3" *ngIf="achievements?.tertiaryInstitution === 'Other'">Tertiary Institution: {{ achievements?.tertiaryInstitutionCustom }}</p>
+                        <p class="description-span-st margin-bottom--3">Qualification Level: {{ achievements?.levelQ }}</p>
+                        <p class="description-span-st margin-bottom--3" *ngIf="achievements?.specificQ === 'Other'">Specific Qualification: {{ achievements?.specificQCustom }}</p>
+                        <p class="description-span-st margin-bottom--3" *ngIf="achievements?.specificQ !== 'Other'">Specific Qualification: {{ achievements?.specificQ }}</p>
+                        <p class="description-span-st margin-bottom--3" *ngIf="achievements?.specialization === 'Other'">Specialization: {{ achievements?.specializationCustom }}</p>
+                        <p class="description-span-st margin-bottom--3" *ngIf="achievements?.specialization !== 'Other'">Specialization: {{ achievements?.specialization }}</p>
+                        <p class="description-span-st margin-bottom--3">Tertiary Education Achievements: {{ achievements?.education }}</p>
+                        <p class="description-span-st margin-bottom--3">(Final Year: {{ achievements?.endYear | date: 'y' }})</p>
+                      </div>
+                    </div>
+                    <div class="d-flex">
+                      <button *ngIf="achievements?.type !== 2" class="btn margin-right--12" (click)="openVerticallyCentered(candidateQualificationModal, achievements)"><i class="fas fa-pencil-alt"></i></button>
+                      <button class="btn" (click)="deleteCandidateQualification(achievements)"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                  </div>
+                  <!-- List achievements -->
+                </div>
+              </div>
+              <div class="row" *ngIf="showUniversityExemption">
+                <div class="col-lg-6 padding-left--0 padding-right--0">
+                  <div class="form-group list-input d-flex d-flex--align-center d-flex--justify-between">
+                    <label class="text-desc required-icon-content font-size--15" style="width: 75%;">University Exemption obtained:</label>
+                    <div class="col-md-6 d-flex d-flex--justify-end padding-right--0">
+                      <div class="switch__container">
+                        <input id="switch-shadow66" class="switch switch--shadow" type="checkbox" [ngModel]="candidateProfileDetails?.profile?.universityExemption" (click)="changeUniversityExemption()">
+                        <label for="switch-shadow66"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row padding-bottom--32">
+                <button (click)="openVerticallyCenter(candidateQualificationModal)" class="btn primary-button width--200 margin-top--16">Add Qualification</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="d-flex d-flex--justify-center d-flex--align-center border-top-step border-bottom-step padding--15">
+  <button (click)="stepNextPage()" class="btn primary-button margin-top--16 margin-bottom--8">Next</button>
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<ng-template #candidateQualificationModal let-cb="close" let-db="dismiss">
+  <div class="modal-header">
+    <h4 *ngIf="checkEdit" class="modal-title">Edit qualification</h4>
+    <h4 *ngIf="!checkEdit" class="modal-title">New qualification</h4>
+    <button type="button" class="close" aria-label="Close" (click)="db()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="qualificationForm">
+      <div class="form-group">
+        <h3 class="margin-bottom--18 description-span-st font-size--15">Please enter all your qualifications, one at a time</h3>
+        <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+          <ng-select [ngClass]="{'disabled-tab': checkEdit}"
+                     placeholder="Highest Level" formControlName="type" [searchable]="false" (change)="resetForm()">
+            <ng-option [value]="2">NQF 2 - Grade 10</ng-option>
+            <ng-option [value]="1">NQF 4 - Matric</ng-option>
+            <ng-option [value]="3">Tertiary Qualification</ng-option>
+          </ng-select>
+          <span class="required-icon">*</span>
+        </div>
+        <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['type']?.value && validError?.type">
+          Highest Level is required
+        </span>
+        <div class="form-group" *ngIf="qualificationForm.controls['type'].value === 1">
+          <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+            <input type="text" class="form-control input-form full-width" placeholder="School Name" formControlName="schoolName">
+            <span class="required-icon">*</span>
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['schoolName']?.value && validError?.schoolName">
+            School Name is required
+          </span>
+          <div class="form-group input-group list-input d-flex d-flex--align-center right-calendar display-year">
+            <label class="text-desc description-span-st">Year Matriculated</label>
+            <input class="form-control input-form" type="number" placeholder="Select Date" formControlName="matriculatedYear" (change)="validMatriculatedYear()"/>
+            <span class="required-icon">*</span>
+            <span class="input-group-btn margin-right--12" style="right: -12px;">
+              <button type="button" class="btn btn-default top--0" (click)="togglePicker(qualificationForm.controls['matriculatedYear']?.value)">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </button>
+            </span>
+            <div [ngClass]="{'active': showYearPicker}" (clickOutside)="onClickedOutside($event)" class="year-picker-qualification">
+              <div class="arrow-top" (click)="scrollYear('top')">
+                <i class="fas fa-caret-up"></i>
+              </div>
+              <div class="content-year" #yearPickers id="yearPickers">
+                <span id="{{ year }}" (click)="setYearValue(year)" [ngClass]="{'active-year': qualificationForm.controls['matriculatedYear']?.value === year}" *ngFor="let year of yearsArray">{{ year }}</span>
+              </div>
+              <div class="arrow-bottom" (click)="scrollYear('bottom')">
+                <i class="fas fa-caret-down"></i>
+              </div>
+            </div>
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="validError?.matriculatedYear">
+            Year Matriculated is required
+          </span>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="validError?.matriculatedYearEnter">
+            Please enter a valid Year Matriculated
+          </span>
+          <div class="form-group list-input d-flex d-flex--align-center required-icon-content d-flex--direction-column">
+            <span class="margin-bottom--18 description-span-st">How many subjects did you complete in the below categories:</span>
+            <span class="required-icon" style="top: 20px">*</span>
+            <table border="1" class="subjects-complete-table">
+              <tr>
+                <th class="description-span-st font-weight--600">Percentages, %</th>
+                <th class="description-span-st font-weight--600">Numbers</th>
+              </tr>
+              <tr>
+                <td class="description-span-st"> > 80</td>
+                <td>
+                  <input [value]="completeSubjectObj.eighty" (change)="setValueSubjects(eighty.value, 'eighty')" #eighty type="number" placeholder="Enter number">
+                </td>
+              </tr>
+              <tr>
+                <td class="description-span-st">70-79</td>
+                <td>
+                  <input [value]="completeSubjectObj.seventy" (change)="setValueSubjects(seventy.value, 'seventy')" #seventy type="number" placeholder="Enter number">
+                </td>
+              </tr>
+              <tr>
+                <td class="description-span-st">60-69</td>
+                <td>
+                  <input [value]="completeSubjectObj.sixty" (change)="setValueSubjects(sixty.value, 'sixty')" #sixty type="number" placeholder="Enter number">
+                </td>
+              </tr>
+              <tr>
+                <td class="description-span-st">50-59</td>
+                <td>
+                  <input [value]="completeSubjectObj.fifty" (change)="setValueSubjects(fifty.value, 'fifty')" #fifty type="number" placeholder="Enter number">
+                </td>
+              </tr>
+              <tr>
+                <td class="description-span-st">40-49</td>
+                <td>
+                  <input [value]="completeSubjectObj.forty" (change)="setValueSubjects(forty.value, 'forty')" #forty type="number" placeholder="Enter number">
+                </td>
+              </tr>
+              <tr>
+                <td class="description-span-st">30-39</td>
+                <td>
+                  <input [value]="completeSubjectObj.thirty" (change)="setValueSubjects(thirty.value, 'thirty')" #thirty type="number" placeholder="Enter number">
+                </td>
+              </tr>
+              <tr>
+                <td class="description-span-st"> < 30</td>
+                <td>
+                  <input [value]="completeSubjectObj.twenty" (change)="setValueSubjects(twenty.value, 'twenty')" #twenty type="number" placeholder="Enter number">
+                </td>
+              </tr>
+            </table>
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!completeSubjectObj?.eighty &&
+           !completeSubjectObj?.seventy &&
+           !completeSubjectObj?.sixty &&
+           !completeSubjectObj?.fifty &&
+           !completeSubjectObj?.forty &&
+           !completeSubjectObj?.thirty &&
+           !completeSubjectObj?.twenty &&
+            validError?.completeSubject">
+             You must fill in at least one of the fields in the table.
+          </span>
+        </div>
+        <div class="form-group" *ngIf="qualificationForm.controls['type'].value === 3">
+          <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+            <ng-select
+                    (change)="otherChangeForm('tertiaryInstitution')"
+                    placeholder="Institution Name" formControlName="tertiaryInstitution" [searchable]="true">
+              <ng-option *ngFor="let institution of _sharedService.qualificationData.tertiary_institution" [value]="institution.value">{{institution.value}}</ng-option>
+            </ng-select>
+            <span class="required-icon">*</span>
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['tertiaryInstitution']?.value && validError?.tertiaryInstitution">
+            Institution Name is required
+          </span>
+          <!-- Institution Name -->
+          <div *ngIf="qualificationForm.controls['tertiaryInstitution'].value === 'Other'" class="form-group list-input d-flex d-flex--align-center required-icon-content">
+            <input type="text" (change)="otherChangeForm('tertiaryInstitutionCustom')" class="form-control input-form full-width" placeholder="Other Institution Name" formControlName="tertiaryInstitutionCustom">
+            <span class="required-icon">*</span>
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['tertiaryInstitutionCustom']?.value && validError?.tertiaryInstitutionCustom">
+            Other Institution Name is required
+          </span>
+          <!-- Other Institution Name -->
+          <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+            <ng-select
+                    [ngClass]="{'disabled-tab': !qualificationForm.controls['tertiaryInstitution'].value || (qualificationForm.controls['tertiaryInstitution'].value === 'Other' && !qualificationForm.controls['tertiaryInstitutionCustom']?.value)}"
+                    (change)="otherChangeForm('levelQ')"
+                    placeholder="Qualification Level" formControlName="levelQ" [searchable]="false">
+              <ng-option *ngFor="let level of _sharedService.qualificationData.qualification_level" [value]="level.value">{{level.value}}</ng-option>
+            </ng-select>
+            <span class="required-icon">*</span>
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['levelQ']?.value && validError?.levelQ">
+            Qualification Level is required
+          </span>
+          <!-- Qualification Level Other -->
+          <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+            <ng-select
+                    [ngClass]="{'disabled-tab': !qualificationForm.controls['levelQ'].value}"
+                    (change)="otherChangeForm('specificQ')"
+                    placeholder="Specific Qualification" formControlName="specificQ" [searchable]="true">
+              <ng-option *ngFor="let specific of _sharedService.qualificationData.specific_qualification" [value]="specific.value">{{specific.value}}</ng-option>
+            </ng-select>
+            <span class="required-icon">*</span>
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['specificQ']?.value && validError?.specificQ">
+            Specific Qualification is required
+          </span>
+          <!-- Specific Qualification -->
+          <div *ngIf="qualificationForm.controls['specificQ'].value === 'Other'" class="form-group list-input d-flex d-flex--align-center required-icon-content">
+            <input type="text" (change)="otherChangeForm('specificQCustom')" class="form-control input-form full-width" placeholder="Other Specific Qualification" formControlName="specificQCustom">
+            <span class="required-icon">*</span>
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['specificQCustom']?.value && validError?.specificQCustom">
+            Other Specific Qualification is required
+          </span>
+          <!-- Specific Qualification Other -->
+          <div class="form-group list-input d-flex d-flex--align-center required-icon-content">
+            <ng-select
+                    [ngClass]="{'disabled-tab': !qualificationForm.controls['specificQ'].value || (qualificationForm.controls['specificQ'].value === 'Other' && !qualificationForm.controls['specificQCustom']?.value)}"
+                    (change)="otherChangeForm('specialization')"
+                    placeholder="Specialization" formControlName="specialization" [searchable]="">
+              <ng-container *ngFor="let specialization of specializationField" >
+                <ng-option [value]="specialization.name">{{specialization.name}}</ng-option>
+              </ng-container>
+            </ng-select>
+            <span class="required-icon">*</span>
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['specialization']?.value && validError?.specialization">
+            Specialization is required
+          </span>
+          <!-- Specialization -->
+          <div *ngIf="qualificationForm.controls['specialization'].value === 'Other'" class="form-group list-input d-flex d-flex--align-center required-icon-content">
+            <!-- -->
+            <input [ngClass]="{'disabled-tab': (qualificationForm.controls['specificQ'].value === 'Other' && !qualificationForm.controls['specificQCustom'].value )}"
+              type="text" class="form-control input-form full-width" placeholder="Other Specialization" formControlName="specializationCustom">
+            <span class="required-icon">*</span>
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['specializationCustom']?.value && validError?.specializationCustom">
+            Other Specialization is required
+          </span>
+          <!-- Specialization Other -->
+          <div class="form-group list-input d-flex d-flex--align-center">
+            <ng-select placeholder="Tertiary Education Achievements" formControlName="education" [searchable]="false">
+              <ng-option [value]="'Golden Key'">Golden Key</ng-option>
+              <ng-option [value]="'Cum Laude'">Cum Laude</ng-option>
+              <ng-option [value]="'Dean’s List'">Dean’s List</ng-option>
+              <ng-option [value]="'None of the Above'">None of the Above</ng-option>
+            </ng-select>
+            <!--<span class="required-icon">*</span>-->
+          </div>
+          <!--<span class="help-box d-flex d-flex--justify-start margin-bottom--18" *ngIf="!qualificationForm.controls['education']?.value && validError?.education">
+            Tertiary Education Achievements is required
+          </span>-->
+          <!-- Tertiary Education Achievements -->
+          <div class="d-flex d-flex--justify-between date-qualification-content">
+            <div class="form-group input-group list-input d-flex d-flex--align-center right-calendar display-year">
+              <label class="text-desc description-span-st">Start</label>
+              <div class="input-group display-year required-icon-content">
+                <input autocomplete="off" class="form-control input-form" formControlName="startYear"
+                       [(ngModel)]="selectedDateStart"
+                       placeholder="Start Date"
+                       [dpDayPicker]="config"
+                       (onChange)="endYearValidate()"
+                       [mode]="'month'"
+                       [readonly]="true"
+                />
+                <span class="required-icon">*</span>
+              </div>
+            </div>
+            <!-- Start Year -->
+            <div class="form-group input-group list-input d-flex d-flex--align-center right-calendar display-year">
+              <label class="text-desc description-span-st">End</label>
+              <div class="input-group display-year required-icon-content">
+                <input autocomplete="off" class="form-control input-form" formControlName="endYear"
+                       [(ngModel)]="selectedDateEnd"
+                       placeholder="End Date"
+                       [dpDayPicker]="config"
+                       (onChange)="endYearValidate()"
+                       [mode]="'month'"
+                       [readonly]="true"
+                />
+                <span class="required-icon">*</span>
+              </div>
+            </div>
+            <!-- End Year -->
+          </div>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['startYear']?.value && validError?.startYear">
+            Start Date is required
+          </span>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="!qualificationForm.controls['endYear']?.value && validError?.endYear">
+            End Date is required
+          </span>
+          <span class="help-box d-flex d-flex--justify-start margin-bottom--12" *ngIf="validError?.endYearCheck">
+             End Date must not be less than or equal to Start Date
+          </span>
+        </div>
+      </div>
+      <button class="btn danger-button float-left" (click)="closeActiveModal()">Close</button>
+      <button *ngIf="checkEdit" class="btn primary-button float-right" (click)="updateCandidateQualification()">Update</button>
+      <button *ngIf="!checkEdit" class="btn primary-button float-right" (click)="createCandidateQualification()">Save</button>
+    </form>
+  </div>
+</ng-template>
+<!-- Candidate qualification modal -->
+
+<ng-template #contentAchievement let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">think twice</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <h3 class="job-popup-title">Are you sure you want to leave?</h3>
+    <span class="job-popup-desc">You have made changes you have not saved. If you leave now your changes will not be saved. You can save your changes by selecting "Add Achievement" at the bottom of the page.</span>
+    <div class="d-flex d-flex--justify-around margin-bottom--12">
+      <button (click)="exitPage()" class="btn primary-button">Yes</button>
+      <button (click)="d('Cross click')" class="btn primary-button">No</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #contentAll let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">think twice</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <h3 class="job-popup-title">Are you sure you want to leave?</h3>
+    <span class="job-popup-desc">You have made changes you have not saved. If you leave now your changes will not be saved. You can save your changes by selecting "Add Reference" and "Add Achievement" at the bottom of the page.</span>
+    <div class="d-flex d-flex--justify-around margin-bottom--12">
+      <button (click)="exitPage()" class="btn primary-button">Yes</button>
+      <button (click)="d('Cross click')" class="btn primary-button">No</button>
+    </div>
+    <!--<a (click)="" class="job-popup-delete">No</a>-->
+  </div>
+</ng-template>
+
+<div [ngClass]="{'active': videoUploadPopup}" class="modal-video-record">
+  <div class="modal-header">
+    <h4 class="modal-title">disable profile</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeLookingPopup(false, true)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <h3 class="job-popup-title">Please note, turning this off will mean:</h3>
+    <span class="job-popup-desc margin-bottom--6">- You will no longer receive any notifications of any new jobs.</span>
+    <span class="job-popup-desc margin-bottom--6">- You will not be visible to clients browsing profiles.</span>
+    <span class="job-popup-desc margin-bottom--24">- Any current applications you have made will be cancelled</span>
+    <div class="d-flex d-flex--justify-around margin-bottom--12">
+      <button (click)="lookingJobToggle('looking', checkLooking);closeLookingPopup(false, false)" class="btn primary-button">Disable Profile</button>
+      <button (click)="closeLookingPopup(false, true)" class="btn primary-button">Go Back</button>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,10 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Dear {{ user.firstName }}
+    <br><br>
+    Your registration with Yes2Work has been successful. It is brilliant to have you onboard.
+    <br><br>
+    You can now login on <a href="{{ link }}/login">{{ link }}</a> Remember to complete your company details and get your first job loaded so you can find your ideal YES eligible employee.
+    <br><br>
+    Please don’t hesitate to get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

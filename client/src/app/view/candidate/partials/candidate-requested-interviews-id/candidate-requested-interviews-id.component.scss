@@ -1,0 +1,22 @@
+.decs-popup-text{
+  color: #767676;
+  font-size: 13px;
+  font-weight: 300;
+}
+.title-decs-popup-text{
+  font-size: 14px;
+  color: #767676;
+  font-weight: 600;
+}
+.top-title-job{
+  border-bottom: 1px solid #e1e1e1 !important;
+  padding-bottom: 10px;
+  padding-top: 10px;
+
+  & > div {
+    color: #414041;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 18px;
+  }
+}

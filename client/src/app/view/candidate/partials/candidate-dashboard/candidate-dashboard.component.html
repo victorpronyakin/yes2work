@@ -1,0 +1,375 @@
+<div class="title-description margin-bottom--32">
+  <h3 *ngIf="checkStatus" class="margin-bottom--24">Welcome Back, {{ nameUser }}!</h3>
+  <h3 *ngIf="!checkStatus" class="margin-bottom--24">Welcome, {{ nameUser }}!</h3>
+  <p>Complete your profile and record a video to ensure your profile is attractive to potential employers. Once completed, manage your job search here by applying to advertised jobs.</p>
+</div>
+<div class="row margin-top--32 margin-bottom--32">
+  <div class="col-md-8 padding-left--0 candidate-dashboard-notification">
+    <div class="row margin-bottom--8">
+      <div class="col-8 col-md-10 padding-left--0">
+        <label *ngIf="candidateProfileDetails?.profile?.percentage > 50
+          && candidateProfileDetails?.profile?.copyOfID
+          && candidateProfileDetails?.profile?.copyOfID[0]
+          && candidateProfileDetails?.profile?.copyOfID[0]?.approved
+          && ((candidateProfileDetails?.allowVideo === true)
+          || (candidateProfileDetails?.profile?.video
+          && candidateProfileDetails?.profile?.video?.approved === true))"
+          class="label-text">
+          I am looking for a job
+        </label>
+        <label *ngIf="candidateProfileDetails?.profile?.percentage < 50
+        || !candidateProfileDetails?.profile?.copyOfID
+        || !candidateProfileDetails?.profile?.copyOfID[0]
+        || !candidateProfileDetails?.profile?.copyOfID[0]?.approved
+        || (candidateProfileDetails?.allowVideo === false && !candidateProfileDetails?.profile?.video)
+        || (candidateProfileDetails?.allowVideo === false && candidateProfileDetails?.profile?.video
+        && candidateProfileDetails?.profile?.video?.approved === false)"
+        class="label-text disabled-text">
+        I am looking for a job
+      </label>
+      </div>
+      <div class="col-2 col-md-2 d-flex d-flex--align-center">
+        <label class="label-text">No</label>
+        <div class="switch__container margin-left--5 margin-right--5">
+          <input id="switch-shadow" class="switch switch--shadow" type="checkbox" [(ngModel)]="checkLooking" (ngModelChange)="changeStatusCandidate('looking', checkLooking)">
+          <label for="switch-shadow" [ngClass]="{'test-shadow': visibilityLooking}"></label>
+        </div>
+        <label class="label-text">Yes</label>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 d-flex d-flex--justify-end cell-btn-profile">
+    <button routerLink="/candidate/profile_details" class="btn danger-button candidate-dashboard-st" *ngIf="_sharedService.visibleErrorProfileIcon || _sharedService.visibleErrorVideoIcon">Your Profile is Incomplete</button>
+    <!--<button routerLink="/candidate/view_cv" class="btn primary-button candidate-dashboard-st margin-left--24" *ngIf="!_sharedService.visibleErrorProfileIcon && !_sharedService.visibleErrorVideoIcon">View Profile</button>-->
+  </div>
+</div>
+<div class="row margin-bottom--32">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <h4 class="title-row d-flex">Jobs Alerts</h4>
+  </div>
+</div>
+<div class="subtitle-job margin-bottom--12">
+  <h4 class="subtitlerow">New Jobs Alerts <span class="summary-span">{{ jobAlertsTotal.number }}</span></h4>
+</div>
+<div class="row margin-bottom--32">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 12%">Ideal Start Date</div>
+          <div class="column-table" style="width: 15%">Industry</div>
+          <div class="column-table" style="width: 17%">Position</div>
+          <div class="column-table" style="width: 16%">Location</div>
+          <div class="column-table" style="width: 16%">Distance from home</div>
+          <div class="column-table" style="width: 16%">Days Left</div>
+          <div class="column-table d-flex--justify-center" style="width: 8%"></div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let job of jobAlerts | slice: 0:5; let i = index">
+          <input type="checkbox" class="accordions__checkbox" id="{{ job?.id }}">
+          <label class="accordions__heading" for="{{ job?.id }}">{{ job?.jobTitle }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table border-right-table" style="width: 12%">
+              <div class="title-cell">Ideal Start Date</div>
+              <div class="description-cell">
+                <span>{{ job?.createdDate | date: 'dd LLL yyyy' }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 15%">
+              <div class="title-cell">Industry</div>
+              <div class="description-cell">
+                <span>{{ job?.industry | industryList }}</span>
+              </div>
+            </div>
+            <div class="column-table acc border-right-table" style="width: 17%">
+              <div class="title-cell">Position</div>
+              <div class="description-cell">
+                <span>{{ job?.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 16%">
+              <div class="title-cell">Location</div>
+              <div class="description-cell">
+                <span>{{ job?.addressCity }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 16%">
+              <div class="title-cell">Distance from home</div>
+              <div class="description-cell">
+                <span>{{ distanceJobAlerts[i] }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 16%">
+              <div class="title-cell">Days Left</div>
+              <div class="description-cell">
+                <span>{{ job?.endDate | dateLeft }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center button-cell center-button" style="width: 8%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-center">
+                <a class="view-popup-icon" (click)="openVerticallyCenter(candidateJobPopup, jobAlerts, job, 1)"><i class="fa fa-eye"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table not-found-search" *ngIf="jobAlerts.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Jobs alerts not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="jobAlerts.length > 0" class="job-popup-delete" routerLink="/candidate/job_alerts_new">VIEW ALL</span>
+  </div>
+</div>
+<div class="subtitle-job margin-bottom--12">
+  <h4 class="subtitlerow">Employer Requested Interviews <span class="summary-span">{{ interviewRequestTotal.number }}</span></h4>
+</div>
+<div class="row margin-bottom--32">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 10%">Date</div>
+          <div class="column-table d-flex--justify-center" style="width: 14%">Industry</div>
+          <div class="column-table d-flex--justify-center" style="width: 12%">Position</div>
+          <div class="column-table d-flex--justify-center" style="width: 12%">Location</div>
+          <div class="column-table d-flex--justify-center" style="width: 18%">Distance from home</div>
+          <div class="column-table d-flex--justify-center" style="width: 12%">Days Left</div>
+          <div class="column-table d-flex--justify-center" style="width: 13%">Action</div>
+          <div class="column-table d-flex--justify-start" style="width: 9%">Status</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let job of interviewRequest; let i = index">
+          <input type="checkbox" class="accordions__checkbox" id="{{ job?.jobId }}">
+          <label class="accordions__heading" for="{{ job?.jobId }}">{{ job?.jobTitle }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 10%">
+              <div class="title-cell">Date</div>
+              <div class="description-cell">
+                <span>{{ job?.created | date: 'dd LLL yyyy' }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 14%">
+              <div class="title-cell">Industry</div>
+              <div class="description-cell">
+                <span>{{ job?.industry | industryList }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 12%">
+              <div class="title-cell">Position</div>
+              <div class="description-cell">
+                <span>{{ job?.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 12%">
+              <div class="title-cell">Location</div>
+              <div class="description-cell">
+                <span>{{ job?.addressCity }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 18%">
+              <div class="title-cell">Distance from home</div>
+              <div class="description-cell">
+                <span>{{ distanceInterviewRequets[i] }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 12%">
+              <div class="title-cell">Days Left</div>
+              <div class="description-cell">
+                <span>{{ job?.created | daysLapped }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center button-cell center-button border-right-table" style="width: 13%">
+              <div class="title-cell"></div>
+              <div class="description-cell d-flex--justify-center">
+                <a *ngIf="job.jobId" class="view-popup-icon" (click)="openVerticallyCenter(candidateJobPopup, interviewRequest, job, 0)"><i class="fa fa-eye"></i></a>
+                <a *ngIf="!job.jobId" class="view-popup-icon" (click)="openVerticallyCenter(candidateJobPopupId, interviewRequest, job, 0)"><i class="fa fa-eye"></i></a>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-start" style="width: 9%">
+              <div class="title-cell">Status</div>
+              <div class="description-cell">
+                <span *ngIf="job?.status === 1" class="pending">Pending</span>
+                <span *ngIf="job?.status === 2" class="setup">Set Up</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table not-found-search" *ngIf="interviewRequest.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Interview requests not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="interviewRequest.length > 0" class="job-popup-delete" routerLink="/candidate/request_interviews">VIEW ALL</span>
+  </div>
+</div>
+<div class="row margin-bottom--32">
+  <div class="col-md-12 padding-left--0">
+    <h4 class="title-row">Your job application progress</h4>
+  </div>
+</div>
+<div class="row margin-bottom--48 info-cell-statistic">
+  <div class="col-md-4">
+    <div class="applicants-info">
+      <div class="count-candidate red">
+        <h3 class="margin-bottom--12 text-align--center">{{ awaiting }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center">Applications Awaiting Approval</p>
+      <button class="btn primary-button margin-bottom--12 custom-padding" routerLink="/candidate/awaiting_approval">View</button>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="applicants-info">
+      <div class="count-candidate green">
+        <h3 class="margin-bottom--12 text-align--center">{{ successful }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center">Successful Applications</p>
+      <button class="btn primary-button margin-bottom--12 custom-padding" routerLink="/candidate/approved_applications">View</button>
+    </div>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+<div class="row margin-bottom--32">
+  <div class="col-md-12 ">
+    <h4 class="title-row">Unsuccessful</h4>
+  </div>
+</div>
+<div class="row margin-bottom--48 info-cell-statistic">
+  <div class="col-md-4">
+    <div class="applicants-info">
+      <div class="count-candidate gray">
+        <h3 class="margin-bottom--12 text-align--center">{{ declined }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center">Declined Opportunities</p>
+      <button class="btn primary-button margin-bottom--12 custom-padding" routerLink="/candidate/job_alerts_declined">View</button>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="applicants-info">
+      <div class="count-candidate gray">
+        <h3 class="margin-bottom--12 text-align--center">{{ unsuccessful }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center">Unsuccessful Applications</p>
+      <button class="btn primary-button margin-bottom--12 custom-padding" routerLink="/candidate/declined_applications">View</button>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="applicants-info">
+      <div class="count-candidate gray">
+        <h3 class="margin-bottom--12 text-align--center">{{ missed }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center">Expired opportunities</p>
+      <button class="btn primary-button margin-bottom--12 custom-padding" routerLink="/candidate/job_alerts_expired">View</button>
+    </div>
+  </div>
+</div>
+<div class="row margin-bottom--32">
+  <div class="col-md-12">
+    <h4 class="title-row">Profile Statistics</h4>
+  </div>
+</div>
+<div class="row margin-bottom--48 info-cell-statistic">
+  <div class="col-md-4">
+    <div class="applicants-info d-flex--justify-center">
+      <div class="count-candidate earl-grey">
+        <h3 class="margin-bottom--12 text-align--center">{{ view }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center margin-top--18">Profile Views</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="applicants-info d-flex--justify-center">
+      <div class="count-candidate earl-grey">
+        <h3 class="margin-bottom--12 text-align--center">{{ unique }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center margin-top--18">Unique Profile Views</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="applicants-info d-flex--justify-center">
+      <div class="count-candidate earl-grey">
+        <h3 class="margin-bottom--12 text-align--center">{{ play }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center margin-top--18">Interview Video Views</p>
+    </div>
+  </div>
+</div>
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<ng-template #candidateJobPopup let-cc="close" let-dc="dismiss">
+  <app-candidate-job-popup [closePopup]="dc"
+                           [job]="currentJob"
+                           [jobArray]="jobArray"
+                           [statusButtonJob]="statusButtonJob"
+                           [accessSeenJob]="accessSeenJob"
+                           [(jobAlertsTotal)]="jobAlertsTotal"
+  ></app-candidate-job-popup>
+</ng-template>
+
+<ng-template #candidateJobPopupId let-cc="close" let-dc="dismiss">
+  <app-candidate-requested-interviews-id [closePopup]="dc"
+                                         [job]="currentJob"
+                                         [jobArray]="jobArray"
+                                         [statusButtonJob]="statusButtonJob"
+                                         [(jobAlertsTotal)]="jobAlertsTotal"
+  ></app-candidate-requested-interviews-id>
+</ng-template>
+
+
+<div [ngClass]="{'active': videoUploadPopup}" class="modal-video-record">
+  <div class="modal-header">
+    <h4 class="modal-title">disable profile</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeLookingPopup(false, true)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <h3 class="job-popup-title">Please note, turning this off will mean:</h3>
+    <span class="job-popup-desc margin-bottom--6">- You will no longer receive any notifications of any new jobs.</span>
+    <span class="job-popup-desc margin-bottom--6">- You will not be visible to clients browsing profiles.</span>
+    <span class="job-popup-desc margin-bottom--24">- Any current applications you have made will be cancelled</span>
+    <div class="d-flex d-flex--justify-around margin-bottom--12">
+      <button (click)="lookingJobToggle('looking', checkLooking, videoCheck, progressBar);closeLookingPopup(false, false)" class="btn primary-button">Disable Profile</button>
+      <button (click)="closeLookingPopup(false, true)" class="btn primary-button">Go Back</button>
+    </div>
+  </div>
+</div>
+
+<!--<div [ngClass]="{'active': visibleActivePopup}" class="modal-video-record">
+  <div class="modal-header">
+    <h4 class="modal-title">think twice</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeVisiblePopup(false, false)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <h3 class="job-popup-title">Please note, turning this toggle on will mean:</h3>
+    <span class="job-popup-desc margin-bottom--24">Your profile becomes visible to all potential employers - which may include your current employer.</span>
+    <div class="d-flex d-flex--justify-around margin-bottom--12">
+      <button (click)="closeVisiblePopup(false, true);visibleJobToggle('visible', checkVisible)" class="btn primary-button">I Understand</button>
+      <button (click)="closeVisiblePopup(false, false)" class="btn primary-button">Go Back</button>
+    </div>
+  </div>
+</div>-->
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <h3 class="job-popup-title">Thank you. CAs Online will be in touch to setup an interview.</h3>
+    <button (click)="d('Cross click')" class="btn primary-button job-popup-button">Got it</button>
+  </div>
+</ng-template>

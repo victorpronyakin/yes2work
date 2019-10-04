@@ -1,0 +1,10 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Dear {{ user.firstName }}
+    <br><br>
+    Thank you for registering on Yes2Work. Unfortunately, your registration has been unsuccessful.
+    <br><br>
+    Please note that you tried to register as a potential employer. If you are a young prospective employee, please register as a candidate <a href="{{ link }}">here</a>
+    <br><br>
+    Please don’t hesitate to get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you believe you do qualify to register as a potential employer and you think your application has been declined in error.
+{% endblock %}

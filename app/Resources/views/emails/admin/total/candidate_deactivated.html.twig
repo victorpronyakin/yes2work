@@ -1,0 +1,17 @@
+{% extends 'emails/base_email_admin.html.twig' %}
+{% block body_html %}
+    {% if candidates is defined and candidates is not empty %}
+        <h3>A candidates({{ candidates|length }}) has just deactivated their profile.</h3>
+        <br>
+        {% for item in candidates %}
+            {% if item.candidate is defined %}
+                A candidate, {{ item.candidate.firstName }} {{ item.candidate.lastName }}, has deactivated their profile.
+                <br><br>
+                Please make contact on <a href="mailto:{{ item.candidate.email }}">{{ item.candidate.email }}</a> or <a href="tel:{{ item.candidate.phone }}">{{ item.candidate.phone }}</a>
+                <br><br>
+                Please click <a href="{{ (item.link is defined) ? item.link : '#' }}">here</a> to view the candidate's profile.
+                <br><br>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

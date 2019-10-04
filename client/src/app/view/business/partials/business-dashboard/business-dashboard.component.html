@@ -1,0 +1,140 @@
+<div class="title-description margin-bottom--24">
+  <h3 *ngIf="checkStatus" class="margin-bottom--24">Welcome Back, {{ businessFirstName }}!</h3>
+  <h3 *ngIf="!checkStatus" class="margin-bottom--24">Welcome, {{ businessFirstName }}!</h3>
+  <p>Publish a brief description of your company and the job you are looking to fill to 100’s of newly qualified CAs who will either accept or decline the opportunity.</p>
+  <p>Filter the interested candidates and then access their CV’s and short introductory videos.</p>
+  <p>Once you’ve decided on your shortlist, the CAs Online team will set up the interviews.</p>
+</div>
+<div class="row margin-bottom--55">
+  <button class="btn primary-button" routerLink="/business/jobs/add">Add new job</button>
+</div>
+<div class="row margin-bottom--24 casp-title">
+  <div class="col-md-8">
+    <h4 class="title-row d-flex"><a routerLink="/business/approved_job">Current jobs loaded</a> <span class="summary-span">{{ sumJobs }}</span></h4>
+  </div>
+  <div class="col-md-4 d-flex d-flex--justify-end d-flex--align-center">
+    <a class="view-all cursor float--right" routerLink="/business/approved_job">View All Jobs</a>
+  </div>
+</div>
+<div class="row margin-bottom--55 info-cell-statistic">
+  <div class="col-md-4">
+    <div class="applicants-info">
+      <div class="count-candidate red">
+        <h3 class="margin-bottom--12 text-align--center">{{ sumAwaiting }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center">Applicants awaiting approval</p>
+      <button class="btn primary-button margin-bottom--12" routerLink="/business/applicants_awaiting">View applicants</button>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="applicants-info">
+      <div class="count-candidate yellow">
+        <h3 class="margin-bottom--12 text-align--center">{{ sumShoerList }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center">Candidates shortlisted for consideration</p>
+      <button class="btn primary-button margin-bottom--12" routerLink="/business/applicants_shortlist">View applicants</button>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="applicants-info">
+      <div class="count-candidate green">
+        <h3 class="margin-bottom--12 text-align--center">{{ sumApproved }}</h3>
+      </div>
+      <p class="margin-bottom--8 text-align--center">Applicants approved for Interview</p>
+      <button class="btn primary-button margin-bottom--12" routerLink="/business/applicants_approved">View applicants</button>
+    </div>
+  </div>
+</div>
+<div class="row margin-bottom--24 casp-title">
+  <div class="col-md-8">
+    <h4 class="title-row">Applicants per job</h4>
+  </div>
+  <div class="col-md-4 d-flex d-flex--justify-end d-flex--align-center">
+    <a class="view-all cursor float--right" routerLink="/business/applicants">View All Applicants</a>
+  </div>
+</div>
+<div class="row margin-bottom--24">
+  <div class="table-information full-width">
+    <div class="head">
+      <div class="row-table d-flex">
+        <div class="column-table" style="width: 15%">Job Title</div>
+        <div class="column-table d-flex--justify-center" style="width: 15%">Awaiting Approval</div>
+        <div class="column-table d-flex--justify-center" style="width: 15%">Shortlisted</div>
+        <div class="column-table d-flex--justify-center" style="width: 15%">Approved for Interview</div>
+        <div class="column-table d-flex--justify-center" style="width: 15%">Days to Closure</div>
+        <div class="column-table d-flex--justify-center" style="width: 15%">Application Closure Date</div>
+        <div class="column-table d-flex--justify-center" style="width: 10%"></div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="row-table" *ngFor="let job of jobs">
+        <input type="checkbox" class="accordions__checkbox" id="{{ job?.id }}">
+        <label class="accordions__heading" for="{{ job?.id }}">{{ job?.jobTitle }} <span class="accordion-item-cta">&#9650;</span></label>
+        <div class="content-row d-flex accordions__content">
+          <div class="column-table acc border-right-table" style="width: 15%">
+            <div class="title-cell">Job Title</div>
+            <div class="description-cell">
+              <span>{{ job?.jobTitle }}</span>
+            </div>
+          </div>
+          <div class="column-table d-flex--justify-center border-right-table" style="width: 15%">
+            <div class="title-cell">Awaiting Approval</div>
+            <div class="description-cell cell-border-statistic">
+              <a routerLink="/business/applicants_awaiting" [queryParams]="{jobId: job.id}" class="cursor circle-table circle-table--red">{{ job?.awaiting }}</a>
+            </div>
+          </div>
+          <div class="column-table d-flex--justify-center border-right-table" style="width: 15%">
+            <div class="title-cell">Shortlisted</div>
+            <div class="description-cell cell-border-statistic">
+              <a routerLink="/business/applicants_shortlist" [queryParams]="{jobId: job.id}" class="cursor circle-table circle-table--yellow">{{ job?.shortlist }}</a>
+            </div>
+          </div>
+          <div class="column-table d-flex--justify-center" style="width: 15%">
+            <div class="title-cell">Approved for Interview</div>
+            <div class="description-cell cell-border-statistic">
+              <a routerLink="/business/applicants_approved" [queryParams]="{jobId: job.id}" class="cursor circle-table circle-table--green">{{ job?.approved }}</a>
+            </div>
+          </div>
+          <div class="column-table d-flex--justify-center closure-date" style="width: 15%">
+            <div class="title-cell">Days to Closure</div>
+            <div class="description-cell cell-border-statistic">
+              <span>{{ job?.closureDate | closureDay }}</span>
+            </div>
+          </div>
+          <div class="column-table d-flex--justify-center border-right-table" style="width: 15%">
+            <div class="title-cell">Application Closure Date</div>
+            <div class="description-cell cell-border-statistic">
+              <span>{{ job?.closureDate | date: 'dd MMMM yyyy' }}</span>
+            </div>
+          </div>
+          <div class="column-table d-flex--justify-center button-cell center-button" style="width: 10%">
+            <div class="title-cell"></div>
+            <div class="description-cell">
+              <a class="view-popup-icon" (click)="openVerticallyCentered(businessJob, job?.id)"><i class="fa fa-eye"></i> <!--<span class="view-all">View job</span>--></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row-table" *ngIf="jobs.length === 0">
+        <div class="content-row d-flex accordions__content">
+          <div class="column-table d-flex--justify-center" style="width: 100%">
+            <span>Jobs not found</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- dashboard information table -->
+</div>
+
+<ng-template #businessJob let-cc="close" let-dc="dismiss">
+  <app-business-job-popup [closePopup]="dc"
+                          [currentBusinessJobId]="currentlyOpenedBusinessJobId"
+                          [businessJobs]="businessJobs"
+                          (deleteJob)="deleteJob($event)"
+                          (closeJob)="closeJob($event)"
+  ></app-business-job-popup>
+</ng-template>
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>

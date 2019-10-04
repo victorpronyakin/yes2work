@@ -1,0 +1,225 @@
+<div class="title-description margin-bottom--24">
+  <h3>Applicants</h3>
+</div>
+<div class="row margin-bottom--24 d-flex d-flex--justify-between">
+  <div class="tabs-items jobs-button-desktop" style="flex-wrap: wrap">
+    <a class="tab-cell margin-bottom--8" routerLink="/admin/all_applicants" routerLinkActive="active">All</a>
+    <a class="tab-cell margin-bottom--8" routerLink="/admin/applications_awaiting" routerLinkActive="active">Applications Awaiting Approval</a>
+    <a class="tab-cell margin-bottom--8" routerLink="/admin/applications_shortlist" routerLinkActive="active">Shortlisted for consideration</a>
+    <a class="tab-cell margin-bottom--8" routerLink="/admin/set_up_interview" routerLinkActive="active">Interviews to be set up</a>
+    <a class="tab-cell margin-bottom--8" routerLink="/admin/pending_interview" routerLinkActive="active">Interviews pending</a>
+    <a class="tab-cell margin-bottom--8" routerLink="/admin/successful_placed" routerLinkActive="active">Successfully placed candidates</a>
+  </div>
+  <select class="form-control field--medium input-form select-form jobs-button-mobile min-width--100" #filter (change)="routerApplicants(filter.value)">
+    <option value="/admin/successful_placed">Successfully placed</option>
+    <option value="/admin/all_applicants">All</option>
+    <option value="/admin/set_up_interview">Interview set up</option>
+    <option value="/admin/pending_interview">Interview pending</option>
+  </select>
+</div>
+<div class="row d-flex d-flex--justify-start d-flex--align-center margin-bottom--18">
+  <h4 class="subtitle-row margin-bottom--0" *ngIf="totalCount"> {{ totalCount }} applicants</h4>
+  <h4 class="subtitle-row margin-bottom--0" *ngIf="!totalCount">0 applicants</h4>
+</div>
+
+<div class="row margin-top--18 margin-bottom--18">
+  <div class="col-md-4 d-flex d-flex--justify-start d-flex--align-center padding-right--0 padding-left--0">
+    <input type="text" class="input-form full-width padding-right--40" placeholder="Search candidates" #search (keyup.enter)="resetArrayPagination();resetSorting();getSuccessfulPlacedInterviews(search.value)">
+    <button class="btn btn-search margin-left--12" (click)="resetArrayPagination();resetSorting();getSuccessfulPlacedInterviews(search.value)"><i class="fas fa-search"></i></button>
+  </div>
+</div>
+
+<div class="row">
+
+  <ul *ngIf="totalItems > 0" class="pagination top">
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(1)">First</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(pager.currentPage - 1)">Previous</button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+      <button [ngClass]="{'primary-button': pager.currentPage === page}" class="btn default-button"
+              (click)="setPage(page)">{{page}}</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.currentPage + 1)">Next</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.totalPages)">Last</button>
+    </li>
+  </ul>
+
+  <div class="col-md-12 padding-left--0 padding-right--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div (click)="sortCandidate('Candidate')" class="column-table d-flex--justify-between " style="width: 25%">
+            <span class="title-column">Candidate</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Candidate'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Candidate'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('Company')" class="column-table d-flex--justify-between " style="width: 25%">
+            <span class="title-column">Company</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Company'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Company'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('Position')" class="column-table d-flex--justify-between " style="width: 25%">
+            <span class="title-column">Position wanted</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Position'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Position'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('Days')" class="column-table d-flex--justify-between " style="width: 25%">
+            <span class="title-column">Days lapsed</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Days'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Days'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+
+        <div *ngIf="paginationLoader" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-6">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-table" *ngFor="let interview of successfulPlacedInterviews">
+          <input type="checkbox" class="accordions__checkbox" id="{{ interview?.id }}">
+          <label class="accordions__heading" for="{{ interview?.id }}">{{ interview?.candidateFirstName }} {{ interview?.candidateLastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 25%">
+              <div class="title-cell">Candidate</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="routeCandidate(interview?.candidateID)">{{ interview?.candidateFirstName }} {{ interview?.candidateLastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 25%">
+              <div class="title-cell">Company</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCentered(contentBusiness, interview?.clientID)">{{ interview?.companyName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 25%">
+              <div class="title-cell">Position wanted</div>
+              <div class="description-cell">
+                <span class="cursor" (click)="openVerticallyCenterJob(businessJobPopup, interview?.jobID, interview?.clientID, contentBusiness)">{{ interview?.jobTitle }}</span>
+              </div>
+            </div>
+            <div class="column-table" style="width: 25%">
+              <div class="title-cell">Days lapsed</div>
+              <div class="description-cell">
+                <span>{{ interview?.created | date:'dd MMM yyyy' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-table not-found-search" *ngIf="successfulPlacedInterviews.length === 0 && !paginationFilter && !paginationLoader">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Candidates not found</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="successfulPlacedInterviews.length === 0 && paginationFilter" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-44">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <ul *ngIf="totalItems > 0" class="pagination bottom">
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(1)">First</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(pager.currentPage - 1)">Previous</button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+      <button [ngClass]="{'primary-button': pager.currentPage === page}" class="btn default-button"
+              (click)="setPage(page)">{{page}}</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.currentPage + 1)">Next</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.totalPages)">Last</button>
+    </li>
+  </ul>
+
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<ng-template #contentBusiness let-cb="close" let-db="dismiss">
+  <app-client-profile-popup [closePopup]="db"
+                            [currentBusinessId]="selectedBusinessId"
+  ></app-client-profile-popup>
+</ng-template>
+
+<ng-template #businessJobPopup let-cc="close" let-dc="dismiss">
+  <app-business-job-view-popup [closePopup]="dc"
+                               [selectedBusinessJob]="selectedBusinessJob"
+  ></app-business-job-view-popup>
+</ng-template>

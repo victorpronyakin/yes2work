@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <h4 class="modal-title">add new user</h4>
+  <button type="button" class="close d-flex" aria-label="Close" (click)="closePopup('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <h4 class="view-title">Personal Info</h4>
+  <form [formGroup]="businessForm">
+    <div class="form-group">
+      <input type="text" class="form-control" formControlName="firstName" placeholder="Your name" required>
+      <span class="help-bpx" *ngIf="businessForm.controls.firstName.invalid && !businessForm.controls.firstName.untouched">Please enter the Name</span>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" formControlName="lastName" placeholder="Your surname" required>
+      <span class="help-bpx" *ngIf="businessForm.controls.lastName.invalid && !businessForm.controls.lastName.untouched">Please enter the Surname</span>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" formControlName="jobTitle" placeholder="Your job title" required >
+      <span class="help-bpx" *ngIf="businessForm.controls.jobTitle.invalid && !businessForm.controls.jobTitle.untouched">Please enter the Job title</span>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" formControlName="phone" placeholder="Contact number" required >
+      <span class="help-bpx" *ngIf="businessForm.controls.phone.invalid && !businessForm.controls.phone.untouched">Please enter a valid contact number</span>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" formControlName="email" placeholder="Work email address" required  >
+      <span class="help-bpx" *ngIf="businessForm.controls.email.invalid && !businessForm.controls.email.untouched">Please enter the Email</span>
+    </div>
+    <h4>Company details</h4>
+    <div class="form-group">
+      <input type="text" class="form-control" formControlName="name" placeholder="Company name" required >
+      <span class="help-bpx" *ngIf="businessForm.controls.name.invalid && !businessForm.controls.name.untouched">Please enter the Company name</span>
+    </div>
+    <div class="form-group">
+      <input type="text" id="search1" formControlName="address" placeholder="Company address" autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control" #search1>
+      <span class="help-bpx" *ngIf="businessForm.controls.address.invalid && !businessForm.controls.address.untouched">Please enter the Company address</span>
+    </div>
+    <div class="form-group">
+      <select class="form-control" formControlName="industry">
+        <option value="null">Industry</option>
+        <option value="1">Financial Services</option>
+        <option value="2">Non-Financial Services</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <h5>Company Description</h5>
+      <!--<p>{{ businessProfileDetails.company.description }}</p>-->
+    </div>
+    <div class="form-group">
+      <textarea type="text" class="form-control" #companyDescription rows="3" maxlength="200" formControlName="description" placeholder="Company description"></textarea>
+      <small class="form-text text-muted" style="top: 45px">{{ 200 - companyDescription.value.length }} characters</small>
+    </div>
+    <button class="btn btn-default margin-bottom--18" (click)="closePopup('Cross click')" style="float: left">Close</button>
+    <button class="btn btn-primary margin-bottom--18" [disabled]="businessForm.invalid" (click)="updateBusinessProfile()" style="float: right">Update</button>
+    <div class="form-group">
+      <select class="form-control">
+        <option value="null">Assign to</option>
+        <option value="1"></option>
+        <option value="2"></option>
+      </select>
+    </div>
+    <button class="btn btn-default margin-bottom--18" (click)="managedBusinessUser(true)" style="float: left">Approve</button>
+    <button class="btn btn-primary margin-bottom--18" (click)="managedBusinessUser(false)" style="float: right">Decline</button>
+  </form>
+</div>

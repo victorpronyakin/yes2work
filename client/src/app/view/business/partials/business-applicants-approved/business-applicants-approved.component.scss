@@ -1,0 +1,45 @@
+.more-filter.active .select-groups{
+  position: relative;
+}
+
+.btn-interview{
+  &.down{
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-top: 12px;
+    margin-right: 0;
+  }
+}
+
+@media screen and (min-width: 1600px){
+  .after_no-img{
+    left: 40%;
+  }
+}
+
+.doc{
+  width: 100%;
+  min-height: 400px;
+  margin-bottom: 10px;
+}
+.close{
+  position: absolute;
+  right: 6px;
+  top: 1px;
+  color: #000;
+  opacity: .9;
+  font-size: 28px;
+  z-index: 1;
+}
+.modal-body{
+  padding: 30px;
+}
+.btn-interview{
+  &.doc-t{
+    width: 180px;
+    padding: 5px;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  color: #fff !important;
+}

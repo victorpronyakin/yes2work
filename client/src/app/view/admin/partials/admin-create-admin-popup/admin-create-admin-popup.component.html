@@ -1,0 +1,49 @@
+<div class="modal-header">
+  <h4 class="modal-title">add new user</h4>
+  <button type="button" class="close d-flex" aria-label="Close" (click)="closePopup('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <h4 class="subtitle-row margin-bottom--18">Add new user</h4>
+  <form [formGroup]="adminForm">
+    <div class="row">
+      <div class="col-md-6 padding-left--0">
+        <div class="form-group required-icon-content">
+          <input type="text" class="form-control input-form full-width" formControlName="firstName" placeholder="Your name" required>
+          <span class="required-icon">*</span>
+          <span class="help-bpx" *ngIf="adminForm.controls.firstName.invalid && !adminForm.controls.firstName.untouched">Please enter the Name</span>
+        </div>
+        <div class="form-group required-icon-content">
+          <input type="text" class="form-control input-form full-width" formControlName="lastName" placeholder="Your surname" required>
+          <span class="required-icon">*</span>
+          <span class="help-bpx" *ngIf="adminForm.controls.lastName.invalid && !adminForm.controls.lastName.untouched">Please enter the Surname</span>
+        </div>
+        <div class="form-group required-icon-content">
+          <int-phone-prefix [defaultCountry]="'za'" class="phone-number" formControlName="phone"></int-phone-prefix>
+          <span class="required-icon">*</span>
+          <span class="help-bpx" *ngIf="adminForm.controls.phone.invalid && !adminForm.controls.phone.untouched">Please enter a valid contact number</span>
+        </div>
+      </div>
+      <div class="col-md-6 padding-right--0">
+        <div class="form-group required-icon-content">
+          <input type="text" class="form-control input-form full-width" formControlName="email" placeholder="Work email address" required  >
+          <span class="required-icon">*</span>
+          <span class="help-bpx" *ngIf="adminForm.controls.email.invalid && !adminForm.controls.email.untouched">Please enter the Email</span>
+        </div>
+        <div class="form-group required-icon-content">
+          <ng-select placeholder="Role" formControlName="role" [searchable]="false">
+            <!--<option value="">Role</option>-->
+            <ng-option [value]="'ROLE_ADMIN'">Admin</ng-option>
+            <ng-option [value]="'ROLE_SUPER_ADMIN'">Super Admin</ng-option>
+          </ng-select>
+          <span class="required-icon">*</span>
+          <span class="help-bpx" *ngIf="adminForm.controls.role.invalid && !adminForm.controls.role.untouched">Please enter the Role</span>
+        </div>
+      </div>
+    </div>
+    <div class="row d-flex d-flex--justify-end d-flex--align-center">
+      <button class="btn primary-button margin-bottom--18" (click)="createNewAdmin()" style="float: left">Register</button>
+    </div>
+  </form>
+</div>

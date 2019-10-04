@@ -1,0 +1,11 @@
+.applicants-list-page {
+  .applicant-avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+
+    img {
+      max-width: 100%;
+    }
+  }
+}

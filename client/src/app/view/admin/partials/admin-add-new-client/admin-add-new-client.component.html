@@ -1,0 +1,151 @@
+<div class="title-description margin-bottom--24">
+  <h3 class="margin-bottom--24">Add new client</h3>
+</div>
+<div class="row">
+  <div class="col-md-12 padding-left--0 padding-right--0">
+    <form [formGroup]="businessForm">
+      <div class="row">
+        <div class="col-md-6 padding-left--0">
+          <h4 class="subtitle-row margin-bottom--18">Personal Info</h4>
+          <div class="form-group required-icon-content">
+            <input type="text" class="form-control input-form full-width" formControlName="firstName" placeholder="First name" required>
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="businessForm.controls.firstName.invalid && !businessForm.controls.firstName.untouched">Please enter your First name</span>
+          </div>
+          <div class="form-group required-icon-content">
+            <input type="text" class="form-control input-form full-width" formControlName="lastName" placeholder="Last name" required>
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="businessForm.controls.lastName.invalid && !businessForm.controls.lastName.untouched">Please enter your Last name</span>
+          </div>
+          <div class="form-group required-icon-content">
+            <input type="text" class="form-control input-form full-width" formControlName="jobTitle" placeholder="Your job title" required >
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="businessForm.controls.jobTitle.invalid && !businessForm.controls.jobTitle.untouched">Please enter the Job title</span>
+          </div>
+          <div class="form-group phone-content-code required-icon-content">
+            <int-phone-prefix [defaultCountry]="'za'" class="phone-number" formControlName="phone"></int-phone-prefix>
+            <span class="required-icon">*</span>
+          </div>
+          <span class="help-bpx margin-bottom--15" *ngIf="businessForm.controls.phone.invalid && !businessForm.controls.phone.untouched">Please enter a valid contact number</span>
+          <div class="form-group required-icon-content">
+            <input type="text" class="form-control input-form full-width" formControlName="email" placeholder="Work email address" required  >
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="businessForm.controls.email.invalid && !businessForm.controls.email.untouched">Please enter a valid email address</span>
+          </div>
+        </div>
+        <div class="col-md-6 padding-right--0">
+          <h4 class="subtitle-row margin-bottom--18">Company details</h4>
+          <div class="form-group required-icon-content">
+            <input type="text" class="form-control input-form full-width" formControlName="name" placeholder="Company name" required >
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="businessForm.controls.name.invalid && !businessForm.controls.name.untouched">Please enter the Company name</span>
+          </div>
+          <div class="form-group required-icon-content">
+            <input type="text" id="search1" formControlName="address" placeholder="Company address" autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control input-form full-width" #search1>
+            <span class="required-icon">*</span>
+            <span class="help-bpx" *ngIf="businessForm.controls.address.invalid && !businessForm.controls.address.untouched">Please enter the Company address</span>
+          </div>
+          <div class="form-group several-inputs d-flex d-flex--justify-between">
+            <div class="wrap-input">
+              <input type="text" formControlName="addressBuildName" class="form-control input-form" placeholder="Building Name">
+              <!--<span class="required-icon">*</span>-->
+              <!--<span class="help-box" *ngIf="businessForm.controls.addressBuildName.invalid && !businessForm.controls.addressBuildName.untouched">Please enter your Building Name</span>-->
+            </div>
+            <div class="wrap-input">
+              <input type="text" formControlName="addressUnit" class="form-control input-form" placeholder="Unit">
+              <!--<span class="required-icon">*</span>-->
+              <!--<span class="help-box" *ngIf="businessForm.controls.addressUnit.invalid && !businessForm.controls.addressUnit.untouched">Please enter your Unit</span>-->
+            </div>
+          </div>
+          <div class="form-group several-inputs d-flex d-flex--justify-between">
+            <div class="wrap-input">
+              <input type="text" formControlName="addressStreetNumber" id="street_number" class="form-control input-form" placeholder="Street address number">
+              <span class="required-icon">*</span>
+              <span class="help-box" *ngIf="businessForm.controls.addressStreetNumber.invalid && !businessForm.controls.addressStreetNumber.untouched">Please enter your Street address number</span>
+            </div>
+            <div class="wrap-input">
+              <input type="text" formControlName="addressStreet" id="route" class="form-control input-form" placeholder="Street ">
+              <span class="required-icon">*</span>
+              <span class="help-box" *ngIf="businessForm.controls.addressStreet.invalid && !businessForm.controls.addressStreet.untouched">Please enter your Street</span>
+            </div>
+          </div>
+          <div class="form-group several-inputs d-flex d-flex--justify-between">
+            <div class="wrap-input">
+              <input type="text" formControlName="addressCity" class="form-control input-form" id="locality" placeholder="City">
+              <span class="required-icon">*</span>
+              <span class="help-box" *ngIf="businessForm.controls.addressCity.invalid && !businessForm.controls.addressCity.untouched">Please enter your City</span>
+            </div>
+            <div class="wrap-input">
+              <input type="text" formControlName="addressSuburb" class="form-control input-form" id="sublocality_level_2" placeholder="Suburb">
+              <span class="required-icon">*</span>
+              <span class="help-box" *ngIf="businessForm.controls.addressSuburb.invalid && !businessForm.controls.addressSuburb.untouched">Please enter your Suburb</span>
+            </div>
+          </div>
+          <div class="form-group several-inputs d-flex d-flex--justify-between">
+            <div class="wrap-input">
+              <input type="text" formControlName="addressState" class="form-control input-form" id="administrative_area_level_1" placeholder="Province">
+              <span class="required-icon">*</span>
+              <span class="help-box" *ngIf="businessForm.controls.addressState.invalid && !businessForm.controls.addressState.untouched">Please enter your Province</span>
+            </div>
+            <div class="wrap-input">
+              <input type="text" formControlName="addressZipCode" class="form-control input-form" id="postal_code" placeholder="Postal code">
+              <span class="required-icon">*</span>
+              <span class="help-box" *ngIf="businessForm.controls.addressZipCode.invalid && !businessForm.controls.addressZipCode.untouched">Please enter your Postal code</span>
+            </div>
+          </div>
+          <div class="form-group position--relative">
+            <input type="text" formControlName="addressCountry" id="country" class="form-control input-form" placeholder="Country">
+            <span class="required-icon">*</span>
+            <span class="help-box" *ngIf="businessForm.controls.addressCountry.invalid && !businessForm.controls.addressCountry.untouched">Please enter your Country</span>
+          </div>
+          <div class="form-group d-flex d-flex--align-center d-flex--justify-between">
+            <label class="sub-text">Listed on the JSE</label>
+            <div class="switch__container">
+              <input id="switch-shadow" class="switch switch--shadow" formControlName="jse" type="checkbox" [(ngModel)]="jse" (click)="jseValue('jse', jse)">
+              <label for="switch-shadow"></label>
+            </div>
+          </div>
+          <div class="form-group required-icon-content">
+            <ss-multiselect-dropdown class="input-form half-width padding--0 border--none"
+                                     [settings]="articlesFirmSettingsBus"
+                                     [texts]="articlesFirmTextConfigBus"
+                                     [options]="indistrySelect"
+                                     [(ngModel)]="optionsModelBus"
+                                     formControlName="industry"
+            ></ss-multiselect-dropdown>
+            <span class="required-icon">*</span>
+            <span class="help-box" *ngIf="businessForm.controls.industry.invalid && !businessForm.controls.industry.untouched">Please enter your Industry</span>
+          </div>
+          <div class="form-group required-icon-content">
+            <ng-select placeholder="Company size" formControlName="companySize" [searchable]="false">
+              <!--<ng-option value="null">Company size</ng-option>-->
+              <ng-option [value]="1">1-10 employees</ng-option>
+              <ng-option [value]="2">11-50 employees</ng-option>
+              <ng-option [value]="3">50-200 employees</ng-option>
+              <ng-option [value]="4">200-1000 employees</ng-option>
+              <ng-option [value]="5">More than 1000 employees</ng-option>
+            </ng-select>
+            <span class="required-icon">*</span>
+            <span class="help-box" *ngIf="businessForm.controls.companySize.invalid && !businessForm.controls.companySize.untouched">Please enter your Company size</span>
+          </div>
+          <div class="form-group position--relative required-icon-content">
+            <textarea type="text" rows="6" class="form-control input-form full-width textarea" #companyDescription maxlength="300" formControlName="description" placeholder="Company description"></textarea>
+            <small class="form-text text-muted" style="top: 110px">{{ 300 - companyDescription.value.length }} characters</small>
+            <span class="required-icon">*</span>
+            <span class="help-box" *ngIf="businessForm.controls['description']?.invalid && !businessForm.controls['description'].untouched ">Please enter your Company description</span>
+            <span class="help-bpx" *ngIf="businessForm.controls['description']?.errors?.maxlength && businessForm.controls['description'].touched">
+              Company description must be less than 300 characters
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row d-flex d-flex--align-center d-flex--justify-end">
+        <button class="btn primary-button margin-bottom--18" [disabled]="businessForm.invalid" (click)="createBusinessProfile()" style="float: right">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>

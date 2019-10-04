@@ -1,0 +1,265 @@
+<div class="title-description margin-bottom--32">
+  <div class="d-flex d-flex--align-center margin-bottom--24 profile-tabs-mobile">
+    <h3 style="margin-right: 45px;">my profile</h3>
+    <div class="tabs-items jobs-button-desktop">
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/profile_details" routerLinkActive="active">Personal Information</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/qualification" routerLinkActive="active">Qualification</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/achievements" routerLinkActive="active">Work Experience </a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/video" routerLinkActive="active">My Video</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/preferences" routerLinkActive="active">Preferences</a>
+    </div>
+    <select class="form-control field--medium input-form select-form jobs-button-mobile min-width--100" #filter1 (change)="routerApplicants(filter1.value)">
+      <option value="/candidate/profile_details">Personal Information</option>
+      <option value="/candidate/qualification">Qualification</option>
+      <option value="/candidate/achievements">Work Experience</option>
+      <option value="/candidate/video">My Video</option>
+      <option value="/candidate/preferences">Preferences</option>
+    </select>
+  </div>
+  <p *ngIf="_sharedService.visibleErrorVideoIcon || _sharedService.visibleErrorProfileIcon">Please make sure you upload a copy of your ID and video before you can apply for a job.</p>
+  <p *ngIf="!_sharedService.visibleErrorProfileIcon && !_sharedService.visibleErrorVideoIcon">Your profile is complete enough to be viewed by clients and to receive new job postings.</p>
+</div>
+<div class="row margin-top--32 margin-bottom--32" *ngIf="!_sharedService.visibleErrorProfileIcon && !_sharedService.visibleErrorVideoIcon">
+  <div class="col-md-8 padding-left--0 candidate-dashboard-notification">
+    <div class="row margin-bottom--8">
+      <div class="col-8 col-md-10 padding-left--0">
+        <label class="label-text">I am looking for a job</label>
+      </div>
+      <div class="col-2 col-md-2 d-flex">
+        <label class="label-text">No</label>
+        <div class="switch__container margin-left--5 margin-right--5">
+          <input id="switch-shadow8" class="switch switch--shadow" type="checkbox" [(ngModel)]="checkLooking" (ngModelChange)="changeStatusCandidate('looking', checkLooking)">
+          <label for="switch-shadow8" [ngClass]="{'test-shadow': visibilityLooking}"></label>
+        </div>
+        <label class="label-text">Yes</label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row progress-info margin-bottom--32">
+  <ngb-progressbar class="full-width" [value]="_sharedService.progressBar" type="warning" [max]="100">{{ _sharedService.progressBar }}% Complete</ngb-progressbar>
+</div>
+<div class="row margin-bottom--18">
+  <h4 class="title-row">My Video</h4>
+</div>
+<div class="row margin-bottom--16">
+  <div class="col-md-12 padding-left--0 padding-right--0">
+    <div class="contant-profile">
+      <!-- Progress bar -->
+      <div class="row">
+        <div class="col-md-6 padding-left--0">
+          <div class="video-pre-header">PLEASE ANSWER THE FOLLOWING QUESTIONS IN YOUR VIDEO</div>
+          <div class="q-list">
+            <div class="q-list-title">Q1. Introduction</div>
+            <div class="q-list-items">
+              <ul class="q-list-items-ul">
+                <li class="q-list-items-ul-li">Your name</li>
+                <li class="q-list-items-ul-li">The year you were born</li>
+              </ul>
+            </div>
+          </div>
+          <div class="q-list">
+            <div class="q-list-title">Q2. How would you describe yourself?</div>
+          </div>
+          <div class="q-list">
+            <div class="q-list-title">Q3. How would you define success?</div>
+          </div>
+          <div class="q-list">
+            <div class="q-list-title">Q4. Select any 2 of the following questions:</div>
+            <div class="q-list-items">
+              <ul class="q-list-items-ul">
+                <li class="q-list-items-ul-li">What is a recent book you've read and how has it shaped your thinking?</li>
+                <li class="q-list-items-ul-li">In a team environment, what role do you usually take on?</li>
+                <li class="q-list-items-ul-li">What makes you stand out from your peers?</li>
+                <li class="q-list-items-ul-li">What do you think about most when you're alone in your car?</li>
+                <li class="q-list-items-ul-li">What motivates you?</li>
+                <li class="q-list-items-ul-li">Describe your ideal working environment.</li>
+                <li class="q-list-items-ul-li">What's one thing you would like to do better and how do you plan on improving this?</li>
+                <li class="q-list-items-ul-li">What's the biggest risk you’ve taken and what did you learn from it?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="video-pre-header">OPTIONAL</div>
+          <div class="q-list">
+            <div class="q-list-title">Q5. Highlight any achievements through your career</div>
+            <div class="q-list-items">
+              <ul class="q-list-items-ul">
+                <li class="q-list-items-ul-li">Include: Dean’s list, Golden Key, Headboy/girl, first time passes for board, positive feedback from your employers or clients</li>
+              </ul>
+            </div>
+          </div>
+          <div class="q-list">
+            <div class="q-list-title">Q6. Is there anything else you would like a potential employer to know about you?</div>
+          </div>
+        </div>
+        <!-- Content from video -->
+        <div class="col-md-6 padding-right--0">
+          <div class="video-pre-header">IMPORTANT TIPS</div>
+          <div class="q-list">
+            <ul class="q-important-list-items-ul">
+              <li class="q-important-list-items-ul-li">Please ensure your video is recorded in landscape format</li>
+              <li class="q-important-list-items-ul-li">Make sure you have a suitable background (preferably a white or grey wall)</li>
+              <li class="q-important-list-items-ul-li">Sit close enough to the screen/phone so that your head and shoulders take up the majority of the screen (i.e. limit foreground & surroundings)</li>
+              <li class="q-important-list-items-ul-li">Choose a quiet space with limited background noise</li>
+              <li class="q-important-list-items-ul-li">Speak clearly​</li>
+              <li class="q-important-list-items-ul-li">You only have 1.30 minutes so be sure to plan carefully</li>
+              <li class="q-important-list-items-ul-li">Remember to look into the camera on your phone/PC and not at the screen</li>
+              <li class="q-important-list-items-ul-li">If you hear an echo, please turn off your speaker (but keep you microphone on)</li>
+              <li class="q-important-list-items-ul-li"><strong>Finally, before submitting, ask yourself if you are proud of the video and happy that this will be shown to potential employers. If not, do it again until you are!</strong></li>
+            </ul>
+          </div>
+
+          <!-- list video-->
+          <div class="d-flex button-loader-video">
+            <button *ngIf="!videoRecordStatus && !videoObject" class="btn primary-button margin-bottom--15" (click)="openVideoPopup()">Record or Upload Video</button>
+            <button *ngIf="videoRecordStatus && !videoObject" class="btn primary-button position--relative margin-bottom--15">
+              <div class="loader--tiny"></div>
+              Record or Upload Video
+            </button>
+          </div>
+          <div class="preloader-video" *ngIf="preloaderNewVideo">
+            <div class="preloader-video-content">
+              <p class="preloader-video-content-text">Video busy uploading...</p>
+            </div>
+            <div id="loadingProgressG">
+              <div id="loadingProgressG_1" class="loadingProgressG"></div>
+            </div>
+          </div>
+          <div class="candidate-video" *ngIf="videoObject && !preloaderNewVideo">
+            <video style="max-height: 400px" [src]="videoObject.url" #videoPlayer width="100%" height="100%" controls></video>
+            <div class="d-flex d-flex--justify-end d-flex--align-center margin-top--16" [ngClass]="{'block-imp': preloaderVideo}">
+              <span *ngIf="!preloaderVideo" class="job-popup-delete margin-right--16" (click)="openVerticallyCenter(question)">Remove video</span>
+              <span *ngIf="!preloaderVideo" class="job-popup-delete margin-right--16" (click)="openVerticallyCenter(questionNewRecord)">Upload or Record new video</span>
+              <div *ngIf="preloaderVideo" style="margin-top: 15px;" class="loader-table margin-bottom--12" id="loader-6">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+          <!-- video block -->
+        </div>
+        <!-- Video content -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="d-flex d-flex--justify-center d-flex--align-center border-top-step border-bottom-step padding--15">
+  <button (click)="stepNextPage()" class="btn primary-button margin-top--16 margin-bottom--8">Next</button>
+</div>
+
+<ng-template #question let-c="close" let-d="dismiss">
+  <button type="button" class="close close-test" aria-label="Close" (click)="d('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <h3 class="job-popup-title">Are you sure?</h3>
+    <div class="button-container-popup d-flex">
+      <button (click)="removeVideo()" class="btn primary-button job-popup-button">Yes</button>
+      <button (click)="d('Cross click')" class="btn primary-button job-popup-button">No</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #questionNewRecord let-c="close" let-d="dismiss">
+  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <h3 class="job-popup-title">Are you sure?</h3>
+    <div class="button-container-popup d-flex">
+      <button (click)="d('Cross click'); openVideoPopup();" class="btn primary-button job-popup-button">Yes</button>
+      <button (click)="d('Cross click')" class="btn primary-button job-popup-button">No</button>
+    </div>
+  </div>
+</ng-template>
+
+<div [ngClass]="{'active': videoRecordPopup}" class="modal-video-record">
+  <div class="video-record-body position--relative">
+    <div class="video-record-head">
+      <button type="button" class="close" aria-label="Close" (click)="closeVideoPopup();">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <ziggeo-recorder [options]="{ 'timelimit': 90, 'countdown': 0, 'picksnapshots': false, 'title': ziggeoTitle, 'webrtc_streaming': true, 'webrtc_on_mobile': true, 'webrtc_streaming_if_necessary':true }"
+                     #ziggeorecorder [apiKey]="'bea8e0e12b839f48aacffdb1e84b5c94'"></ziggeo-recorder>
+    <button *ngIf="finishButton" (click)="closeVideoPopup();" aria-label="Close"
+            class="btn primary-button margin-top--16 margin-bottom--8">
+      Finish
+    </button>
+  </div>
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<div [ngClass]="{'active': videoUploadPopups}" class="modal-video-record">
+  <div class="modal-header">
+    <h4 class="modal-title">disable profile</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeLookingPopup(false, true)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <h3 class="job-popup-title">Please note, turning this off will mean:</h3>
+    <span class="job-popup-desc margin-bottom--6">- You will no longer receive any notifications of any new jobs.</span>
+    <span class="job-popup-desc margin-bottom--6">- You will not be visible to clients browsing profiles.</span>
+    <span class="job-popup-desc margin-bottom--24">- Any current applications you have made will be cancelled</span>
+    <div class="d-flex d-flex--justify-around margin-bottom--12">
+      <button (click)="lookingJobToggle('looking', checkLooking);closeLookingPopup(false, false)" class="btn primary-button">Disable Profile</button>
+      <button (click)="closeLookingPopup(false, true)" class="btn primary-button">Go Back</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #notDevicesNotAccess let-dc="close" let-dc="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">not detected</h4>
+    <button type="button" class="close err" aria-label="Close" (click)="dc('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h3 class="job-popup-desc">We did not detect any microphone or video recording devices. Please make sure these devices are connected before you can continue with the interview recording.</h3>
+    <h3 class="or-text">OR</h3>
+    <h3 *ngIf="checkBr === 'firefox' || checkBr === 'safari' || checkBr === 'chrome'" class="job-popup-desc">Please ensure that your browser is allowed access to your microphone and camera by unblocking it. You can follow the below guide for assistance with this.</h3>
+    <h3 *ngIf="checkBr !== 'firefox' && checkBr !== 'safari' && checkBr !== 'chrome'" class="job-popup-desc">Please ensure that your browser is allowed access to your microphone and camera by unblocking it.</h3>
+    <a *ngIf="checkBr === 'firefox'" class="settings-link" target="_blank" href="https://masterclasshelp.zendesk.com/hc/en-us/articles/213714697-How-do-I-allow-access-to-my-computer-s-microphone-For-Christina-Aguilera-s-Students-">See here</a>
+    <a *ngIf="checkBr === 'safari'" class="settings-link" target="_blank" href="https://support.apple.com/en-gb/guide/safari/ibrwe2159f50/mac">See here</a>
+    <a *ngIf="checkBr === 'chrome'" class="settings-link" target="_blank" href="https://support.google.com/chrome/answer/2693767?hl=en">See here</a>
+
+    <button (click)="dc('Cross click')" class="btn primary-button job-popup-button">I understand</button>
+  </div>
+</ng-template>
+
+
+<ng-template #errorBrowser let-dc="close" let-dc="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">not supported</h4>
+    <button type="button" class="close err" aria-label="Close" (click)="dc('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h3 class="job-popup-desc">Please note, your browser does not support video or sound recording. Please use one of the below browsers:</h3>
+    <div class="browser-download-content">
+      <div class="add-browser">
+        <div class="browser-text">
+          <i class="fab fa-chrome"></i>
+          <span>Chrome</span>
+        </div>
+        <a href="https://www.google.com/chrome/" target="_blank">Download</a>
+      </div>
+      <div class="add-browser">
+        <div class="browser-text">
+          <i class="fab fa-firefox"></i>
+          <span>Firefox</span>
+        </div>
+        <a href="https://www.mozilla.org/en-US/firefox/new/?v=a" target="_blank">Download</a>
+      </div>
+    </div>
+    <button (click)="dc('Cross click')" class="btn primary-button job-popup-button">I understand</button>
+  </div>
+</ng-template>

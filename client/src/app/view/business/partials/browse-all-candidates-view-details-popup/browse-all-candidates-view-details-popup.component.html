@@ -1,0 +1,450 @@
+<div class="modal-header">
+  <h4 *ngIf="checkTitle" class="modal-title">applicant</h4>
+  <h4 *ngIf="!checkTitle" class="modal-title">candidate</h4>
+  <button type="button" class="close d-flex" aria-label="Close" (click)="closePopup('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- modal-header -->
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-6 col-md-6">
+      <div class="image-profile">
+        <div class="img-block">
+          <img *ngIf="candidate?.details?.picture === null" src="/assets/img/placeholders/placeholder.png" alt="candidate image" class="applicant_image" onerror="this.style.opacity='0'">
+          <img *ngIf="candidate?.details?.picture !== null && candidate?.details?.picture.length > 0" src="{{ candidate?.details?.picture[0].url }}" alt="candidate image" class="applicant_image" onerror="this.style.opacity='0'">
+        </div>
+        <div class="img-description">
+          <h3 class="candidate-details__name margin-bottom--16">{{ candidate?.details?.firstName | uppercase }} {{ candidate?.details?.lastName.charAt(0) | uppercase }}</h3>
+          <!--<a *ngIf="!cv" href="#" class="btn btn-interview margin-right&#45;&#45;12 disabled"><i class="fas fa-download"></i> View Assessment</a>-->
+          <!-- (click)="openVerticallyCenter(contentCv)"-->
+          <a *ngIf="false" class="btn btn-interview margin-right--12"><i class="fas fa-download"></i> View Assessment</a>
+        </div>
+
+        <!--<ng-template #contentCv let-c="close" let-d="dismiss">-->
+          <!--<button type="button" class="close cv" aria-label="Close" (click)="d('Cross click')">-->
+            <!--<span aria-hidden="true">&times;</span>-->
+          <!--</button>-->
+          <!--<div class="modal-body cv">-->
+            <!--<div class="iframe-cv"  *ngFor="let file of candidate?.details?.cv">-->
+              <!--<iframe class="doc" *ngIf="file?.adminUrl" [src]="file?.adminUrl | urlType" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>-->
+              <!--<a *ngIf="file.approved && file.adminUrl" href="{{ file?.adminUrl }}" download="{{ file?.adminUrl }}" target="_blank" class="btn btn-interview doc-t margin-right&#45;&#45;12"><i class="fas fa-download"></i> Download CV</a>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</ng-template>-->
+      </div>
+      <div class="video-holder">
+        <video style="max-height: 350px" *ngIf="candidate?.details?.video?.approved" #videoPlayer width="100%" height="100%"
+               (ended)="setStatusCandidateProfile(candidate?.details?.id, 'play')" controls class="margin-bottom--32">
+          <source src="{{ candidate?.details?.video?.adminUrl }}" type="video/mp4">
+        </video>
+        <!-- video -->
+        <div class="candidate-details__panels margin-top--32">
+          <ngb-accordion #acc="ngbAccordion" activeIds="one-panel, second-panel, third-panel, fourth-panel, tenth-panel, eleventh-panel, ninth-panel">
+
+            <ngb-panel id="tenth-panel" class="candidate-details__panels-title" title="Matric Certificates"
+                       *ngIf="candidate?.details?.matricCertificate?.length > 0">
+              <ng-template ngbPanelContent>
+                <ul class="certificaltes-list d-flex d-flex--align-start d-flex--direction-column">
+                  <li *ngFor="let certificate of candidate?.details?.matricCertificate">
+                    <a class="certificat-link"
+                       *ngIf="certificate?.adminUrl"
+                       href="{{ certificate?.adminUrl }}"
+                       download="{{ certificate?.name }}">{{ certificate?.name }}</a>
+                  </li>
+                </ul>
+              </ng-template>
+            </ngb-panel>
+
+            <ngb-panel id="eleventh-panel" class="candidate-details__panels-title" title="Matric Transcripts"
+                       *ngIf="candidate?.details?.matricTranscript?.length > 0">
+              <ng-template ngbPanelContent>
+                <ul class="certificaltes-list d-flex d-flex--align-start d-flex--direction-column">
+                  <li *ngFor="let certificate of candidate?.details?.matricTranscript">
+                    <a class="certificat-link"
+                       *ngIf="certificate?.adminUrl"
+                       href="{{ certificate?.adminUrl }}"
+                       download="{{ certificate?.name }}">{{ certificate?.name }}</a>
+                  </li>
+                </ul>
+              </ng-template>
+            </ngb-panel>
+
+            <ngb-panel id="ninth-panel" class="candidate-details__panels-title" title="Certificate of Qualifications"
+                       *ngIf="candidate?.details?.certificateOfQualification?.length > 0">
+              <ng-template ngbPanelContent>
+                <ul class="certificaltes-list d-flex d-flex--align-start d-flex--direction-column">
+                  <li *ngFor="let certificate of candidate?.details?.certificateOfQualification">
+                    <a class="certificat-link"
+                       *ngIf="certificate?.adminUrl"
+                       href="{{ certificate?.adminUrl }}"
+                       download="{{ certificate?.name }}">{{ certificate?.name }}</a>
+                  </li>
+                </ul>
+              </ng-template>
+            </ngb-panel>
+
+            <ngb-panel id="second-panel" class="candidate-details__panels-title" title="Academic Transcripts"
+                       *ngIf="candidate?.details?.academicTranscript?.length > 0">
+              <ng-template ngbPanelContent>
+                <ul class="certificaltes-list d-flex d-flex--align-start d-flex--direction-column">
+                  <li *ngFor="let transcript of candidate?.details?.academicTranscript">
+                    <a class="certificat-link"
+                       *ngIf="transcript?.adminUrl"
+                       href="{{ transcript?.adminUrl }}"
+                       download="{{ transcript?.name }}">{{ transcript?.name }}</a>
+                  </li>
+                </ul>
+              </ng-template>
+            </ngb-panel>
+
+            <ngb-panel id="one-panel" class="candidate-details__panels-title" title="Latest Payslips"
+                       *ngIf="candidate?.details?.payslip?.length > 0">
+              <ng-template ngbPanelContent>
+                <ul class="certificaltes-list d-flex d-flex--align-start d-flex--direction-column">
+                  <li *ngFor="let certificate of candidate?.details?.payslip">
+                    <a class="certificat-link"
+                       *ngIf="certificate?.adminUrl"
+                       href="{{ certificate?.adminUrl }}"
+                       download="{{ certificate?.name }}">{{ certificate?.name }}</a>
+                  </li>
+                </ul>
+              </ng-template>
+            </ngb-panel>
+
+            <ngb-panel id="third-panel" class="candidate-details__panels-title" title="Credit & Criminal Checks"
+                       *ngIf="creditChecks?.length > 0">
+              <ng-template ngbPanelContent>
+                <ul class="certificaltes-list d-flex d-flex--align-start d-flex--direction-column">
+                  <li *ngFor="let check of creditChecks">
+                    <a class="certificat-link"
+                       *ngIf="check?.adminUrl"
+                       href="{{ check?.adminUrl }}"
+                       download="{{ check?.name }}">{{ check?.name }}</a>
+                  </li>
+                </ul>
+              </ng-template>
+            </ngb-panel>
+
+            <ngb-panel id="fourth-panel" class="candidate-details__panels-title" title="Work Experience & Reference" *ngIf="candidate?.references?.length > 0 && checkReference(candidate?.references)">
+              <ng-template ngbPanelContent>
+                <div *ngFor="let reference of candidate?.references">
+                  <div class="reference-block" *ngIf="reference?.isReference">
+                    <p class="title margin-top--12">
+                      <span class="desc">"{{ reference?.managerComment }}" </span>
+                      - {{ reference?.managerFirstName }} {{ reference?.managerLastName }}
+                      ({{ reference?.managerTitle }})</p>
+                    <span class="desc" *ngIf="reference?.isReference && !reference?.permission">Reference is not allowed to be contacted</span>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-panel>
+
+          </ngb-accordion>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-6">
+      <div class="candidate-details full-width d-flex d-flex--align-start d-flex--direction-column">
+        <div class="candidate-details__records full-width d-flex d-flex--align-start d-flex--direction-column">
+          <div class="candidate-details__record padding--0">
+            <div class="row"></div>
+          </div>
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Gender</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.details?.gender">{{ candidate?.details?.gender }}</span>
+                <span *ngIf="!candidate?.details?.gender">-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Citizenship</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.details?.nationality === 1">South African</span>
+                <span *ngIf="candidate?.details?.nationality === 2">Other</span>
+                <span *ngIf="!candidate?.details?.nationality">-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>YES Applicable Candidate</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.applicable === true">YES</span>
+                <span *ngIf="candidate?.applicable === false">NO</span>
+                <span *ngIf="!candidate?.applicable">-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Availability</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="availability">{{ availability }}</span>
+                <span *ngIf="availability === null">Immediately</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Most recent role</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.details?.mostRole">{{ candidate?.details?.mostRole }}</span>
+                <span *ngIf="!candidate?.details?.mostRole">-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Most recent employer</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.details?.mostEmployer">{{ candidate?.details?.mostEmployer }}</span>
+                <span *ngIf="!candidate?.details?.mostEmployer">-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Desired Work Location</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.details?.citiesWorking">{{ candidate?.details?.citiesWorking }}</span>
+                <span *ngIf="!candidate?.details?.citiesWorking">-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>English Proficiency</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.details?.englishProficiency === 1">Below Average</span>
+                <span *ngIf="candidate?.details?.englishProficiency === 2">Average</span>
+                <span *ngIf="candidate?.details?.englishProficiency === 3">Good</span>
+                <span *ngIf="candidate?.details?.englishProficiency === 4">Exceptional</span>
+                <span *ngIf="!candidate?.details?.englishProficiency">-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Drivers License</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.details?.driverLicense === true">Yes</span>
+                <span *ngIf="candidate?.details?.driverLicense === false">No</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row">
+              <div class="col-sm-6 title-popup-cell">
+                <span>Most Recent Monthly Salary</span>
+              </div>
+              <div class="col-sm-6 description-popup-cell">
+                <span *ngIf="candidate?.details?.mostSalary && candidate?.details?.salaryPeriod === 'monthly'">
+                  R{{ candidate?.details?.mostSalary | number:'.0-0' }}
+                </span>
+                <span *ngIf="candidate?.details?.mostSalary && candidate?.details?.salaryPeriod === 'annual'">
+                  R{{ candidate?.details?.mostSalary / 12 | number:'.0-0' }}
+                </span>
+                <span *ngIf="!candidate?.details?.mostSalary">-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row d-flex d-flex--direction-column">
+              <div class="col-sm-12 title-popup-cell">
+                <span>Qualifications</span>
+              </div>
+              <div class="col-sm-12 padding-left--0 d-flex--justify-start margin-top--18" style=" color: #767676; font-weight: 300; font-size: 13px;"
+                   *ngFor="let qualification of candidate?.qualifications">
+                <span style="line-height: 16px;">{{ qualification }}</span>
+              </div>
+              <div class="col-sm-12 padding-left--0 d-flex--justify-start margin-top--18" style=" color: #767676; font-weight: 300; font-size: 13px;"
+                   *ngIf="candidate?.qualifications.length === 0">
+                <span>-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row d-flex d-flex--direction-column">
+              <div class="col-sm-12 title-popup-cell">
+                <span>Employments</span>
+              </div>
+              <div class="col-sm-12 padding-left--0 d-flex--justify-start margin-top--18" style=" color: #767676; font-weight: 300; font-size: 13px;"
+                   *ngFor="let employment of candidate?.employments">
+                <span>{{ employment }}</span>
+              </div>
+              <div class="col-sm-12 padding-left--0 d-flex--justify-start margin-top--18" style=" color: #767676; font-weight: 300; font-size: 13px;"
+                   *ngIf="candidate?.employments.length === 0">
+                <span>-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+          <div class="candidate-details__record">
+            <div class="row d-flex d-flex--direction-column">
+              <div class="col-sm-12 title-popup-cell">
+                <span>Achievements</span>
+              </div>
+              <div class="col-sm-12 padding-left--0 d-flex--justify-start margin-top--18" style=" color: #767676; font-weight: 300; font-size: 13px;"
+                   *ngFor="let achievement of candidate?.achievements">
+                <span>{{ achievement?.description }}</span>
+              </div>
+              <div class="col-sm-12 padding-left--0 d-flex--justify-start margin-top--18" style=" color: #767676; font-weight: 300; font-size: 13px;"
+                   *ngIf="candidate?.achievements.length === 0">
+                <span>-</span>
+              </div>
+            </div>
+          </div>
+          <!-- candidate-details__record -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal-body -->
+
+<div class="modal-footer">
+  <div class="row full-width">
+    <div *ngIf="_viewPopup === 'true'" class="video-holder__buttons-wrap d-flex d-flex--align-center d-flex--justify-between d-flex--wrap full-width">
+      <div class="d-flex d-flex--align-center d-flex--justify-start full-width">
+        <div class="col-md-12 d-flex d-flex--justify-end">
+          <button *ngIf="groupOfButtonstoShow === 2 || groupOfButtonstoShow === 5" class="btn primary-button margin-right--12" disabled>Short list <i class="fa fa-check"></i></button>
+          <button *ngIf="groupOfButtonstoShow !== 2 && groupOfButtonstoShow !== 5" class="btn primary-button margin-right--12" (click)="addCandidateToShortList(candidate)">Short list</button>
+
+          <button class="btn primary-button" (click)="getJobsCount(true, candidate.details.id);openVerticallyCentered(content, candidate)">Set up interview</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!_viewPopup || _viewPopup === 'false'" class="video-holder__buttons-wrap d-flex d-flex--align-center d-flex--justify-between d-flex--wrap full-width">
+      <div class="d-flex d-flex--align-center d-flex--justify-start full-width" [ngSwitch]="groupOfButtonstoShow">
+
+        <!--<div *ngSwitchCase="0">
+          <div class="col-md-12 d-flex d-flex--justify-end">
+            <button class="btn primary-button margin-right--12" (click)="addCandidateToShortList(candidate)">Short list</button>
+            <button class="btn primary-button" (click)="getJobsCount(true, candidate.id);openVerticallyCentered(content, candidate)">Set up interview</button>
+          </div>
+        </div>-->
+
+        <ng-container *ngSwitchCase="1">
+          <div class="col-md-6">
+            <button class="btn danger-button margin-right--12" (click)="declineCandidateApplication(candidate)">Decline</button>
+          </div>
+          <div class="col-md-6 d-flex d-flex--justify-end mobile-flex-end">
+            <button class="btn primary-button margin-right--12" (click)="addCandidateToShortList(candidate)">Short list</button>
+            <button class="btn primary-button" (click)="getJobsCount(true, candidate.details.id);openVerticallyCentered(content, candidate)">Set up interview</button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="2">
+          <div class="col-md-6">
+            <button class="btn danger-button margin-right--12" (click)="declineCandidateApplication(candidate)">Decline</button>
+          </div>
+          <div class="col-md-6 d-flex d-flex--justify-end mobile-flex-end">
+            <button class="btn primary-button" (click)="getJobsCount(true, candidate.details.id);openVerticallyCentered(content, candidate)">Set up interview</button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="3">
+          <div class="col-md-12 d-flex d-flex--justify-end">
+            <button class="btn primary-button" disabled>Set up interview <i class="fa fa-check"></i></button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="4">
+          <div class="col-md-6">
+            <!--<button class="btn danger-button margin-right&#45;&#45;12" disabled>Decline <i class="fa fa-check"></i></button>-->
+          </div>
+          <div class="col-md-6 d-flex d-flex--justify-end mobile-flex-end">
+            <!--<button class="btn primary-button margin-right&#45;&#45;12" (click)="addCandidateToShortList(candidate)">Short list</button>-->
+            <!--<button class="btn primary-button" (click)="getJobsCount(true, candidate.details.id);openVerticallyCentered(content, candidate)">Set up interview</button>-->
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="5">
+          <div class="col-md-12 d-flex d-flex--justify-end mobile-flex-end">
+            <!---<button class="btn danger-button margin-right--12" (click)="removeCandidateFromShortList(candidate)">Remove</button>-->
+            <!--<button class="btn primary-button" (click)="getJobsCount(true, candidate.details.id);openVerticallyCentered(content, candidate)">Set up interview</button>-->
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="6">
+          <div class="col-md-6">
+            <!--<button class="btn danger-button margin-right--12" (click)="cancelApplicationFromBusiness(candidate)">Cancel</button>-->
+          </div>
+          <div class="col-md-6 d-flex d-flex--justify-end">
+            <!--<button class="btn primary-button" disabled>Set up interview <i class="fa fa-clock"></i></button>-->
+            <!--<button class="btn primary-button" (click)="getJobsCount(true, candidate.details.id);openVerticallyCentered(content, candidate)">Set up interview</button>-->
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="7">
+          <div class="col-md-6">
+            <!--<button class="btn danger-button margin-right--12" (click)="cancelApplicationFromBusiness(candidate)">Cancel</button>-->
+          </div>
+          <div class="col-md-6 d-flex d-flex--justify-end">
+            <!--<button class="btn primary-button" disabled>Set up interview <i class="fa fa-clock"></i></button>-->
+            <!--<button class="btn primary-button" (click)="getJobsCount(true, candidate.details.id);openVerticallyCentered(content, candidate)">Set up interview</button>-->
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchDefault ></ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loaderPopup" id="preloaderPopup">
+  <div id="loaderPopup"></div>
+</div>
+
+<ng-template #content let-cw="close" let-dw="dismiss" class="startst">
+  <div class="modal-header">
+    <h4 class="modal-title">you are interested in interviewing {{ candidate?.details?.firstName }}</h4>
+    <button type="button" class="close d-flex" aria-label="Close" (click)="dw('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="job-popup-desc margin-bottom--24 margin-top--24">Administrator who will be in touch with you and the candidate to set up the window.</p>
+    <h4 class="job-popup-title">Select the Job/s you would like to Interview candidate for</h4>
+    <ng-select placeholder="Select job/s" class="margin-bottom--24" #jobStatus [searchable]="false">
+      <ng-option [value]="null">Not assigned</ng-option>
+      <ng-option *ngFor="let job of listOfJobsCount" [value]="job?.id">{{ job?.jobTitle }}</ng-option>
+    </ng-select>
+    <button type="button" class="btn primary-button job-popup-button" (click)="setUpInterview(candidate, jobStatus.selectedValues[0])">Send Interview Request</button>
+    <a class="job-popup-delete" (click)="cw('Close click')">Cancel</a>
+  </div>
+</ng-template>

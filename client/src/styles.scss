@@ -1,0 +1,11 @@
+/** Import core style */
+@import "~ngx-sharebuttons/styles/share-buttons";
+
+/** Import a theme */
+@import "~ngx-sharebuttons/styles/themes/circles/circles-theme";
+
+@import "~ngx-sharebuttons/styles/themes/default/default-theme";
+
+ss-multiselect-dropdown .dropdown-inline {
+    display: flex !important;
+}

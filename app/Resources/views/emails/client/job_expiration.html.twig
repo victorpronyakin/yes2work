@@ -1,0 +1,10 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Hi {{ job.user.firstName }}
+    <br><br>
+    The {{ job.jobTitle }} job you loaded on Yes2Work is expiring in a days’ time.
+    <br><br>
+    Please click <a href="{{ link }}">here</a> if you would like to extend the expiry date.
+    <br><br>
+    Get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

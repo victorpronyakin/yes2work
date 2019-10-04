@@ -1,0 +1,306 @@
+<div class="title-description margin-bottom--32">
+  <div class="d-flex d-flex--align-center margin-bottom--24 profile-tabs-mobile">
+    <h3 style="margin-right: 45px;">My Preferences</h3>
+    <div class="tabs-items jobs-button-desktop">
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/profile_details" routerLinkActive="active">Personal Information</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/qualification" routerLinkActive="active">Qualification</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/achievements" routerLinkActive="active">Work Experience </a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/video" routerLinkActive="active">My Video</a>
+      <a class="tab-cell" style="padding: 11px 10px 11px 10px;" routerLink="/candidate/preferences" routerLinkActive="active">Preferences</a>
+    </div>
+    <select class="form-control field--medium input-form select-form jobs-button-mobile min-width--100" #filter1 (change)="routerApplicants(filter1.value)">
+      <option value="/candidate/profile_details">Personal Information</option>
+      <option value="/candidate/qualification">Qualification</option>
+      <option value="/candidate/achievements">Work Experience</option>
+      <option value="/candidate/video">My Video</option>
+      <option value="/candidate/preferences">Preferences</option>
+    </select>
+  </div>
+  <p *ngIf="_sharedService.visibleErrorVideoIcon || _sharedService.visibleErrorProfileIcon">Please make sure you upload a copy of your ID and video before you can apply for a job.</p>
+  <p *ngIf="!_sharedService.visibleErrorProfileIcon && !_sharedService.visibleErrorVideoIcon">Your profile is complete enough to be viewed by clients and to receive new job postings.</p>
+</div>
+<div class="row margin-top--32 margin-bottom--32" *ngIf="candidateProfileDetails?.profile?.percentage > 50 &&
+candidateProfileDetails?.profile?.copyOfID &&
+candidateProfileDetails?.profile?.copyOfID[0] &&
+((candidateProfileDetails?.allowVideo === true) || (candidateProfileDetails?.profile?.video && candidateProfileDetails?.profile?.video?.approved === true))">
+  <div class="col-md-8 padding-left--0 candidate-dashboard-notification">
+    <div class="row margin-bottom--8">
+      <div class="col-8 col-md-10 padding-left--0">
+        <label class="label-text">I am looking for a job</label>
+      </div>
+      <div class="col-2 col-md-2 d-flex">
+        <label class="label-text">No</label>
+        <div class="switch__container margin-left--5 margin-right--5">
+          <input id="switch-shadow8" class="switch switch--shadow" type="checkbox" [(ngModel)]="checkLooking" (ngModelChange)="changeStatusCandidate('looking', checkLooking)">
+          <label for="switch-shadow8" [ngClass]="{'test-shadow': visibilityLooking}"></label>
+        </div>
+        <label class="label-text">Yes</label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row progress-info margin-bottom--32">
+  <ngb-progressbar class="full-width" [value]="_sharedService.progressBar" type="warning" [max]="100">{{ _sharedService.progressBar }}% Complete</ngb-progressbar>
+</div>
+<div class="row full-width">
+  <div class="col-md-8 padding-left--0 padding-right--0">
+    <h4 class="subtitle-row">Username & Password</h4>
+    <form class="margin-bottom--32" [formGroup]="passwordForm">
+      <div class="form-group required-icon-content">
+        <input type="password" formControlName="old_password" class="form-control input-form" placeholder="Old password" required>
+        <span class="required-icon">*</span>
+        <span class="help-box" *ngIf="passwordForm.controls.old_password.invalid && !passwordForm.controls.old_password.untouched">Old password entered is not correct</span>
+      </div>
+      <div class="form-group required-icon-content">
+        <input type="password" formControlName="new_password" class="form-control input-form" placeholder="New password" required>
+        <span class="required-icon">*</span>
+        <span class="help-box" *ngIf="passwordForm.controls.new_password.invalid && !passwordForm.controls.new_password.untouched">Password must contain a minimum of 6 characters.</span>
+      </div>
+      <div class="form-group required-icon-content">
+        <input type="password" formControlName="confirm_password" class="form-control input-form" placeholder="Confirm password" required>
+        <span class="required-icon">*</span>
+        <span class="help-box" *ngIf="passwordForm.controls.confirm_password.invalid && !passwordForm.controls.confirm_password.untouched">Passwords do not match</span>
+      </div>
+      <button class="btn primary-button" (click)="updatePassword()">Update</button>
+    </form>
+    <h4 class="margin-top subtitle-row margin-bottom--12">Notifications</h4>
+    <span class="after-sub margin-bottom--18">How do you want to be notified?</span>
+    <div class="margin-bottom--24 email-notification">
+      <div class="row margin-bottom--18">
+        <div class="col-md-4 flex align-center padding-left--0">
+          <span class="description-checkbox">Email</span>
+        </div>
+        <div class="col-md-4 flex align-center justify-right">
+          <div class="switch__container">
+            <input id="switch-shadow" class="switch switch--shadow" type="checkbox" [(ngModel)]="checkEmail" (click)="updatePreferenceNotificationEmail('checkEmail', checkEmail)">
+            <label for="switch-shadow"></label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 flex align-center padding-left--0">
+          <span class="description-checkbox">SMS </span>
+        </div>
+        <div class="col-md-4 flex align-center justify-right">
+          <div class="switch__container">
+            <input id="switch-shadow1" class="switch switch--shadow" type="checkbox" [(ngModel)]="checkSMS" (click)="updatePreferenceNotificationSMS('checkSMS', checkSMS)">
+            <label for="switch-shadow1"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 padding-left--0 padding-right--0">
+    <h4 class="subtitle-row margin-bottom--12">Send me updates for</h4>
+    <div class="send-update padding-left--0 padding-right--0">
+      <div class="row padding-m">
+        <div class="col-2 flex align-center margin-bottom--18 padding-left--0">
+          <p class="after-sub">Interview Requests</p>
+        </div>
+        <div class="col-1 flex align-center justify-right">
+          <div class="switch__container">
+            <input id="switch-shadow5" [disabled]="!checkEmail && !checkSMS" class="switch switch--shadow" type="checkbox" [(ngModel)]="interviewRequestStatus" (click)="updatePreferenceNotificationStatus('interviewRequestStatus', interviewRequestStatus)">
+            <label for="switch-shadow5" [ngClass]="{'test-shadow': !checkEmail && !checkSMS}"></label>
+          </div>
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <label *ngIf="interviewRequestStatus">
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="interviewRequest === 1" type="checkbox" (click)="updatePreferenceNotification('interviewRequest', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <label *ngIf="interviewRequestStatus">
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="interviewRequest === 2" type="checkbox" (click)="updatePreferenceNotification('interviewRequest', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-2 flex align-center justify-center"></div>
+        <div class="col-2 flex align-center justify-center"></div>
+      </div>
+      <div class="row padding-m">
+        <div class="col-2 flex align-center margin-bottom--18 padding-left--0">
+          <p class="after-sub">New Jobs Loaded</p>
+        </div>
+        <div class="col-1 flex align-center justify-right">
+          <div class="switch__container">
+            <input id="switch-shadow6" [disabled]="!checkEmail && !checkSMS" class="switch switch--shadow" type="checkbox" [(ngModel)]="newJobLoadedStatus" (click)="updatePreferenceNotificationStatus('newJobLoadedStatus', newJobLoadedStatus)">
+            <label for="switch-shadow6" [ngClass]="{'test-shadow': !checkEmail && !checkSMS}"></label>
+          </div>
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <label *ngIf="newJobLoadedStatus">
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="newJobLoaded === 1" type="checkbox" (click)="updatePreferenceNotification('newJobLoaded', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <label *ngIf="newJobLoadedStatus">
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="newJobLoaded === 2" type="checkbox" (click)="updatePreferenceNotification('newJobLoaded', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-2 flex align-center justify-center"></div>
+        <div class="col-2 flex align-center justify-center"></div>
+      </div>
+      <div class="row padding-m">
+        <div class="col-2 flex align-center margin-bottom--18 padding-left--0">
+          <p class="after-sub">Application Declined</p>
+        </div>
+        <div class="col-1 flex align-center justify-right">
+          <div class="switch__container">
+            <input id="switch-shadow12" [disabled]="!checkEmail && !checkSMS" class="switch switch--shadow" type="checkbox" [(ngModel)]="applicationDeclineStatus" (click)="updatePreferenceNotificationStatus('applicationDeclineStatus', applicationDeclineStatus)">
+            <label for="switch-shadow12" [ngClass]="{'test-shadow': !checkEmail && !checkSMS}"></label>
+          </div>
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <label *ngIf="applicationDeclineStatus">
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="applicationDecline === 1" type="checkbox" (click)="updatePreferenceNotification('applicationDecline', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <label *ngIf="applicationDeclineStatus">
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="applicationDecline === 2" type="checkbox" (click)="updatePreferenceNotification('applicationDecline', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-2 flex align-center justify-center"></div>
+        <div class="col-2 flex align-center justify-center"></div>
+      </div>
+      <div class="row padding-m">
+        <div class="col-2 flex align-center margin-bottom--18 padding-left--0">
+          <p class="after-sub">Job Posts Ending Soon</p>
+        </div>
+        <div class="col-1 flex align-center justify-right">
+          <div class="switch__container">
+            <input id="switch-shadow4" [disabled]="!checkEmail && !checkSMS" class="switch switch--shadow" type="checkbox" [(ngModel)]="jobEndingSoonStatus" (click)="updatePreferenceNotificationStatus('jobEndingSoonStatus', jobEndingSoonStatus)">
+            <label for="switch-shadow4" [ngClass]="{'test-shadow': !checkEmail && !checkSMS}"></label>
+          </div>
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <!--<label>
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="jobEndingSoon === 1" type="checkbox" (click)="updatePreferenceNotification('jobEndingSoon', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>-->
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <label *ngIf="jobEndingSoonStatus">
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="jobEndingSoon === 2" type="checkbox" (click)="updatePreferenceNotification('jobEndingSoon', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-2 flex align-center justify-center"></div>
+        <div class="col-2 flex align-center justify-center"></div>
+      </div>
+      <div class="row padding-m">
+        <div class="col-2 flex align-center margin-bottom--18 padding-left--0">
+          <p class="after-sub">Documents Approved</p>
+        </div>
+        <div class="col-1 flex align-center justify-right">
+          <div class="switch__container">
+            <input id="switch-shadow9" [disabled]="!checkEmail && !checkSMS" class="switch switch--shadow" type="checkbox" [(ngModel)]="documentApproveStatus" (click)="updatePreferenceNotificationStatus('documentApproveStatus', documentApproveStatus)">
+            <label for="switch-shadow9" [ngClass]="{'test-shadow': !checkEmail && !checkSMS}"></label>
+          </div>
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <!--<label>
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="interviewUpcoming === 1" type="checkbox" (click)="updatePreferenceNotification('interviewUpcoming', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>-->
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <!--<label>
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="interviewUpcoming === 2" type="checkbox" (click)="updatePreferenceNotification('interviewUpcoming', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>-->
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <!--<label>
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="interviewUpcoming === 3" type="checkbox" (click)="updatePreferenceNotification('interviewUpcoming', 3)">
+            <span class="lbl padding-8">Weekly</span>
+          </label>-->
+        </div>
+        <div class="col-2 flex align-center justify-center"></div>
+      </div>
+      <!--<div class="row padding-m">
+        <div class="col-2 flex align-center margin-bottom&#45;&#45;18 padding-left&#45;&#45;0">
+          <p class="after-sub">Reminder to Complete Profile</p>
+        </div>
+        <div class="col-1 flex align-center justify-right">
+          <div class="switch__container">
+            <input id="switch-shadow10" [disabled]="!checkEmail && !checkSMS" class="switch switch&#45;&#45;shadow" type="checkbox" [(ngModel)]="reminderProfileStatus" (click)="updatePreferenceNotificationStatus('reminderProfileStatus', reminderProfileStatus)">
+            <label for="switch-shadow10" [ngClass]="{'test-shadow': !checkEmail && !checkSMS}"></label>
+          </div>
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          &lt;!&ndash;<label>
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="reminderProfile === 1" type="checkbox" (click)="updatePreferenceNotification('reminderProfile', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>&ndash;&gt;
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          &lt;!&ndash;<label *ngIf="reminderProfileStatus">
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="reminderProfile === 2" type="checkbox" (click)="updatePreferenceNotification('reminderProfile', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>&ndash;&gt;
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <label *ngIf="reminderProfileStatus">
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="reminderProfile === 3" type="checkbox" (click)="updatePreferenceNotification('reminderProfile', 3)">
+            <span class="lbl padding-8">Weekly</span>
+          </label>
+        </div>
+        <div class="col-2 flex align-center justify-center">
+          <label *ngIf="reminderProfileStatus">
+            <input [disabled]="!checkEmail && !checkSMS" [checked]="reminderProfile === 4" type="checkbox" (click)="updatePreferenceNotification('reminderProfile', 4)">
+            <span class="lbl padding-8">Monthly</span>
+          </label>
+        </div>
+      </div>-->
+    </div>
+  </div>
+</div>
+<div class="d-flex d-flex--justify-center d-flex--align-center border-top-step border-bottom-step padding--15">
+  <button (click)="stepNextPage()" class="btn primary-button margin-top--16 margin-bottom--8">Save & Close</button>
+</div>
+
+<!--<div [ngClass]="{'active': statePopupStatus}" class="modal-video-record">
+  <div class="whatsapp-container">
+    <div class="whatsapp-header">
+      <h4 class="modal-title">setting up your SMS notifications</h4>
+      <button type="button" class="close" aria-label="Close" (click)="statePopup()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="whatsapp-body">
+      <span class="job-popup-desc">In order to receive SMS notifications simply select the button below and follow the instructions.</span>
+      <h3 class="job-popup-title">Please note: you must save the number as “CAs Online”.</h3>
+      <span class="job-popup-desc">If you do not setup your SMS, you will not be able to receive SMS notifications.</span>
+      &lt;!&ndash;<a [href]="whatsAppLink|safe" target="_blank" (click)="updatePreferenceNotificationWhatsappPopup('checkSMS', checkSMS);closePopup()" class="btn primary-button job-popup-button">Open SMS</a>&ndash;&gt;
+    </div>
+  </div>
+</div>-->
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>
+
+<div [ngClass]="{'active': videoUploadPopups}" class="modal-video-record">
+  <div class="modal-header">
+    <h4 class="modal-title">disable profile</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeLookingPopup(false, true)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <h3 class="job-popup-title">Please note, turning this off will mean:</h3>
+    <span class="job-popup-desc margin-bottom--6">- You will no longer receive any notifications of any new jobs.</span>
+    <span class="job-popup-desc margin-bottom--6">- You will not be visible to clients browsing profiles.</span>
+    <span class="job-popup-desc margin-bottom--24">- Any current applications you have made will be cancelled</span>
+    <div class="d-flex d-flex--justify-around margin-bottom--12">
+      <button (click)="lookingJobToggle('looking', checkLooking);closeLookingPopup(false, false)" class="btn primary-button">Disable Profile</button>
+      <button (click)="closeLookingPopup(false, true)" class="btn primary-button">Go Back</button>
+    </div>
+  </div>
+</div>

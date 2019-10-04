@@ -1,0 +1,6 @@
+{% extends 'emails/base_email_admin.html.twig' %}
+{% block body_html %}
+    {{ user.firstName }} {{ user.lastName }} has just posted a New Job, {{ job.jobTitle }}, on Yes2Work.
+    <br><br>
+    Please click <a href="{{ link }}">here</a> to view the new job post.
+{% endblock %}

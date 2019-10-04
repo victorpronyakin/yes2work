@@ -1,0 +1,128 @@
+.form-group{
+  margin-bottom: 18px;
+}
+.terms{
+  font-size: 14px;
+
+  & > a{
+    color: #0073cf;
+    cursor: pointer;
+  }
+}
+.form-control:focus{
+   border-color: #aaaaaa;
+   box-shadow: none;
+}
+.after-registration-cloud{
+  width: 100%;
+  max-width: 100%;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  & > h3{
+    color: #ffffff;
+    text-shadow: 0px 3.5px 7.4px rgba(0, 0, 0, 0.28);
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  .first{
+    width: 450px;
+  }
+}
+
+.modal-body{
+  padding: 28px;
+  .title-row{
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .btn{
+    width: 100%;
+  }
+}
+
+.input-group-btn{
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  height: calc(100% - 2px);
+  margin-right: 0;
+
+  .btn-default{
+    height: 100%;
+    border-radius: 0;
+    background: #fff;
+  }
+}
+
+.ngxmdp .selectorarrow{
+  right: 0 !important;
+  left: inherit !important;
+}
+
+
+.dropbtn{
+  height: 49px;
+}
+
+.refer-box{
+  background: #fff;
+  padding: 25px 20px;
+  margin-bottom: 105px;
+  width: 500px;
+
+  .title-row{
+    font-size: 22px;
+  }
+}
+
+
+.item-refer-block {
+  margin-bottom: 50px;
+}
+
+.invalid {
+  color: red;
+  margin-bottom: 20px;
+  display: block;
+}
+.confirmation-message {
+  color: #28a745;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.social-buttons-content{
+  .sb-button{
+    &:first-child{
+      background: #4267B2;
+      border-radius: 3px;
+
+      .sb-wrapper{
+        .sb-inner{
+          .sb-template{
+            & > i{
+              font-size: 16px;
+              color: #ffffff;
+            }
+          }
+        }
+      }
+    }
+    &:last-child{
+      background: #00acee;
+      border-radius: 3px;
+
+      & > .sb-wrapper{
+        .sb-inner{
+
+        }
+      }
+    }
+  }
+}
+

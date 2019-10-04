@@ -1,0 +1,93 @@
+{% extends 'emails/base_email_admin.html.twig' %}
+{% block body_html %}
+    <!-- candidateFile -->
+    {% if types.candidateFile is defined and types.candidateFile is not empty %}
+        <h3>A candidates({{ types.candidateFile|length }}) has uploaded a document on Yes2Work and is awaiting your approval.</h3>
+        <br>
+        {% if types.candidateFile[0] is defined and types.candidateFile[0]['link'] is defined %}
+            Please click <a href="{{ types.candidateFile[0]['link'] }}">here</a> to view the video or document awaiting approval.
+            <br><br>
+        {% endif %}
+    {% endif %}
+
+    <!-- candidateRequestVideo -->
+    {% if types.candidateRequestVideo is defined and types.candidateRequestVideo is not empty %}
+        <h3>Request from candidates({{ types.candidateRequestVideo|length }}) to have their video down professionally.</h3>
+        <br>
+        {% for item in types.candidateRequestVideo %}
+            {% if item.candidate is defined %}
+                You have received a request from {{ item.candidate.firstName }} {{ item.candidate.lastName }} to have their video done professionally.
+                <br><br>
+                Please make contact on <a href="mailto:{{ item.candidate.email }}">{{ item.candidate.email }}</a> or <a href="tel:{{ item.candidate.phone }}">{{ item.candidate.phone }}</a>
+                <br><br>
+                Please click <a href="{{ item.link }}">here</a> to view the applicant's profile.
+                <br><br>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- clientSign -->
+    {% if types.clientSign is defined and types.clientSign is not empty %}
+        <h3>A new clients({{ types.clientSign|length }}) has registered on Yes2Work.</h3>
+        <br>
+        {% if types.clientSign[0] is defined and types.clientSign[0]['link'] is defined %}
+            Please click <a href="{{ types.clientSign[0]['link'] }}">here</a> to view the new client’s profile.
+            <br><br>
+        {% endif %}
+    {% endif %}
+
+    <!-- interviewSetUp -->
+    {% if types.interviewSetUp is defined and types.interviewSetUp is not empty %}
+        <h3>A clients({{ types.interviewSetUp|length }}) has just requested an interview.</h3>
+        <br>
+        {% for item in types.interviewSetUp %}
+            A client, {{ item.client.firstName }} {{ item.client.lastName }} from {{ item.companyName }} has just requested an interview with {{ item.candidate.firstName }} {{ item.candidate.lastName }}
+            {{ (item.jobTitle is defined and item.jobTitle is not empty) ? ' for '~item.jobTitle : '' }}.
+            <br><br>
+            Client Contact details: <br>
+            Client Name: {{ item.client.firstName }} <br>
+            Company Name: {{ item.companyName }} <br>
+            Client Phone Number: {{ item.client.phone }} <br>
+            Client Email address: {{ item.client.email }} <br>
+            <br>
+            Candidate Contact details: <br>
+            Name: {{ item.candidate.firstName }} <br>
+            Candidate Phone Number: {{ item.candidate.phone }} <br>
+            Candidate Email address: {{ item.candidate.email }} <br>
+            <br><br>
+        {% endfor %}
+        {% if types.interviewSetUp[0] is defined and types.interviewSetUp[0]['link'] is defined %}
+            Please click <a href="{{ types.interviewSetUp[0]['link'] }}">here</a> to view the application.
+            <br><br>
+        {% endif %}
+    {% endif %}
+
+    <!-- jobNew -->
+    {% if types.jobNew is defined and types.jobNew is not empty %}
+        <h3>A New Job posts({{ types.jobNew|length }}) is awaiting your approval.</h3>
+        <br>
+        {% for item in types.jobNew %}
+            {{ item.user.firstName }} {{ item.user.lastName }} has just posted a New Job, {{ item.job.jobTitle }}, on Yes2Work.
+            <br><br>
+        {% endfor %}
+        {% if types.jobNew[0] is defined and types.jobNew[0]['link'] is defined %}
+            Please click <a href="{{ types.jobNew[0]['link'] }}">here</a> to view the new job post.
+            <br><br>
+        {% endif %}
+    {% endif %}
+
+    <!-- jobChange -->
+    {% if types.jobChange is defined and types.jobChange is not empty %}
+        <h3>A client has edited their job posts({{ types.jobChange|length }}).</h3>
+        <br>
+        {% for item in types.jobChange %}
+            {{ item.user.firstName }} {{ item.user.lastName }} has just edited their job {{ item.job.jobTitle }} on Yes2Work.
+            <br><br>
+        {% endfor %}
+        {% if types.jobChange[0] is defined and types.jobChange[0]['link'] is defined %}
+            Please click <a href="{{ types.jobChange[0]['link'] }}">here</a> to view the job post and review what was edited.
+            <br><br>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

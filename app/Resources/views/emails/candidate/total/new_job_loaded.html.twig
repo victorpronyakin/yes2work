@@ -1,0 +1,16 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Hi {{ firstName }}
+    <br><br>
+    Brilliant news!
+    <br><br>
+    {% for job in jobs %}
+        A {{ (job.jse is defined and job.jse == true) ? 'Listed' : 'Unlisted' }} {{ (job.industry is defined) ? job.industry : '' }} business situated in {{ (job.city is defined) ? job.city : '' }} has loaded a new {{ (job.jobTitle is defined) ? job.jobTitle : '' }} job which you may be interested in.
+        <br><br>
+        Take note that applications close on: {{ (job.closureDate is defined) ? job.closureDate|date('Y-m-d') : '' }}.
+        <br><br>
+    {% endfor %}
+    Please click <a href="{{ (link is defined) ? link : 'https://app.yes2work.co.za/candidate/job_alerts_new' }}">here</a> to find out more and either Apply or Decline this opportunity.
+    <br><br>
+    Get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

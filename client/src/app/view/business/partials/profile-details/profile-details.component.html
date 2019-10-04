@@ -1,0 +1,361 @@
+<div class="title-description margin-bottom--24">
+  <h3 class="margin-bottom--24">my account</h3>
+</div>
+<div class="row full-width profile-info-mobile">
+  <div class="fouth-width padding-right--12">
+    <div class="table-information full-width achievements-mobile">
+      <div class="body">
+        <div class="row-table">
+          <input type="checkbox" class="accordions__checkbox" id="5">
+          <label class="accordions__heading" for="5">My details <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="row margin-bottom--18">
+              <h4 class="title-row">My details</h4>
+            </div>
+            <div class="row d-flex--direction-column">
+              <form [formGroup]="businessForm">
+                <h4 class="subtitle-row">personal information</h4>
+                <div class="form-group required-icon-content">
+                  <input type="text" class="form-control input-form" formControlName="firstName" placeholder="First name" required>
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="businessForm.controls.firstName.invalid && !businessForm.controls.firstName.untouched">Please enter your First name</span>
+                </div>
+                <div class="form-group required-icon-content">
+                  <input type="text" class="form-control input-form" formControlName="lastName" placeholder="Last name" required>
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="businessForm.controls.lastName.invalid && !businessForm.controls.lastName.untouched">Please enter your Last name</span>
+                </div>
+                <div class="form-group required-icon-content">
+                  <input type="text" class="form-control input-form" formControlName="jobTitle" placeholder="Your job title" required >
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="businessForm.controls.jobTitle.invalid && !businessForm.controls.jobTitle.untouched">Please enter the Job title</span>
+                </div>
+                <div class="form-group phone-content-code required-icon-content">
+                  <int-phone-prefix class="phone-number" formControlName="phone"></int-phone-prefix>
+                  <span class="required-icon">*</span>
+                </div>
+                <!--<span class="help-box" *ngIf="businessForm.controls['phone']?.errors?.validNumber && !businessForm.controls['phone']?.untouched">Please enter the Phone</span>-->
+                <span class="help-box" *ngIf="businessForm.controls.phone.invalid && !businessForm.controls.phone.untouched">Please enter a valid contact number</span>
+                <div class="form-group margin-bottom--24 required-icon-content">
+                  <input type="text" class="form-control input-form" formControlName="email" placeholder="Work email address" required  >
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="businessForm.controls.email.invalid && !businessForm.controls.email.untouched">Please enter a valid email address</span>
+                </div>
+                <h4 class="subtitle-row">Company details</h4>
+                <div class="form-group required-icon-content">
+                  <input type="text" class="form-control input-form" formControlName="name" placeholder="Company name" required >
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="businessForm.controls.name.invalid && !businessForm.controls.name.untouched">Please enter the Company name</span>
+                </div>
+                <div class="form-group required-icon-content">
+                  <input type="text" id="search1" formControlName="address" placeholder="Company address" autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control input-form" #search1>
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="businessForm.controls.address.invalid && !businessForm.controls.address.untouched">Please enter the Company address</span>
+                  <span class="sub-text-client-address">We need your company address to calculate the approximate distance between the place of work and the candidate’s residence. If the search above does not pick up your address, please use another address close by.</span>
+                </div>
+                <div class="form-group several-inputs d-flex d-flex--justify-between">
+                <div class="wrap-input">
+                  <input type="text" formControlName="addressBuildName" class="form-control input-form" placeholder="Building Name">
+                  <!--<span class="required-icon">*</span>-->
+                  <!--<span class="help-box" *ngIf="businessForm.controls.addressBuildName.invalid && !businessForm.controls.addressBuildName.untouched">Please enter your Building Name</span>-->
+                </div>
+                  <div class="wrap-input">
+                    <input type="text" formControlName="addressUnit" class="form-control input-form" placeholder="Unit">
+                    <!--<span class="required-icon">*</span>-->
+                    <!--<span class="help-box" *ngIf="businessForm.controls.addressUnit.invalid && !businessForm.controls.addressUnit.untouched">Please enter your Unit</span>-->
+                  </div>
+                </div>
+                <div class="form-group several-inputs d-flex d-flex--justify-between">
+                  <div class="wrap-input">
+                    <input type="text" formControlName="addressStreetNumber" id="street_number" class="form-control input-form" placeholder="Street address number">
+                    <span class="required-icon">*</span>
+                    <span class="help-box" *ngIf="businessForm.controls.addressStreetNumber.invalid && !businessForm.controls.addressStreetNumber.untouched">Please enter your Street address number</span>
+                  </div>
+                  <div class="wrap-input">
+                    <input type="text" formControlName="addressStreet" id="route" class="form-control input-form" placeholder="Street ">
+                    <span class="required-icon">*</span>
+                    <span class="help-box" *ngIf="businessForm.controls.addressStreet.invalid && !businessForm.controls.addressStreet.untouched">Please enter your Street</span>
+                  </div>
+                </div>
+                <div class="form-group several-inputs d-flex d-flex--justify-between">
+                  <div class="wrap-input">
+                    <input type="text" formControlName="addressCity" class="form-control input-form" id="locality" placeholder="City">
+                    <span class="required-icon">*</span>
+                    <span class="help-box" *ngIf="businessForm.controls.addressCity.invalid && !businessForm.controls.addressCity.untouched">Please enter your City</span>
+                  </div>
+                  <div class="wrap-input">
+                    <input type="text" formControlName="addressSuburb" class="form-control input-form" id="sublocality_level_2" placeholder="Suburb">
+                    <span class="required-icon">*</span>
+                    <span class="help-box" *ngIf="businessForm.controls.addressSuburb.invalid && !businessForm.controls.addressSuburb.untouched">Please enter your Suburb</span>
+                  </div>
+                </div>
+                <div class="form-group several-inputs d-flex d-flex--justify-between">
+
+                  <div class="wrap-input">
+                    <input type="text" formControlName="addressState" class="form-control input-form" id="administrative_area_level_1" placeholder="Province">
+                    <span class="required-icon">*</span>
+                    <span class="help-box" *ngIf="businessForm.controls.addressState.invalid && !businessForm.controls.addressState.untouched">Please enter your Province</span>
+                  </div>
+                  <div class="wrap-input">
+                    <input type="text" formControlName="addressZipCode" class="form-control input-form" id="postal_code" placeholder="Postal code">
+                    <span class="required-icon">*</span>
+                    <span class="help-box" *ngIf="businessForm.controls.addressZipCode.invalid && !businessForm.controls.addressZipCode.untouched">Please enter your Postal code</span>
+                  </div>
+                </div>
+                <div class="form-group required-icon-content">
+                  <input type="text" formControlName="addressCountry" id="country" class="form-control input-form" placeholder="Country">
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="businessForm.controls.addressCountry.invalid && !businessForm.controls.addressCountry.untouched">Please enter your Country</span>
+                </div>
+                <div class="form-group d-flex d-flex--align-center d-flex--justify-between">
+                  <label class="sub-text">Listed on the JSE</label>
+                  <div class="switch__container">
+                    <input id="switch-shadow1" class="switch switch--shadow" formControlName="jse" type="checkbox" [(ngModel)]="jse" (click)="jseValue('jse', jse)">
+                    <label for="switch-shadow1"></label>
+                  </div>
+                </div>
+                <div class="form-group required-icon-content">
+                  <ss-multiselect-dropdown class="input-form half-width padding--0 border--none"
+                                           [settings]="articlesFirmSettingsBus"
+                                           [texts]="articlesFirmTextConfigBus"
+                                           [options]="indistrySelect"
+                                           [(ngModel)]="optionsModelBus"
+                                           formControlName="industry"
+                  ></ss-multiselect-dropdown>
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="businessForm.controls.industry.invalid && !businessForm.controls.industry.untouched">Please enter your Industry</span>
+                </div>
+                <div class="form-group required-icon-content">
+                  <ng-select placeholder="Company size" formControlName="companySize" [searchable]="false">
+                    <!--<ng-option value="null">Company size</ng-option>-->
+                    <ng-option [value]="1">1-10 employees</ng-option>
+                    <ng-option [value]="2">11-50 employees</ng-option>
+                    <ng-option [value]="3">50-200 employees</ng-option>
+                    <ng-option [value]="4">200-1000 employees</ng-option>
+                    <ng-option [value]="5">More than 1000 employees</ng-option>
+                  </ng-select>
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="businessForm.controls.companySize.invalid && !businessForm.controls.companySize.untouched">Please enter your Company size</span>
+
+                </div>
+                <div class="form-group position--relative required-icon-content">
+                  <textarea type="text" rows="6" class="form-control input-form textarea" #companyDescription formControlName="description" placeholder="Company description" maxlength="300"></textarea>
+                  <small class="form-text text-muted" style="top: 110px">{{ 300 - companyDescription.value.length }} characters</small>
+                  <!-- required field validation -->
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="businessForm.controls['description']?.invalid && !businessForm.controls['description'].untouched ">Please enter your Company description</span>
+                  <span class="help-bpx" *ngIf="businessForm.controls['description']?.errors?.maxlength && businessForm.controls['description'].touched">
+                    Company description must be less than 300 characters
+                  </span>
+
+                </div>
+                <div class="form-group">
+                  <span class="help-box" *ngIf="errorUpdate">{{ errorUpdate }}</span>
+                </div>
+                <button class="btn primary-button" [disabled]="businessForm.invalid" (click)="updateBusinessProfile()">Save & Next</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sixth-width padding-left--12">
+    <div class="table-information full-width achievements-mobile">
+      <div class="body">
+        <div class="row-table">
+          <input type="checkbox" class="accordions__checkbox" id="4">
+          <label class="accordions__heading" for="4">My preferences <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="row margin-bottom--18">
+              <h4 class="title-row">My preferences</h4>
+            </div>
+            <div class="row d-flex--direction-column">
+              <h4 class="subtitle-row">Username & Password</h4>
+              <form class="margin-bottom--32" [formGroup]="passwordForm">
+                <div class="form-group required-icon-content">
+                  <input type="password" formControlName="old_password" class="form-control input-form" placeholder="Old password" required>
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="passwordForm.controls.old_password.invalid && !passwordForm.controls.old_password.untouched">Old password entered is not correct</span>
+                </div>
+                <div class="form-group required-icon-content">
+                  <input type="password" formControlName="new_password" class="form-control input-form" placeholder="New password" required>
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="passwordForm.controls.new_password.invalid && !passwordForm.controls.new_password.untouched">Password must contain a minimum of 6 characters.</span>
+                </div>
+                <div class="form-group required-icon-content">
+                  <input type="password" formControlName="confirm_password" class="form-control input-form" placeholder="Confirm password" required>
+                  <span class="required-icon">*</span>
+                  <span class="help-box" *ngIf="passwordForm.controls.confirm_password.invalid && !passwordForm.controls.confirm_password.untouched">Passwords do not match</span>
+                </div>
+                <button class="btn primary-button" (click)="updatePassword()">Update password</button>
+              </form>
+              <h4 class="margin-top subtitle-row margin-bottom--12">Notifications</h4>
+              <span class="after-sub margin-bottom--18">How do you want to be notified</span>
+              <div class="margin-bottom--24 email-notification">
+                <div class="row padding-min">
+                  <div class="col-md-4 flex align-center padding-left--0">
+                    <span class="description-checkbox">Email</span>
+                  </div>
+                  <div class="col-md-4 flex align-center justify-right">
+                    <div class="switch__container">
+                      <input id="switch-shadow" class="switch switch--shadow" type="checkbox" [(ngModel)]="checkEmail" (click)="updatePreferenceNotificationEmail('checkEmail', checkEmail)">
+                      <label for="switch-shadow"></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h4 class="subtitle-row margin-bottom--12">Send me updates for</h4>
+              <div class="send-update padding-left--0 padding-right--0">
+                <!--<div class="row padding-m">
+                  <div class="col-md-2 flex align-center margin-bottom&#45;&#45;18 padding-left&#45;&#45;0">
+                    <p class="after-sub">New Candidates</p>
+                  </div>
+                  <div class="col-md-1 flex align-center justify-right">
+                    <div class="switch__container">
+                      <input id="switch-shadow9" [disabled]="!checkEmail" class="switch switch&#45;&#45;shadow" type="checkbox" [(ngModel)]="newCandidateStatus" (click)="updatePreferenceNotificationStatus('newCandidateStatus', newCandidateStatus)">
+                      <label for="switch-shadow9" [ngClass]="{'test-shadow': !checkEmail}"></label>
+                    </div>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center"></div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="newCandidateStatus">
+                      <input [disabled]="!checkEmail" [checked]="newCandidate === 2" type="checkbox" (click)="updatePreferenceNotification('newCandidate', 2)">
+                      <span class="lbl padding-8">Daily</span>
+                    </label>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="newCandidateStatus">
+                      <input [disabled]="!checkEmail" [checked]="newCandidate === 3" type="checkbox" (click)="updatePreferenceNotification('newCandidate', 3)">
+                      <span class="lbl padding-8">Weekly</span>
+                    </label>
+                  </div>
+                </div>-->
+                <div class="row padding-m">
+                  <div class="col-md-2 flex align-center margin-bottom--18 padding-left--0">
+                    <p class="after-sub">Job Approved</p>
+                  </div>
+                  <div class="col-md-1 flex align-center justify-right">
+                    <div class="switch__container">
+                      <input id="switch-shadow8" [disabled]="!checkEmail" class="switch switch--shadow" type="checkbox" [(ngModel)]="jobApproveStatus" (click)="updatePreferenceNotificationStatus('jobApproveStatus', jobApproveStatus)">
+                      <label for="switch-shadow8" [ngClass]="{'test-shadow': !checkEmail}"></label>
+                    </div>
+                  </div>
+                  <!--<div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="jobApproveStatus">
+                      <input [disabled]="!checkEmail" [checked]="jobApprove === 1" type="checkbox" (click)="updatePreferenceNotification('jobApprove', 1)">
+                      <span class="lbl padding-8">Immediate</span>
+                    </label>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="jobApproveStatus">
+                      <input [disabled]="!checkEmail" [checked]="jobApprove === 2" type="checkbox" (click)="updatePreferenceNotification('jobApprove', 2)">
+                      <span class="lbl padding-8">Daily</span>
+                    </label>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="jobApproveStatus">
+                      <input [disabled]="!checkEmail" [checked]="jobApprove === 3" type="checkbox" (click)="updatePreferenceNotification('jobApprove', 3)">
+                      <span class="lbl padding-8">Weekly</span>
+                    </label>
+                  </div>-->
+                </div>
+                <!--<div class="row padding-m">
+                  <div class="col-md-2 flex align-center margin-bottom&#45;&#45;18 padding-left&#45;&#45;0">
+                    <p class="after-sub">Job Declined</p>
+                  </div>
+                  <div class="col-md-1 flex align-center justify-right">
+                    <div class="switch__container">
+                      <input id="switch-shadow7" [disabled]="!checkEmail" class="switch switch&#45;&#45;shadow" type="checkbox" [(ngModel)]="jobDeclineStatus" (click)="updatePreferenceNotificationStatus('jobDeclineStatus', jobDeclineStatus)">
+                      <label for="switch-shadow7" [ngClass]="{'test-shadow': !checkEmail}"></label>
+                    </div>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="jobDeclineStatus">
+                      <input [disabled]="!checkEmail" [checked]="jobDecline === 1" type="checkbox" (click)="updatePreferenceNotification('jobDecline', 1)">
+                      <span class="lbl padding-8">Immediate</span>
+                    </label>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="jobDeclineStatus">
+                      <input [disabled]="!checkEmail" [checked]="jobDecline === 2" type="checkbox" (click)="updatePreferenceNotification('jobDecline', 2)">
+                      <span class="lbl padding-8">Daily</span>
+                    </label>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="jobDeclineStatus">
+                      <input [disabled]="!checkEmail" [checked]="jobDecline === 3" type="checkbox" (click)="updatePreferenceNotification('jobDecline', 3)">
+                      <span class="lbl padding-8">Weekly</span>
+                    </label>
+                  </div>
+                </div>-->
+                <div class="row padding-m">
+                  <div class="col-md-2 flex align-center margin-bottom--18 padding-left--0">
+                    <p class="after-sub">Candidate Applications</p>
+                  </div>
+                  <div class="col-md-1 flex align-center justify-right">
+                    <div class="switch__container">
+                      <input id="switch-shadow6" [disabled]="!checkEmail" class="switch switch--shadow" type="checkbox" [(ngModel)]="candidateApplicantStatus" (click)="updatePreferenceNotificationStatus('candidateApplicantStatus', candidateApplicantStatus)">
+                      <label for="switch-shadow6" [ngClass]="{'test-shadow': !checkEmail}"></label>
+                    </div>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="candidateApplicantStatus">
+                      <input [disabled]="!checkEmail" [checked]="candidateApplicant === 1" type="checkbox" (click)="updatePreferenceNotification('candidateApplicant', 1)">
+                      <span class="lbl padding-8">Immediate</span>
+                    </label>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="candidateApplicantStatus">
+                      <input [disabled]="!checkEmail" [checked]="candidateApplicant === 2" type="checkbox" (click)="updatePreferenceNotification('candidateApplicant', 2)">
+                      <span class="lbl padding-8">Daily</span>
+                    </label>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="candidateApplicantStatus">
+                      <input [disabled]="!checkEmail" [checked]="candidateApplicant === 3" type="checkbox" (click)="updatePreferenceNotification('candidateApplicant', 3)">
+                      <span class="lbl padding-8">Weekly</span>
+                    </label>
+                  </div>
+                </div>
+                <!--<div class="row padding-m">
+                  <div class="col-md-2 flex align-center margin-bottom&#45;&#45;18 padding-left&#45;&#45;0">
+                    <p class="after-sub">Candidate Declines</p>
+                  </div>
+                  <div class="col-md-1 flex align-center justify-right">
+                    <div class="switch__container">
+                      <input id="switch-shadow5" [disabled]="!checkEmail" class="switch switch&#45;&#45;shadow" type="checkbox" [(ngModel)]="candidateDeclineStatus" (click)="updatePreferenceNotificationStatus('candidateDeclineStatus', candidateDeclineStatus)">
+                      <label for="switch-shadow5" [ngClass]="{'test-shadow': !checkEmail}"></label>
+                    </div>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="candidateDeclineStatus">
+                      <input [disabled]="!checkEmail" [checked]="candidateDecline === 1" type="checkbox" (click)="updatePreferenceNotification('candidateDecline', 1)">
+                      <span class="lbl padding-8">Immediate</span>
+                    </label>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="candidateDeclineStatus">
+                      <input [disabled]="!checkEmail" [checked]="candidateDecline === 2" type="checkbox" (click)="updatePreferenceNotification('candidateDecline', 2)">
+                      <span class="lbl padding-8">Daily</span>
+                    </label>
+                  </div>
+                  <div class="col-md-3 flex align-center justify-center">
+                    <label *ngIf="candidateDeclineStatus">
+                      <input [disabled]="!checkEmail" [checked]="candidateDecline === 3" type="checkbox" (click)="updatePreferenceNotification('candidateDecline', 3)">
+                      <span class="lbl padding-8">Weekly</span>
+                    </label>
+                  </div>
+                </div>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>

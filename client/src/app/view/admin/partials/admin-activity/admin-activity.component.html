@@ -1,0 +1,203 @@
+<div class="title-description margin-bottom--24">
+  <h3 class="margin-bottom--12">Activity</h3>
+  <p>This is a record of what has been going on in the Admin section. You can search for activity records via the search bar or filter per Timestamp, User and/or Action.</p>
+</div>
+<div class="row margin-top--18 margin-bottom--18 d-flex d-flex--align-center d-flex--justify-between">
+  <div class="col-md-4 d-flex d-flex--justify-start d-flex--align-center padding-right--0 padding-left--0">
+    <input type="text" class="input-form full-width padding-right--40" placeholder="Search activity" #search (keyup.enter)="resetSorting();resetCurrentPage();getAdminLogging(search.value, dateStart.value, dateEnd.value, 1)">
+    <button class="btn btn-search margin-left--12" (click)="resetSorting();resetCurrentPage();getAdminLogging(search.value, dateStart.value, dateEnd.value, 1)"><i class="fas fa-search"></i></button>
+  </div>
+  <div class="col-md-2 margin-bottom--18"></div>
+  <div class="col-md-6 d-flex padding-left--0 padding-right--0 d-flex--direction-column">
+    <div class="row filter-block-nav">
+      <div class="col-md-12 padding-left--0 d-flex d-flex--align-center padding-right--0">
+        <h4 class="subtitle-row margin-bottom--0 margin-right--18">Filter</h4>
+        <div class="input-group margin-right--12 display-year">
+          <input placeholder="Date Start" class="form-control input-form" ngx-mydatepicker #dateStart [options]="myOptionsDate" #dp1="ngx-mydatepicker" />
+          <span class="input-group-btn margin-right--12">
+            <button type="button" class="btn btn-default" (click)="dp1.toggleCalendar()">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <div class="input-group display-year">
+          <input placeholder="Date End" class="form-control input-form" ngx-mydatepicker #dateEnd [options]="myOptionsDate" #dp2="ngx-mydatepicker"  />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" (click)="dp2.toggleCalendar()">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <button class="btn primary-button margin-left--12" (click)="resetCurrentPage();resetSorting();getAdminLogging(search.value, dateStart.value, dateEnd.value, 1)">Date apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row margin-bottom--18">
+  <ul *ngIf="totalItems > 0" class="pagination top">
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(1)">First</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(pager.currentPage - 1)">Previous</button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+      <button [ngClass]="{'primary-button': pager.currentPage === page}" class="btn default-button"
+              (click)="setPage(page)">{{ page }}</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.currentPage + 1)">Next</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.totalPages)">Last</button>
+    </li>
+  </ul>
+
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div (click)="sortCandidate('Timestamp')" class="column-table d-flex--justify-between " style="width: 20%">
+            <span class="title-column">Timestamp</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Timestamp'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Timestamp'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('User')" class="column-table d-flex--justify-between " style="width: 20%">
+            <span class="title-column">User</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='User'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'User'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div (click)="sortCandidate('Action')" class="column-table d-flex--justify-between " style="width: 30%">
+            <span class="title-column">Action</span>
+            <span class="sort-icons">
+              <ng-template [ngIf]="orderBy ==='Action'">
+                <i *ngIf="!orderSort" class="fas fa-sort-up"></i>
+                <i *ngIf="orderSort" class="fas fa-sort-down"></i>
+              </ng-template>
+              <ng-template [ngIf]="orderBy !== 'Action'">
+                <i class="fas fa-sort-up"></i>
+                <i class="fas fa-sort-down"></i>
+              </ng-template>
+            </span>
+          </div>
+          <div class="column-table d-flex--justify-between " style="width: 30%">Url</div>
+        </div>
+      </div>
+      <div class="body">
+        <div *ngIf="paginationLoader" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-6">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-table" *ngFor="let logging of loggingList">
+          <input type="checkbox" class="accordions__checkbox" id="{{ logging?.id }}">
+          <label class="accordions__heading" for="{{ logging?.id }}">{{ logging?.firstName }} {{ logging?.lastName }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table border-right-table" style="width: 20%">
+              <div class="title-cell">Timestamp</div>
+              <div class="description-cell">
+                <span>{{ logging?.created | date:'h:mm d MMM y' }}</span>
+              </div>
+            </div>
+            <div class="column-table acc border-right-table" style="width: 20%">
+              <div class="title-cell">User</div>
+              <div class="description-cell">
+                <span>{{ logging?.firstName }} {{ logging?.lastName }}</span>
+              </div>
+            </div>
+            <div class="column-table border-right-table" style="width: 30%">
+              <div class="title-cell">Action</div>
+              <div class="description-cell">
+                <span>{{ logging?.action }}</span>
+              </div>
+            </div>
+            <div class="column-table" style="width: 30%">
+              <div class="title-cell">Url</div>
+              <div class="description-cell">
+                <span class="job-popup-delete table-delete margin-bottom--0" routerLink="{{ logging?.type | urlLogging }}">{{ logging?.type | urlLogging }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-table not-found-search" *ngIf="loggingList.length === 0 && !paginationFilter && !paginationLoader">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Loggings not found</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="loggingList.length === 0 && paginationFilter" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <div class="loader-table44 margin-bottom--12" id="loader-44">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <ul *ngIf="totalItems > 0" class="pagination bottom">
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(1)">First</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === 1" class="btn default-button"
+              (click)="setPage(pager.currentPage - 1)">Previous</button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+      <button [ngClass]="{'primary-button': pager.currentPage === page}" class="btn default-button"
+              (click)="setPage(page)">{{ page }}</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.currentPage + 1)">Next</button>
+    </li>
+    <li>
+      <button [disabled]="pager.currentPage === pager.totalPages" class="btn default-button"
+              (click)="setPage(pager.totalPages)">Last</button>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>

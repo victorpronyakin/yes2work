@@ -1,0 +1,59 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    router:
+        resource: '%kernel.project_dir%/app/config/routing_dev.yml'
+        strict_requirements: true
+    profiler: { only_exceptions: false }
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
+
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+            channels: ['!event']
+        console:
+            type: console
+            process_psr_3_messages: false
+            channels: ['!event', '!doctrine', '!console']
+        # To follow logs in real time, execute the following command:
+        # `bin/console server:log -vv`
+        server_log:
+            type: server_log
+            process_psr_3_messages: false
+            host: 127.0.0.1:9911
+        # uncomment to get logging in your browser
+        # you may have to allow bigger header sizes in your Web server configuration
+        #firephp:
+        #    type: firephp
+        #    level: info
+        #chromephp:
+        #    type: chromephp
+        #    level: info
+
+#swiftmailer:
+#    delivery_addresses: ['me@example.com']
+
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Yes2Work Documentation
+            description: Yes2Work Documentation
+        securityDefinitions:
+            password:
+                type: oauth2
+                description: provides a password flow access_token
+                flow: password
+                tokenUrl: /oauth/v2/token
+                name: Authorization
+        security:
+            - password: []
+    areas:
+        path_patterns:
+            - ^/api(?!/doc$)

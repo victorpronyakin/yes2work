@@ -1,0 +1,120 @@
+<div class="title-description margin-bottom--24">
+  <h3 class="margin-bottom--24">Jobs Awaiting Approval</h3>
+</div>
+<div class="row">
+  <div class="d-flex d-flex--direction-column d-flex--align-start d-flex--justify-center full-width full-height">
+    <ng-select class="margin-bottom--32" style="width: 240px !important" placeholder="Approved Jobs" #jobStatus [searchable]="false" (change)="routerJobs(jobStatus)">
+      <ng-option [value]="'/business/approved_job'">Approved Jobs</ng-option>
+      <ng-option [value]="'/business/awaiting_job'">Jobs Awaiting Approval</ng-option>
+      <ng-option [value]="'/business/old_jobs'">Old Jobs</ng-option>
+    </ng-select>
+  </div>
+</div>
+<div class="row margin-bottom--24">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 30%">Job Title</div>
+          <div class="column-table d-flex--justify-center" style="width: 17%">Awaiting Approval</div>
+          <div class="column-table d-flex--justify-center" style="width: 17%">Shortlisted</div>
+          <div class="column-table d-flex--justify-center" style="width: 18%">Approved for Interview</div>
+          <div class="column-table d-flex--justify-center" style="width: 18%"></div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let job of businessJobs">
+          <input type="checkbox" class="accordions__checkbox" id="{{ job?.id }}">
+          <label class="accordions__heading" for="{{ job?.id }}">{{ job?.companyName }} - {{ job?.jobTitle }} <span class="accordion-item-cta">&#9650;</span></label>
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table acc border-right-table" style="width: 30%">
+              <div class="title-cell">Job Title</div>
+              <div class="description-cell full-width">
+                <h4 class=" title-description-cell margin-bottom--8">{{ job?.companyName }} - {{ job?.jobTitle }}</h4>
+                <div class="full-width d-flex margin-bottom--8">
+                  <span style="width: 35%;">Location:</span>
+                  <span style="width: 65%;">{{ job?.jobAddress }}</span>
+                </div>
+                <div class="full-width d-flex margin-bottom--8">
+                  <span style="width: 35%;">Date:</span>
+                  <span style="width: 65%;">{{ job?.jobCreated | date:'dd MMMM yyyy' }} - {{ job?.jobClosure | date:'dd MMMM yyyy' }}</span>
+                </div>
+              </div>
+            </div>
+            <!---->
+            <div class="acc-view column-table d-flex--justify-center border-right-table" style="width: 17%">
+              <div class="title-cell">Location</div>
+              <div class="description-cell">
+                <span>{{ job?.jobAddress }}</span>
+              </div>
+            </div>
+            <div class="acc-view column-table d-flex--justify-center border-right-table" style="width: 17%">
+              <div class="title-cell">Date</div>
+              <div class="description-cell">
+                <span>{{ job?.jobCreated | date:'dd MMMM yyyy' }} - {{ job?.jobClosure | date:'dd MMMM yyyy' }}</span>
+              </div>
+            </div>
+            <!---->
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 17%">
+              <div class="title-cell">Awaiting Approval</div>
+              <div class="description-cell cell-border-statistic">
+                <a routerLink="/business/applicants_awaiting" [queryParams]="{jobId: job.id}" class="cursor circle-table circle-table--red">{{ job?.awaitingCount }}</a>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 17%">
+              <div class="title-cell">Shortlisted</div>
+              <div class="description-cell cell-border-statistic">
+                <a routerLink="/business/applicants_shortlist" [queryParams]="{jobId: job.id}" class="cursor circle-table circle-table--yellow">{{ job?.shortListCount }}</a>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 18%">
+              <div class="title-cell">Approved for Interview</div>
+              <div class="description-cell cell-border-statistic">
+                <a routerLink="/business/applicants_approved" [queryParams]="{jobId: job.id}" class="cursor circle-table circle-table--green">{{ job?.approvedCount }}</a>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center closure-date desktop-none" style="width: 18%">
+              <div class="title-cell">Days to Closure</div>
+              <div class="description-cell cell-border-statistic">
+                <span>{{ job?.jobClosure | closureDay }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center button-cell" style="width: 18%">
+              <div class="title-cell"></div>
+              <div class="description-cell second-button">
+                <a class="view-popup-icon margin-right--8" *ngIf="job?.status" (click)="closeBusinessJob(job)"><i class="fas fa-times-circle"></i></a>
+                <a class="view-popup-icon margin-right--8" *ngIf="job?.status" routerLink="/business/jobs/edit/{{ job?.id }}"><i class="fas fa-pencil-alt"></i></a>
+                <a class="view-popup-icon margin-right--8" (click)="openVerticallyCentered(businessJob, job?.id)"><i class="fa fa-eye"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-table" *ngIf="businessJobs.length === 0">
+          <div class="content-row d-flex accordions__content">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Jobs not found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="loadMoreCheck && !paginationLoader" class="job-popup-delete" (click)="loadPagination()">Load more</span>
+    <div *ngIf="paginationLoader" class="loader-table margin-bottom--12" id="loader-6">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</div>
+<ng-template #businessJob let-cc="close" let-dc="dismiss">
+  <app-business-job-popup [closePopup]="dc"
+                          [currentBusinessJobId]="currentlyOpenedBusinessJobId"
+                          [businessJobs]="businessJobs"
+                          (deleteJob)="deleteJob($event)"
+                          (closeJob)="closeJob($event)"
+  ></app-business-job-popup>
+</ng-template>
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>

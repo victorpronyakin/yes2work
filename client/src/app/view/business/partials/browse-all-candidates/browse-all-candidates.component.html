@@ -1,0 +1,281 @@
+<div class="title-description margin-bottom--10">
+  <h3 class="margin-bottom--10">Browse All Candidates</h3>
+  <p style="font-weight: 500;">Disclaimer: These candidates have had no sight of the industry of your company, the type of opportunity you are recruiting for or the physical location of your organisation. The candidates you select may therefore not be interested in the opportunity which is presented to them.</p>
+  <p style="font-weight: 500;">We recommend you create a job and select your candidates from the applicants to streamline the process for you. </p>
+</div>
+<div class="row margin-bottom--24 d-flex d-flex--justify-between">
+  <div class="col-md-8 d-flex d-flex--justify-start d-flex--align-center padding-right--0 padding-left--0 browse-all-cand-filter">
+    <span class="margin-right--12">Search candidates</span>
+    <div class="position--relative">
+      <input type="text" class="input-form padding-right--40" placeholder="Search all Candidates" #search (keyup.enter)="resetArrayPagination();fetchCandidatesByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)">
+      <button class="btn btn-search margin-left--12" (click)="resetArrayPagination();fetchCandidatesByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)"><i class="fas fa-search"></i></button>
+    </div>
+  </div>
+  <div class="col-md-4 rendering-icon full-width d-flex d-flex--justify-end">
+    <button (click)="statusRendiring(true)" [ngClass]="{'active': renderingApplicants}"><i class="fas fa-bars"></i></button>
+    <button (click)="statusRendiring(false)" [ngClass]="{'active': !renderingApplicants}"><i class="fas fa-th-large"></i></button>
+  </div>
+</div>
+<div class="row margin-bottom--24 filter-title">
+  <div #filterItem (click)="openMoreFilters(); fetchCandidatesCountByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)" class="filter-item d-flex d-flex--justify-between full-width">
+    <span>filter candidates
+      <i *ngIf="!checkOpenFilters" class="fas fa-angle-down"></i>
+      <i *ngIf="checkOpenFilters" class="fas fa-angle-up"></i>
+    </span>
+    <a #openButton>Open more filters</a>
+  </div>
+</div>
+<div class="filter-background" #filterFont></div>
+<div class="row more-filter" #openFilters>
+  <div class="col-md-12 select-groups d-flex d-flex--align-center d-flex--justify-start d-flex--wrap">
+    <form [formGroup]="filterForm" class="d-flex--justify-between col-md-12 d-flex d-flex--align-center d-flex--wrap">
+      <div class="form-group margin-right--12 d-flex d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="articlesFirmOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="articlesFirmTextConfig"
+                                 [(ngModel)]="articlesFirmPredefined"
+                                 #articlesFirm
+                                 formControlName="articlesFirm"
+                                 (ngModelChange)="specifiedArticlesFirmCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)"></ss-multiselect-dropdown>
+      </div>
+      <!-- articles firm -->
+      <!--<div class="form-group margin-right&#45;&#45;12 d-flex&#45;&#45;direction-column">
+        <ng-select placeholder="Video" formControlName="video" #video [searchable]="false" (change)="fetchCandidatesCountByCriteria(articlesFirmSelectedName, gender.selectedValues[0], qualification.selectedValues[0], nationality.selectedValues[0], ethnicity.selectedValues[0], null, location.selectedValues[0], availability.selectedValues[0])">
+          &lt;!&ndash;<ng-option [value]="null">Video</ng-option>&ndash;&gt;
+          <ng-option [value]="0">All</ng-option>
+          <ng-option [value]="1">With video</ng-option>
+        </ng-select>
+      </div>-->
+      <!-- video -->
+      <div class="form-group margin-right--12 d-flex d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="genderOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="configGender"
+                                 [(ngModel)]="genderModel"
+                                 #gender
+                                 formControlName="gender"
+                                 (ngModelChange)="fetchCandidatesCountByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- gender -->
+      <div class="form-group d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="availabilityOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="configAvailability"
+                                 [(ngModel)]="availabilityModel"
+                                 #availability
+                                 formControlName="availability"
+                                 (ngModelChange)="fetchCandidatesCountByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- availability -->
+      <div class="form-group margin-right--12 d-flex d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="ethnicityOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="configEthnicity"
+                                 [(ngModel)]="ethnicityModel"
+                                 #ethnicity
+                                 formControlName="ethnicity"
+                                 (ngModelChange)="fetchCandidatesCountByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- ethnicity -->
+      <div class="form-group d-flex--direction-column margin-right--12">
+        <ss-multiselect-dropdown [options]="locationOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="configLocation"
+                                 [(ngModel)]="locationModel"
+                                 #location
+                                 formControlName="location"
+                                 (ngModelChange)="fetchCandidatesCountByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- location -->
+      <div class="form-group margin-right--12">
+        <ss-multiselect-dropdown [options]="qualificationOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="configQualification"
+                                 [(ngModel)]="qualificationModel"
+                                 #qualification
+                                 formControlName="qualification"
+                                 (ngModelChange)="fetchCandidatesCountByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- qualification -->
+      <div class="form-group margin-right--12 d-flex d-flex--direction-column">
+        <ss-multiselect-dropdown [options]="nationalityOptions"
+                                 [settings]="articlesFirmSettings"
+                                 [texts]="configNationality"
+                                 [(ngModel)]="nationalityModel"
+                                 #nationality
+                                 formControlName="nationality"
+                                 (ngModelChange)="fetchCandidatesCountByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)"
+        ></ss-multiselect-dropdown>
+      </div>
+      <!-- nationality -->
+      <div class="form-group margin-right--12 d-flex d-flex--direction-column date-filter-applicant">
+        <div class="input-group margin-right--12 display-year">
+          <input autocomplete="off" class="form-control input-form" formControlName="articlesCompletedStart" [(ngModel)]="selectedDateStart" placeholder="Articles completed from" [dpDayPicker]="config" [mode]="'month'"
+                 (ngModelChange)="fetchCandidatesCountByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)"
+          />
+        </div>
+        <div class="input-group display-year">
+          <input autocomplete="off" class="form-control input-form" formControlName="articlesCompletedEnd" [(ngModel)]="selectedDateEnd" placeholder="Articles completed to" [dpDayPicker]="config" [mode]="'month'"
+                 (ngModelChange)="fetchCandidatesCountByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)"
+          />
+        </div>
+      </div>
+      <!-- month picker -->
+    </form>
+    <div class="row full-width d-flex--justify-end">
+      <button class="btn reset-btn" (click)="resetFilterForm()"><i class="fas fa-redo-alt"></i> reset filters</button>
+      <span class="total-count margin-left--16"><span>{{ totalCountFilter }}</span> Candidates</span>
+      <button class="btn primary-button margin-left--16" (click)="resetArrayPagination();fetchCandidatesByCriteria(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)">Search</button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <h4 class="subtitle-row" *ngIf="candidatesCountMatchingCriteria"> {{ candidatesCountMatchingCriteria }} candidates</h4>
+  <h4 class="subtitle-row" *ngIf="!candidatesCountMatchingCriteria">0 candidates</h4>
+</div>
+<div class="row margin-bottom--24">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <div class="table-information full-width margin-bottom--24" #rendering (window:resize)="onResize()">
+      <div class="head">
+        <div class="row-table d-flex">
+          <div class="column-table" style="width: 20%">Candidate name</div>
+          <div class="column-table d-flex--justify-center" style="width: 20%">Articles firm</div>
+          <div class="column-table d-flex--justify-center" style="width: 20%">Articles completed</div>
+          <div class="column-table d-flex--justify-center" style="width: 20%">Availability</div>
+          <div class="column-table d-flex--justify-center" style="width: 20%">Most recent employer</div>
+          <div class="column-table d-flex--justify-center margin-right--15" style="width: 20%">Most recent role</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row-table" *ngFor="let candidate of candidatesList">
+          <div class="content-row d-flex">
+            <div class="column-table acc border-right-table" style="width: 20%">
+              <div class="description-cell full-width d-flex d-flex--align-center image-cell">
+              <span class="applicant-avatar margin-right--12">
+                <img *ngIf="candidate?.picture !== null && candidate?.picture.length > 0" src="{{ candidate?.picture }}" alt="candidate image" class="applicant_image" onerror="this.style.opacity='0'">
+                <img *ngIf="candidate?.picture === null || candidate?.picture.length === 0" src="/assets/img/placeholders/placeholder.png" alt="candidate image" class="applicant_image" onerror="this.style.opacity='0'">
+              </span>
+                <h4 class="title-description-cell">{{ candidate?.firstName }} {{ candidate?.lastName.charAt(0) }}</h4>
+                <button *ngIf="candidate.video" (click)="openVerticallyCentered(videoPopup, candidate)" class="btn btn-interview margin-right--8 display-none"><i class="fas fa-play-circle"></i> Video Interview</button>
+                <!--<a *ngIf="!candidate?.cvFiles && !renderingApplicants || candidate?.cvFiles?.length === 0 && !renderingApplicants" href="#" class="btn btn-interview down margin-right&#45;&#45;12 disabled"><i class="fas fa-download"></i> Preview CV</a>-->
+                <a *ngIf="candidate?.cvFiles?.length > 0 && !renderingApplicants" (click)="openVerticallyCenter(content)" class="btn btn-interview down margin-right--12"><i class="fas fa-download"></i> Preview CV</a>
+
+                <ng-template #content let-c="close" let-d="dismiss">
+                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <div class="modal-body">
+                    <div class="iframe-cv"  *ngFor="let file of candidate?.cvFiles">
+                      <iframe class="doc" [src]="file?.adminUrl | urlType" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                      <a *ngIf="file.approved" href="{{ file?.adminUrl }}" download="{{ file?.adminUrl }}" target="_blank" class="btn btn-interview doc-t margin-right--12"><i class="fas fa-download"></i> Download CV</a>
+                    </div>
+                  </div>
+                </ng-template>
+
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table position--relative" style="width: 22%">
+              <div class="title-cell">Articles firm</div>
+              <div class="description-cell img-articles">
+                <img *ngIf="candidate?.articlesFirm !== 'Other'" class="logo-table" src="/assets/img/logo_table/{{ candidate?.articlesFirm | notSpace }}.jpg" #img (load)="hideArticlesFirm(img)" onerror="this.style.display='none';this.style.opacity='0'">
+                <span *ngIf="candidate?.articlesFirm !== 'Other'" class="after_no-img">{{ candidate?.articlesFirm  }}</span>
+                <span *ngIf="candidate?.articlesFirm === 'Other'">{{ candidate?.articlesFirmName }}</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 19%">
+              <div class="title-cell">Articles completed</div>
+              <div class="description-cell">
+                <span *ngIf="candidate?.dateArticlesCompleted">{{ candidate?.dateArticlesCompleted | date:"MMM ‘yy" }}</span>
+                <span *ngIf="!candidate?.dateArticlesCompleted">-</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 20%">
+              <div class="title-cell">Availability</div>
+              <div class="description-cell">
+                <span *ngIf="candidate?.availability === false">{{ candidate?.dateAvailability }}</span>
+                <span *ngIf="candidate?.availability === true">Immediately</span>
+                <span *ngIf="candidate?.availability === null">-</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table" style="width: 19%">
+              <div class="title-cell">Most recent employer</div>
+              <div class="description-cell">
+                <span *ngIf="candidate?.employer">{{ candidate?.employer }}</span>
+                <span *ngIf="!candidate?.employer">-</span>
+              </div>
+            </div>
+            <div class="column-table d-flex--justify-center border-right-table margin-right--15" style="width: 19%">
+              <div class="title-cell">Most recent role</div>
+              <div class="description-cell">
+                <span>{{ candidate?.role }}</span>
+                <span *ngIf="!candidate?.role">-</span>
+              </div>
+            </div>
+          </div>
+          <div class="content-row margin-bottom--8">
+            <div class="column-table d-flex--justify-center button-cell" style="width: 100%">
+              <div class="title-cell"></div>
+              <div class="description-cell second-button">
+                <button [disabled]="!candidate.video" (click)="openVerticallyCentered(videoPopup, candidate)" class="btn btn-interview margin-right--8"><i class="fas fa-play-circle"></i> Video Interview</button>
+                <button class="btn primary-button" (click)="openVerticallyCentered(candidateDetailsPopup, candidate, 'true')">View full profile</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="candidatesList.length === 0" class="row-table not-found-search">
+          <div class="content-row d-flex">
+            <div class="column-table d-flex--justify-center" style="width: 100%">
+              <span>Candidates not found!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="loadMoreCheck && !paginationLoader" class="job-popup-delete" (click)="loadPagination(search.value, articlesFirmSelectedName, genderModel, qualificationModel, nationalityModel, ethnicityModel, null, locationModel, availabilityModel, selectedDateStart, selectedDateEnd)">Load more</span>
+    <div *ngIf="paginationLoader" class="loader-table margin-bottom--12" id="loader-6">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</div>
+<ng-template #candidateDetailsPopup let-cc="close" let-dc="dismiss">
+  <app-browse-all-candidates-view-details-popup [closePopup]="dc"
+                                                [candidateToView]="candidateToView"
+                                                [listOfJobs]="listOfJobs"
+                                                [viewPopup]="viewPopup"
+  ></app-browse-all-candidates-view-details-popup>
+</ng-template>
+
+<ng-template #videoPopup let-cd="close" let-dd="dismiss">
+  <app-business-video-popup [closePopup]="dd"
+                            [candidateToView]="candidateToView"
+  ></app-business-video-popup>
+</ng-template>
+
+<ng-template #contentPage let-c="close" let-d="dismiss">
+  <div class="modal-header d-flex d-flex--justify-center">
+    <h4 class="modal-title">disclaimer</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')" style="color: #fff; opacity: 1;">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1rem 2rem;">
+    <span class="job-popup-desc" style="line-height: 17px; font-size: 15px; color: #000; font-weight: 500;">These candidates have had no sight of the industry of your company, the type of opportunity you are recruiting for or the physical location of your organisation. The candidates you select may therefore not be interested in the opportunity which is presented to them.</span>
+    <span class="job-popup-desc" style="line-height: 17px; font-size: 15px; color: #000; font-weight: 500;">We recommend you create a job and select your candidates from the applicants to streamline the process for you.</span>
+    <div class="d-flex d-flex--justify-around margin-bottom--12">
+      <button (click)="d('Cross click')" class="btn primary-button">GOT IT</button>
+    </div>
+    <!--<a (click)="" class="job-popup-delete">No</a>-->
+  </div>
+</ng-template>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>

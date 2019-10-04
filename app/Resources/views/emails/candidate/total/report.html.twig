@@ -1,0 +1,39 @@
+{% block body_html %}
+    Hey {{ firstName }} {{ lastName }}!<br>
+
+    <!-- Candidate JOB_OPPORTUNITY -->
+    {% if types.jobOpportunity is defined and types.jobOpportunity is not empty %}
+        <h3>Your invitations to the interview({{ types.jobOpportunity|length }}):</h3>
+        <ol>
+            {% for item in types.jobOpportunity %}
+                <option>{{ loop.index }}. An interview for the job {{ item.jobTitle }}.</option>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    <!-- Candidate INTERVIEW_UPCOMING -->
+    {% if types.interviewUpcoming is defined and types.interviewUpcoming is not empty %}
+        <h3>Your applications have been approved({{ types.interviewUpcoming|length }}):</h3>
+        <ol>
+            {% for item in types.interviewUpcoming %}
+                <option>{{ loop.index }}. At the job post - {{ item.jobTitle }}.</option>
+            {% endfor %}
+        </ol>
+        <br>
+        Admin contact you to create an interviews.
+    {% endif %}
+
+    <!-- Candidate JOB_APPLICATION -->
+    {% if types.jobApplication is defined and types.jobApplication is not empty %}
+        <h3>Your applications have been rejected({{ types.jobApplication|length }}):</h3>
+        <ol>
+            {% for item in types.jobApplication %}
+                <option>{{ loop.index }}. At the job post - {{ item.jobTitle }}.</option>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    <br><br>
+    Regards,<br>
+    the Yes2Work.
+{% endblock %}

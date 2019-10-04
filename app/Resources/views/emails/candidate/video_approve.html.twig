@@ -1,0 +1,10 @@
+{% extends 'emails/base_email.html.twig' %}
+{% block body_html %}
+    Hi {{ candidate.firstName }}
+    <br><br>
+    Your video that you recently uploaded on Yes2Work has been approved.
+    <br><br>
+    To view your profile please click <a href="{{ link }}">here</a>
+    <br><br>
+    Get hold of us on <a href="mailto:support@yes2work.co.za">support@yes2work.co.za</a> if you have any questions or feedback.
+{% endblock %}

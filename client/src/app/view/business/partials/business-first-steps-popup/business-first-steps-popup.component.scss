@@ -1,0 +1,47 @@
+.first-popup{
+  .modal-title{
+    font-size: 24px;
+    font-weight: 700;
+    color: #0073cf;
+    text-align: center;
+  }
+
+  .modal-popup-footer{
+    .col-md-12{
+      &:first-child{
+        color: #414041;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.cursors{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-popup{
+  font-weight: 300;
+  font-size: 13px;
+  color: #767676;
+  text-align: center;
+  width: 100%;
+
+  & > p{
+    line-height: 17px;
+  }
+}
+
+.img-popup{
+  border: 3px solid #0076cf;
+  border-radius: 50%;
+  width: 98px;
+  height: 98px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}

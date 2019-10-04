@@ -1,0 +1,86 @@
+<div class="popup-job-container">
+  <div class="modal-header">
+    <h4 class="modal-title">full job</h4>
+    <button type="button" class="close d-flex" aria-label="Close" (click)="closePopup('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- modal-header -->
+  <div class="modal-body jobs-body">
+    <div class="top-title-job d-flex d-flex--align-center d-flex--justify-between margin-bottom--24">
+      <div class="d-flex d-flex--align-center d-flex--justify-start">Application closes:  -</div>
+      <div *ngIf="checkDate === 1" class="d-flex d-flex--align-center d-flex--justify-start">{{ remaining }} Days left</div>
+    </div>
+    <div class="job-details-container d-flex d-flex--align-center margin-bottom--24">
+      <div class="row full-width">
+        <div class="col-md-6 padding-left--0">
+          <div class="row">
+            <div class="col-md-6 padding-left--0">
+              <h6 class="title-decs-popup-text div d-flex d-flex&#45;&#45;align-center margin-bottom&#45;&#45;8">Job Title: </h6>
+            </div>
+            <div class="col-md-6 padding-right--0 margin-bottom--8">
+              <span class="decs-popup-text">{{ candidateJobInformation?.jobTitle }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 padding-left--0">
+              <h6 class="title-decs-popup-text div d-flex d-flex&#45;&#45;align-center margin-bottom&#45;&#45;8">Industry: </h6>
+            </div>
+            <div class="col-md-6 padding-right--0 margin-bottom--8">
+              <span class="decs-popup-text">{{ candidateJobInformation?.industry | industryList }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 padding-left--0">
+              <h6 class="title-decs-popup-text div d-flex d-flex&#45;&#45;align-center margin-bottom&#45;&#45;24">Location: </h6>
+            </div>
+            <div class="col-md-6 padding-right--0 margin-bottom--8">
+              <span class="decs-popup-text" style="display: flex; align-items: center;">{{ candidateJobInformation?.addressCity }}{{obj.distance}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 padding-left--0">
+              <h6 class="title-decs-popup-text div d-flex d-flex&#45;&#45;align-center margin-bottom&#45;&#45;24">Period to Apply: </h6>
+            </div>
+            <div class="col-md-6 padding-right--0 margin-bottom--8">
+              <span class="decs-popup-text">{{ candidateJobInformation?.createdDate | date: 'd MMM y' }} - {{ candidateJobInformation?.endDate | date: 'd MMM y' }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 padding-left--0">
+              <h6 class="title-decs-popup-text div d-flex d-flex&#45;&#45;align-center margin-bottom&#45;&#45;24">Job Start Date: </h6>
+            </div>
+            <div class="col-md-6 padding-right--0 margin-bottom--8">
+              <span class="decs-popup-text">-</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 padding-right--0">
+          <div class="row">
+            <div class="col-md-12 padding-right--0 d-flex d-flex--justify-end d-flex--align-center" *ngIf="_statusButtonJob === 1">
+              <button class="btn danger-button margin-right--12" (click)="declineJobAlerts(candidateJobInformation?.id)">Decline</button>
+              <button class="btn primary-button" (click)="applyJobAlerts(candidateJobInformation?.id)">Apply</button>
+            </div>
+            <div class="col-md-12 padding-right--0 d-flex d-flex--justify-end" *ngIf="_statusButtonJob === 2">
+              <button class="btn primary-button" (click)="reApplyJobAlerts(candidateJobInformation?.id)">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- job-details-container -->
+    <div class="company-description-container d-flex d-flex--align-start d-flex--direction-column">
+      <h5 class="title-decs-popup-text company-description-container__title margin-bottom--16">Company Description</h5>
+      <p class="decs-popup-text margin-bottom--16">{{ candidateJobInformation?.companyDescription }}</p>
+      <div class="border-bottom full-width"></div>
+      <h5 class="title-decs-popup-text company-description-container__title margin-top--16 margin-bottom--16">Job Description</h5>
+      <p class="decs-popup-text margin-bottom--24">{{ candidateJobInformation?.roleDescription }}</p>
+    </div>
+    <!-- company-description-container -->
+  </div>
+  <!-- modal-body -->
+
+  <div *ngIf="loaderPopup" id="preloaderPopup">
+    <div id="loaderPopup" style="position: absolute"></div>
+  </div>
+</div>

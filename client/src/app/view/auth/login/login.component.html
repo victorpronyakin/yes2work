@@ -1,0 +1,96 @@
+<div *ngIf="activeProfile" class="margin-bottom--18">
+  <div class="d-flex after-registration-cloud">
+    <h3>Your request has been sent</h3>
+    <img class="first" src="assets/img/1.png">
+  </div>
+</div>
+<div class="login-box">
+  <h4 *ngIf="checkForgot" class="title-row d-flex margin-bottom--12 d-flex--justify-center">Login to Yes2Work</h4>
+  <div *ngIf="checkForgot" class="col-lg-12 login-form">
+    <div class="col-lg-12 login-form">
+      <form [formGroup]="loginForm">
+        <div class="form-group position--relative">
+          <input type="text" class="form-control auth-input" formControlName="login" placeholder="Email address">
+          <label class="requared-label">We require this</label>
+        </div>
+        <span class="help-bpx margin-bottom--12" *ngIf="loginForm.controls.login.invalid && !loginForm.controls.login.untouched">Please enter a valid email address.</span>
+        <div class="form-group position--relative margin-bottom--12">
+          <input type="password" class="form-control auth-input" formControlName="password" placeholder="Password">
+          <label class="requared-label">We require this</label>
+        </div>
+        <span class="help-bpx margin-bottom--12" *ngIf="loginForm.controls.password.invalid && !loginForm.controls.password.untouched">Password incorrect.</span>
+        <div class="form-group forgot-password">
+          <span class="forgot-pass" (click)="transitionForgot()">Forgot Password</span>
+        </div>
+        <div class="form-group">
+          <span class="help-bpx" *ngIf="errorRegistration">{{ errorRegistration }}</span>
+        </div>
+        <div class="col-lg-12 loginbttm padding-right--0 padding-left--0">
+          <div class="col-lg-12 login-btm login-button padding-right--0 padding-left--0">
+            <button *ngIf="!buttonPreloader" type="submit" class="btn primary-button full-width" (click)="login()">Login</button>
+            <button *ngIf="buttonPreloader" class="btn primary-button position--relative full-width">
+              <div class="loader--tiny"></div>
+              Login
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <h4 *ngIf="showPatForgot" class="title-row d-flex margin-bottom--12 d-flex--justify-center d-flex--align-center position--relative"><a class="back-login" (click)="backLogin()"><i class="fas fa-arrow-left"></i></a>Forgot Password?</h4>
+  <h3 *ngIf="showPatForgot" class="subs-text d-flex margin-bottom--32 d-flex--justify-center text-align--center">Fill in your email address below and we will send you a reset link to your email</h3>
+  <div *ngIf="showPatForgot" class="custom-form col-lg-12 login-form">
+    <div class="col-lg-12 login-form margin-bottom--24">
+      <form [formGroup]="forgotPasswordForm">
+        <div class="form-group position--relative margin-bottom--24">
+          <input type="text" class="form-control auth-input" formControlName="email" placeholder="Email Address">
+          <label class="requared-label">We require this</label>
+        </div>
+        <span class="help-bpx margin-bottom--12" *ngIf="forgotPasswordForm.controls.email.invalid && !forgotPasswordForm.controls.email.untouched">Please enter the Email</span>
+        <div class="form-group">
+          <span class="help-bpx" *ngIf="errorRegistration">{{ errorRegistration }}</span>
+        </div>
+        <button *ngIf="!buttonPreloader" type="submit" class="btn primary-button full-width" (click)="forgotPassword()">Submit</button>
+        <button *ngIf="buttonPreloader" class="btn primary-button position--relative full-width">
+          <div class="loader--tiny"></div>
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <h4 *ngIf="showPat" class="title-row d-flex margin-bottom--12 d-flex--justify-center d-flex--align-center position--relative">Password reset email has been submitted</h4>
+  <h3 *ngIf="showPat" class="subs-text d-flex margin-bottom--32 d-flex--justify-center text-align--center">An email has been sent to you. Please check your inbox and select the link provided.</h3>
+  <div *ngIf="showPat" class="custom-form col-lg-12 login-form">
+    <div class="col-lg-12 login-form margin-bottom--24">
+      <button style="display: block; margin: 0 auto; margin-top: 15px;" type="submit" class="btn primary-button full-width margin-left--16" (click)="backToLogin()">Back to Login</button>
+    </div>
+  </div>
+
+  <h4 *ngIf="notAccount" class="title-row d-flex margin-bottom--12 d-flex--justify-center text-align--center d-flex--align-center position--relative">Your account has been Registered but is currently awaiting approval from Yes2Work.</h4>
+  <div *ngIf="notAccount" class="custom-form col-lg-12 login-form">
+    <div class="col-lg-12 login-form margin-bottom--24">
+      <button style="display: block; margin: 0 auto; margin-top: 15px;" type="submit" class="btn primary-button full-width margin-left--16" (click)="backToLogin()">Back Home</button>
+    </div>
+  </div>
+
+  <h4 *ngIf="deactiveProfile" class="title-row d-flex margin-bottom--12 d-flex--justify-center text-align--center d-flex--align-center position--relative">Your account has been deactivated by Yes2Work.</h4>
+  <h3 *ngIf="deactiveProfile" class="subs-text reactive-sub d-flex margin-bottom--32 d-flex--justify-center text-align--center">To reactivate your account, please select the "Reactivate Account" button below and a consultant from Yes2Work will be in touch.</h3>
+  <div *ngIf="deactiveProfile" class="custom-form col-lg-12 login-form">
+    <div class="col-lg-12 login-form margin-bottom--24">
+      <button style="display: block; margin: 0 auto; margin-top: 15px;" type="submit" class="btn primary-button full-width margin-left--16" (click)="reactivatedAccount()">Reactive Account</button>
+    </div>
+  </div>
+
+
+  <h4 *ngIf="activeProfile" class="title-row d-flex margin-bottom--12 d-flex--justify-center d-flex--align-center position--relative text-align--center">
+      Please allow for 24 hours for feedback. If you have not received a mail back from Yes2Work please check you Junk and Other inboxes. 
+      Alternatively please contact Yes2Work on support@yes2work.co.za
+  </h4>
+  <div *ngIf="activeProfile" class="custom-form col-lg-12 login-form">
+    <div class="col-lg-12 login-form margin-bottom--24">
+      <button style="display: block; margin: 0 auto; margin-top: 15px;" type="submit" class="btn primary-button full-width margin-left--16" (click)="backToLogin()">Back Home</button>
+    </div>
+  </div>
+</div>

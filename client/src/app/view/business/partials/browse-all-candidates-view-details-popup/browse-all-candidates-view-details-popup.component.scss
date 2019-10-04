@@ -1,0 +1,93 @@
+.candidate-details {
+  &__name {
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #333;
+  }
+
+  &__panels {
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  .certificaltes-list {
+
+    li {
+      padding: 5px 0;
+
+      a {
+        color: #333;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.achievement-block,
+.reference-block {
+  padding: 10px 0;
+  border-bottom: 1px solid #e1e1e1;
+
+  p {
+    line-height: 18px;
+  }
+}
+
+.cancel-popup{
+  cursor: pointer;
+  top: 9px;
+  position: relative;
+}
+
+
+@media screen and (max-width: 575px){
+  .modal-footer{
+    .row{
+      .video-holder__buttons-wrap{
+        & > div{
+          align-items: baseline;
+
+          .col-md-6{
+            padding-right: 0;
+
+            &.mobile-flex-end{
+              padding-left: 0;
+              padding-right: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.doc{
+  width: 100%;
+  min-height: 400px;
+  margin-bottom: 10px;
+}
+.close{
+  &.cv{
+    position: absolute;
+    right: 6px;
+    top: 1px;
+    color: #000;
+    opacity: .9;
+    font-size: 28px;
+    z-index: 1;
+  }
+}
+.modal-body{
+  &.cv{
+    padding: 30px;
+  }
+}
+.btn-interview{
+  width: 180px;
+  padding: 5px;
+  justify-content: center;
+  margin-bottom: 30px;
+  color: #fff !important;
+}

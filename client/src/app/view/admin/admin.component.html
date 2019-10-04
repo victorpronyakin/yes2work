@@ -1,0 +1,18 @@
+<div class="dashboard">
+  <app-admin-navbar></app-admin-navbar>
+  <div class="container-fluid container-page padding-left--100 padding-right--0">
+    <div class="row full-height">
+      <app-admin-sidebar></app-admin-sidebar>
+      <div class="content-page-column full-height position--relative">
+        <div class="content-page padding-right--100 padding-left--0">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-admin-footer></app-admin-footer>
+</div>
+
+<div *ngIf="sharedService.preloaderView" id="preloaderView">
+  <div id="loader"></div>
+</div>

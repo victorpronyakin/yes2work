@@ -1,0 +1,90 @@
+<div class="sidebar-column" [ngClass]="{'active': this.sharedService.checkSidebar}">
+  <div class="sidebar">
+    <ul class="accordion css-accordion">
+      <li class="accordion-item mobile-display">
+        <span (click)="openSidebar()" class="mobile-close-icon"><i class="fas fa-times"></i></span>
+      </li>
+      <li class="accordion-item">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" routerLink="/admin/dashboard" routerLinkActive="active-link"><img class="margin-right--12" src="/assets/img/icons/dashboard_icon.png"> dashboard</label>
+      </li>
+      <li class="accordion-item" routerLinkActive="active-link">
+        <input class="accordion-item-input" type="checkbox" name="accordion" id="item1"
+               [(ngModel)]="clientLinkStatus"/>
+        <label routerLinkActive="active-link" for="item1" class="accordion-item-hd"><img class="margin-right--12" src="/assets/img/icons/4.png"> clients<span class="accordion-item-hd-cta">&#9650;</span></label>
+        <div class="accordion-item-bd" routerLinkActive="active-link">
+          <ul>
+            <li class="cursor outline--none" routerLink="/admin/new_clients" routerLinkActive="active-link"><a>New client awaiting approval <span *ngIf="sharedService.sidebarAdminBadges.clientNew > 0" class="alert-budger danger">{{ sharedService.sidebarAdminBadges.clientNew }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/admin/client_document" routerLinkActive="active-link"><a>Employer document awaiting approval <span *ngIf="sharedService.sidebarAdminBadges?.clientFiles > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges?.clientFiles }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/admin/all_clients" routerLinkActive="active-link"><a>All clients <span *ngIf="sharedService.sidebarAdminBadges.clientAll > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges.clientAll }}</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="accordion-item" routerLinkActive="active-link">
+        <input class="accordion-item-input" type="checkbox" name="accordion" id="item2"
+               [(ngModel)]="jobLinkStatus"/>
+        <label for="item2" class="accordion-item-hd"><img class="margin-right--12" src="/assets/img/icons/jobs_icon.png">jobs<span class="accordion-item-hd-cta">&#9650;</span></label>
+        <div class="accordion-item-bd" routerLinkActive="active-link">
+          <ul>
+            <li class="cursor outline--none" routerLink="/admin/new_jobs" routerLinkActive="active-link"><a>New Jobs Awaiting approval <span *ngIf="sharedService.sidebarAdminBadges.jobNew > 0" class="alert-budger danger">{{ sharedService.sidebarAdminBadges.jobNew }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/admin/all_jobs" routerLinkActive="active-link"><a>All jobs <span *ngIf="sharedService.sidebarAdminBadges.jobAll > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges.jobAll }}</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="accordion-item" routerLinkActive="active-link">
+        <input class="accordion-item-input" type="checkbox" name="accordion" id="item3"
+               [(ngModel)]="candidateLinkStatus"/>
+        <label for="item3" class="accordion-item-hd"><img class="margin-right--12" src="/assets/img/icons/2.png">candidates<span class="accordion-item-hd-cta">&#9650;</span></label>
+        <div class="accordion-item-bd" routerLinkActive="active-link">
+          <ul>
+            <li class="cursor outline--none" routerLink="/admin/new_candidates" routerLinkActive="active-link"><a>New candidates awaiting approval <span *ngIf="sharedService.sidebarAdminBadges.candidateNew > 0" class="alert-budger danger">{{ sharedService.sidebarAdminBadges.candidateNew }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/admin/candidate_document" routerLinkActive="active-link"><a>Candidate Documents awaiting approval <span *ngIf="sharedService.sidebarAdminBadges.candidateFileNew > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges.candidateFileNew }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/admin/candidate_video" routerLinkActive="active-link"><a>Candidate Videos awaiting approval <span *ngIf="sharedService.sidebarAdminBadges.candidateVideoNew > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges.candidateVideoNew }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/admin/all_candidates" routerLinkActive="active-link"><a>All candidates <span *ngIf="sharedService.sidebarAdminBadges.candidateAll > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges.candidateAll }}</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="accordion-item" routerLinkActive="active-link">
+        <input class="accordion-item-input" type="checkbox" name="accordion" id="item4"
+               [(ngModel)]="applicantLinkStatus"/>
+        <label for="item4" class="accordion-item-hd"><img class="margin-right--12" src="/assets/img/icons/3.png">applicants<span class="accordion-item-hd-cta">&#9650;</span></label>
+        <div class="accordion-item-bd" routerLinkActive="active-link">
+          <ul>
+            <li class="cursor outline--none" routerLink="/admin/all_applicants" routerLinkActive="active-link"><a>All <span *ngIf="sharedService.sidebarAdminBadges.interviewAll > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges.interviewAll }}</span></a></li>
+
+            <li class="cursor outline--none" routerLink="/admin/applications_awaiting" routerLinkActive="active-link"><a>Applications Awaiting Approval <span *ngIf="sharedService.sidebarAdminBadges.awaitingApplicants > 0" class="alert-budger danger">{{ sharedService.sidebarAdminBadges.awaitingApplicants }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/admin/applications_shortlist" routerLinkActive="active-link"><a>Shortlisted for consideration <span *ngIf="sharedService.sidebarAdminBadges.shortlistApplicants > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges.shortlistApplicants }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/admin/set_up_interview" routerLinkActive="active-link"><a>Interviews to be set up <span *ngIf="sharedService.sidebarAdminBadges.interviewSetUp > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges.interviewSetUp }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/admin/pending_interview" routerLinkActive="active-link"><a>Interviews pending <span *ngIf="sharedService.sidebarAdminBadges.interviewPending > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges.interviewPending }}</span></a></li>
+            <li class="cursor outline--none" routerLink="/admin/successful_placed" routerLinkActive="active-link"><a>Successfully placed candidates <span *ngIf="sharedService.sidebarAdminBadges.interviewPlaced > 0" class="alert-budger">{{ sharedService.sidebarAdminBadges.interviewPlaced }}</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <!--<li class="accordion-item">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" routerLink="/admin/reporting" routerLinkActive="active-link"><img class="margin-right&#45;&#45;12" src="/assets/img/icons/candidates_icon.png">reporting</label>
+      </li>-->
+      <li class="accordion-item">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" routerLink="/admin/switch_account" routerLinkActive="active-link"><img class="margin-right--12" src="/assets/img/icons/2.png">Switch Account</label>
+      </li>
+      <li class="accordion-item">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" routerLink="/admin/activity" routerLinkActive="active-link"><img class="margin-right--12" src="/assets/img/icons/5.png">activity</label>
+      </li>
+
+      <li class="accordion-item mobile-display">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" routerLink="/admin/profile" routerLinkActive="active-link">my account</label>
+      </li>
+      <li *ngIf="checkRole" class="accordion-item mobile-display">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" routerLink="/admin/manage_system" routerLinkActive="active-link">manage system</label>
+      </li>
+      <li class="accordion-item mobile-display">
+        <input class="accordion-item-input" type="checkbox" name="accordion"/>
+        <label class="accordion-item-hd" (click)="logout()">logout</label>
+      </li>
+    </ul>
+  </div>
+</div>

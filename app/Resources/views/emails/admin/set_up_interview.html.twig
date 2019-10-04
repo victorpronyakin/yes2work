@@ -1,0 +1,18 @@
+{% extends 'emails/base_email_admin.html.twig' %}
+{% block body_html %}
+    A client, {{ client.firstName }} {{ client.lastName }} from {{ companyName }} has just requested an interview with {{ candidate.firstName }} {{ candidate.lastName }}
+    {{ (jobTitle is defined and jobTitle is not empty) ? ' for '~jobTitle : '' }}.
+    <br><br>
+    Client Contact details: <br>
+    Client Name: {{ client.firstName }} <br>
+    Company Name: {{ companyName }} <br>
+    Client Phone Number: {{ client.phone }} <br>
+    Client Email address: {{ client.email }} <br>
+    <br>
+    Candidate Contact details: <br>
+    Name: {{ candidate.firstName }} <br>
+    Candidate Phone Number: {{ candidate.phone }} <br>
+    Candidate Email address: {{ candidate.email }} <br>
+    <br>
+    Please click <a href="{{ link }}">here</a> to view the application.
+{% endblock %}

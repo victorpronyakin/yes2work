@@ -1,0 +1,14 @@
+@media screen and (max-width: 767px){
+  .form-control{
+    &.field--medium{
+      &.margin-bottom--32{
+        &.input-form{
+          &.select-form{
+            display: block;
+            width: 100%!important;
+          }
+        }
+      }
+    }
+  }
+}

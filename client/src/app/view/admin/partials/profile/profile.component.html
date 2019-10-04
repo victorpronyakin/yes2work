@@ -1,0 +1,269 @@
+<div class="title-description margin-bottom--24">
+  <h3 class="margin-bottom--24">my profile</h3>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque corporis deleniti deserunt, distinctio dolor doloribus fuga iste natus nisi officiis pariatur possimus qui voluptates! Cumque quibusdam recusandae reprehenderit rerum voluptates?</p>
+</div>
+<div class="row full-width profile-notific">
+  <div class="half-width padding-right--12">
+    <h4 class="title-row margin-bottom--12">My personal information</h4>
+    <form [formGroup]="adminProfileForm">
+      <div class="form-group required-icon-content">
+        <input type="text" class="form-control input-form" formControlName="firstName" placeholder="First name" required>
+        <span class="required-icon">*</span>
+        <span class="help-box" *ngIf="adminProfileForm.controls.firstName.invalid && !adminProfileForm.controls.firstName.untouched">Please enter the Name</span>
+      </div>
+      <div class="form-group required-icon-content">
+        <input type="text" class="form-control input-form" formControlName="lastName" placeholder="Surname" required>
+        <span class="required-icon">*</span>
+        <span class="help-box" *ngIf="adminProfileForm.controls.lastName.invalid && !adminProfileForm.controls.lastName.untouched">Please enter the Surname</span>
+      </div>
+      <div class="form-group phone-content-code required-icon-content">
+        <int-phone-prefix class="phone-number" formControlName="phone"></int-phone-prefix>
+        <span class="required-icon">*</span>
+      </div>
+      <span class="help-box margin-bottom--15" *ngIf="adminProfileForm.controls.phone.invalid && !adminProfileForm.controls.phone.untouched">Please enter a valid contact number</span>
+      <div class="form-group required-icon-content">
+        <input type="text" class="form-control input-form" formControlName="email" placeholder="Email" required >
+        <span class="required-icon">*</span>
+        <span class="help-box" *ngIf="adminProfileForm.controls.email.invalid && !adminProfileForm.controls.email.untouched">Please enter the Email</span>
+      </div>
+      <button class="btn primary-button" [disabled]="adminProfileForm.invalid" (click)="updateAdminProfile()" style="float: right">Update</button>
+    </form>
+  </div>
+  <div class="half-width padding-left--12">
+    <h4 class="title-row margin-bottom--12">Username & Password</h4>
+    <form class="margin-bottom--32" [formGroup]="passwordForm">
+      <div class="form-group required-icon-content">
+        <input type="password" formControlName="old_password" class="form-control input-form" placeholder="Old password" required>
+        <span class="required-icon">*</span>
+        <span class="help-box" *ngIf="passwordForm.controls.old_password.invalid && !passwordForm.controls.old_password.untouched">Old password entered is not correct</span>
+      </div>
+      <div class="form-group required-icon-content">
+        <input type="password" formControlName="new_password" class="form-control input-form" placeholder="New password" required>
+        <span class="required-icon">*</span>
+        <span class="help-box" *ngIf="passwordForm.controls.new_password.invalid && !passwordForm.controls.new_password.untouched">Password must contain a minimum of 6 characters.</span>
+      </div>
+      <div class="form-group required-icon-content">
+        <input type="password" formControlName="confirm_password" class="form-control input-form" placeholder="Confirm password" required>
+        <span class="required-icon">*</span>
+        <span class="help-box" *ngIf="passwordForm.controls.confirm_password.invalid && !passwordForm.controls.confirm_password.untouched">Passwords do not match</span>
+      </div>
+      <button class="btn primary-button" (click)="updatePassword()" style="float: right">Update</button>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 padding-right--0 padding-left--0">
+    <h4 class="margin-top title-row margin-bottom--12">Notifications</h4>
+    <span class="after-sub margin-bottom--18">How do you want to be notified?</span>
+    <div class="margin-bottom--24 email-notification">
+      <div class="row padding-min">
+        <div class="col-md-4 flex align-center padding-left--0">
+          <span class="description-checkbox">Email</span>
+        </div>
+        <div class="col-md-4 flex align-center justify-right">
+          <div class="switch__container">
+            <input id="switch-shadow" class="switch switch--shadow" type="checkbox" [(ngModel)]="notifyEmail" (click)="updatePreferenceNotificationEmail('notifyEmail', notifyEmail)">
+            <label for="switch-shadow"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h4 class="title-row margin-bottom--12">Candidates</h4>
+    <div class="container send-update padding-left--0 padding-right--0">
+      <div class="row padding-m">
+        <div class="col-md-3 flex align-center margin-bottom--24 padding-left--0">
+          <p class="after-sub">New sign ups</p>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateSign === 1" type="checkbox" (click)="updatePreferenceNotification('candidateSign', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateSign === 2" type="checkbox" (click)="updatePreferenceNotification('candidateSign', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateSign === 3" type="checkbox" (click)="updatePreferenceNotification('candidateSign', 3)">
+            <span class="lbl padding-8">Weekly</span>
+          </label>
+        </div>
+      </div>
+      <div class="row padding-m">
+        <div class="col-md-3 flex align-center margin-bottom--24 padding-left--0">
+          <p class="after-sub">New upload file</p>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateFile === 1" type="checkbox" (click)="updatePreferenceNotification('candidateFile', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateFile === 2" type="checkbox" (click)="updatePreferenceNotification('candidateFile', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateFile === 3" type="checkbox" (click)="updatePreferenceNotification('candidateFile', 3)">
+            <span class="lbl padding-8">Weekly</span>
+          </label>
+        </div>
+      </div>
+      <div class="row padding-m">
+        <div class="col-md-3 flex align-center margin-bottom--24 padding-left--0">
+          <p class="after-sub">Request for video</p>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateRequestVideo === 1" type="checkbox" (click)="updatePreferenceNotification('candidateRequestVideo', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateRequestVideo === 2" type="checkbox" (click)="updatePreferenceNotification('candidateRequestVideo', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateRequestVideo === 3" type="checkbox" (click)="updatePreferenceNotification('candidateRequestVideo', 3)">
+            <span class="lbl padding-8">Weekly</span>
+          </label>
+        </div>
+      </div>
+      <div class="row padding-m">
+        <div class="col-md-3 flex align-center margin-bottom--24 padding-left--0">
+          <p class="after-sub">Profile deactivated</p>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateDeactivate === 1" type="checkbox" (click)="updatePreferenceNotification('candidateDeactivate', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateDeactivate === 2" type="checkbox" (click)="updatePreferenceNotification('candidateDeactivate', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="candidateDeactivate === 3" type="checkbox" (click)="updatePreferenceNotification('candidateDeactivate', 3)">
+            <span class="lbl padding-8">Weekly</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <h4 class="title-row margin-bottom--12">Clients</h4>
+    <div class="container send-update padding-left--0 padding-right--0">
+      <div class="row padding-m">
+        <div class="col-md-3 flex align-center margin-bottom--24 padding-left--0">
+          <p class="after-sub">New sign ups</p>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="clientSign === 1" type="checkbox" (click)="updatePreferenceNotification('clientSign', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="clientSign === 2" type="checkbox" (click)="updatePreferenceNotification('clientSign', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="clientSign === 3" type="checkbox" (click)="updatePreferenceNotification('clientSign', 3)">
+            <span class="lbl padding-8">Weekly</span>
+          </label>
+        </div>
+      </div>
+      <div class="row padding-m">
+        <div class="col-md-3 flex align-center margin-bottom--24 padding-left--0">
+          <p class="after-sub">Request interview</p>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="interviewSetUp === 1" type="checkbox" (click)="updatePreferenceNotification('interviewSetUp', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="interviewSetUp === 2" type="checkbox" (click)="updatePreferenceNotification('interviewSetUp', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="interviewSetUp === 3" type="checkbox" (click)="updatePreferenceNotification('interviewSetUp', 3)">
+            <span class="lbl padding-8">Weekly</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <h4 class="title-row margin-bottom--12">Jobs</h4>
+    <div class="container send-update padding-left--0 padding-right--0">
+      <div class="row padding-m">
+        <div class="col-md-3 flex align-center margin-bottom--24 padding-left--0">
+          <p class="after-sub">New posted jobs</p>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="jobNew === 1" type="checkbox" (click)="updatePreferenceNotification('jobNew', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="jobNew === 2" type="checkbox" (click)="updatePreferenceNotification('jobNew', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="jobNew === 3" type="checkbox" (click)="updatePreferenceNotification('jobNew', 3)">
+            <span class="lbl padding-8">Weekly</span>
+          </label>
+        </div>
+      </div>
+      <div class="row padding-m">
+        <div class="col-md-3 flex align-center margin-bottom--24 padding-left--0">
+          <p class="after-sub">Edited jobs</p>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="jobChange === 1" type="checkbox" (click)="updatePreferenceNotification('jobChange', 1)">
+            <span class="lbl padding-8">Immediate</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="jobChange === 2" type="checkbox" (click)="updatePreferenceNotification('jobChange', 2)">
+            <span class="lbl padding-8">Daily</span>
+          </label>
+        </div>
+        <div class="col-md-3 flex align-center justify-center">
+          <label>
+            <input [disabled]="!notifyEmail" [checked]="jobChange === 3" type="checkbox" (click)="updatePreferenceNotification('jobChange', 3)">
+            <span class="lbl padding-8">Weekly</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="preloaderPage" id="preloader">
+  <div id="loader"></div>
+</div>

@@ -1,0 +1,4 @@
+{% extends 'emails/base_email_admin.html.twig' %}
+{% block body_html %}
+    {{ user.firstName~" "~user.lastName }} at {{ company.name }}, {{ user.phone }}, {{ user.email }} is looking to hire a post articles candidate.
+{% endblock %}

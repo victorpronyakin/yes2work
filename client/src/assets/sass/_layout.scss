@@ -1,0 +1,106 @@
+// Layout
+.form-group {
+
+  &.several-inputs {
+
+    label {
+      width: 100%;
+    }
+
+    input {
+      width: 45%;
+    }
+  }
+}
+
+.field {
+  &--small {
+    flex: 0 !important;
+    width: 120px !important;
+  }
+}
+
+.field {
+  &--medium {
+    flex: 0 !important;
+    width: 240px !important;
+  }
+}
+
+.content-page-column{
+  width: calc(100% - 330px);
+}
+
+
+// Navbar
+.admin-link{
+  cursor: pointer;
+}
+
+.admin-link:after{
+  content: initial !important;
+}
+
+.navbar-brand{
+
+  img{
+    height: 60px;
+  }
+}
+
+.d-inline-block{
+  padding: 15px;
+
+  .dropdown-item{
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+}
+
+.btn{
+
+  &.new-job-button{
+    padding: 10px 25px;
+    text-transform: uppercase;
+    margin-left: 25px;
+    outline: none;
+  }
+}
+
+.rightside-content {
+  padding: 25px;
+}
+
+
+// List row (label and input)
+.list-input{
+  width: 100%;
+
+  .address-label{
+    width: 19.5%;
+  }
+  .address-input{
+    width: 80.5%;
+  }
+
+  & > label{
+    width: 40%;
+  }
+  & > input{
+    width: 60%;
+  }
+  & > select{
+    width: 60%;
+  }
+}
+
+.modal-content {
+  border: 1px solid green;
+  max-width: 750px !important;
+  width: 100%;
+}
+.content-page{
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  padding: 20px;
+}
